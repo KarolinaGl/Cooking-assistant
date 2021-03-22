@@ -20,6 +20,9 @@ namespace CookingAssistant
     /// </summary>
     public partial class MainWindow : Window
     {
+        /// <summary>
+        /// This is the MainWindow constructor
+        /// </summary>
         public MainWindow()
         {
             InitializeComponent();
