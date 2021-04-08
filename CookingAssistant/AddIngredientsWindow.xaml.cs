@@ -32,11 +32,10 @@ namespace CookingAssistant
             this.ingredientsDataGrid.ItemsSource = ingredients.ToList();
         }
 
-        private void IngredientsGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void IngredientsDataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (this.ingredientsDataGrid.SelectedIndex >= 0 && this.ingredientsDataGrid.SelectedItems.Count >= 0)
             {
-                // TODO: if (this.ingredientsDataGrid.SelectedItems[0].GetType() == typeof(Ingredient))
                 Ingredient i = (Ingredient)this.ingredientsDataGrid.SelectedItems[0];
                 this.updateIngredientNameTextBox.Text = i.ingredientName;
                 updatedIngredientId = i.ingredientId;
@@ -72,7 +71,7 @@ namespace CookingAssistant
             this.ingredientsDataGrid.ItemsSource = db.Ingredients.ToList();
         }
 
-        private void deleteIngredientButton_Click(object sender, RoutedEventArgs e)
+        private void DeleteIngredientButton_Click(object sender, RoutedEventArgs e)
         {
             var ingredients = from i in db.Ingredients
                               where i.ingredientId == updatedIngredientId
