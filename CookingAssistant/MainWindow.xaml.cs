@@ -12,20 +12,33 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using YouTubeLib;
 
-namespace CookingAssistant
+namespace CookingUI
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
     public partial class MainWindow : Window
     {
-        /// <summary>
-        /// This is the MainWindow constructor
-        /// </summary>
+        public string input;
         public MainWindow()
         {
-            InitializeComponent();
+        }
+
+        private void SearchButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (this.input != null)
+            {
+                var ytWindow = new YouTubeWindow(input);
+                ytWindow.Show();
+                ytWindow.Owner = this;
+            }
+        }
+
+        private void InputChanged(object sender, RoutedEventArgs e)
+        {
+            this.input = TextBoxInput.Text;
         }
     }
 }
