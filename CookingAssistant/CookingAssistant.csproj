@@ -102,6 +102,9 @@
     <Compile Include="AddIngredientsWindow.xaml.cs">
       <DependentUpon>AddIngredientsWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="AddMeasurementsWindow.xaml.cs">
+      <DependentUpon>AddMeasurementsWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="CookingAssistantDBModel.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -126,6 +129,10 @@
       <DependentUpon>CookingAssistantDBModel.tt</DependentUpon>
     </Compile>
     <Page Include="AddIngredientsWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="AddMeasurementsWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
