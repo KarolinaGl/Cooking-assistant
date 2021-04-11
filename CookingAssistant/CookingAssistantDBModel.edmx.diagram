@@ -17,6 +17,9 @@
         <AssociationConnector Association="CookingAssistantDBModel.FK_RecipeIngredients_MeasurementUnits" ManuallyRouted="false" />
         <AssociationConnector Association="CookingAssistantDBModel.FK_Supplies_MeasurementUnits" ManuallyRouted="false" />
         <AssociationConnector Association="CookingAssistantDBModel.FK_RecipeIngredients_Recipes" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="CookingAssistantDBModel.ShoppingList" Width="1.5" PointX="8.5" PointY="5.125" />
+        <AssociationConnector Association="CookingAssistantDBModel.FK_ShoppingLists_Ingredients" />
+        <AssociationConnector Association="CookingAssistantDBModel.FK_ShoppingLists_MeasurementUnits" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

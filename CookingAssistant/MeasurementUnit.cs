@@ -19,6 +19,7 @@ namespace CookingAssistant
         {
             this.RecipeIngredients = new HashSet<RecipeIngredient>();
             this.Supplies = new HashSet<Supply>();
+            this.ShoppingLists = new HashSet<ShoppingList>();
         }
     
         public int measurementId { get; set; }
@@ -28,5 +29,7 @@ namespace CookingAssistant
         public virtual ICollection<RecipeIngredient> RecipeIngredients { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Supply> Supplies { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ShoppingList> ShoppingLists { get; set; }
     }
 }

@@ -126,6 +126,9 @@
     <Compile Include="AddMeasurementsWindow.xaml.cs">
       <DependentUpon>AddMeasurementsWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ShoppingList.cs">
+      <DependentUpon>CookingAssistantDBModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="YouTubeLib.cs" />
     <Compile Include="CookingAssistantDBModel.cs">
       <AutoGen>True</AutoGen>
