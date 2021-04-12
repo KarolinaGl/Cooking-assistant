@@ -25,7 +25,6 @@ namespace CookingAssistant
         {
             InitializeComponent();
 
-            CookingAssistantDBEntities db = new CookingAssistantDBEntities();
             var ingredients = from ingredient in db.Ingredients
                               select ingredient;
 
