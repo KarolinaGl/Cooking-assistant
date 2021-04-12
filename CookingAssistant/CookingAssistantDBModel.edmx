@@ -25,6 +25,8 @@
           </Key>
           <Property Name="measurementId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="measurementDescription" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="type" Type="nchar" MaxLength="10" />
+          <Property Name="defaultUnit" Type="float" />
         </EntityType>
         <EntityType Name="RecipeIngredients">
           <Key>
@@ -223,16 +225,6 @@
           <NavigationProperty Name="Supplies" Relationship="Self.FK_Supplies_Ingredients" FromRole="Ingredients" ToRole="Supplies" />
           <NavigationProperty Name="ShoppingLists" Relationship="CookingAssistantDBModel.FK_ShoppingLists_Ingredients" FromRole="Ingredient" ToRole="ShoppingList" />
         </EntityType>
-        <EntityType Name="MeasurementUnit">
-          <Key>
-            <PropertyRef Name="measurementId" />
-          </Key>
-          <Property Name="measurementId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="measurementDescription" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
-          <NavigationProperty Name="RecipeIngredients" Relationship="Self.FK_RecipeIngredients_MeasurementUnits" FromRole="MeasurementUnits" ToRole="RecipeIngredients" />
-          <NavigationProperty Name="Supplies" Relationship="Self.FK_Supplies_MeasurementUnits" FromRole="MeasurementUnits" ToRole="Supplies" />
-          <NavigationProperty Name="ShoppingLists" Relationship="CookingAssistantDBModel.FK_ShoppingLists_MeasurementUnits" FromRole="MeasurementUnit" ToRole="ShoppingList" />
-        </EntityType>
         <EntityType Name="RecipeIngredient">
           <Key>
             <PropertyRef Name="recipeIngredientId" />
@@ -243,8 +235,8 @@
           <Property Name="ingredientId" Type="Int32" Nullable="false" />
           <Property Name="measurementQuantity" Type="Double" Nullable="false" />
           <NavigationProperty Name="Ingredient" Relationship="Self.FK_RecipeIngredients_Ingredients" FromRole="RecipeIngredients" ToRole="Ingredients" />
-          <NavigationProperty Name="MeasurementUnit" Relationship="Self.FK_RecipeIngredients_MeasurementUnits" FromRole="RecipeIngredients" ToRole="MeasurementUnits" />
           <NavigationProperty Name="Recipe" Relationship="Self.FK_RecipeIngredients_Recipes" FromRole="RecipeIngredients" ToRole="Recipes" />
+          <NavigationProperty Name="MeasurementUnit" Relationship="CookingAssistantDBModel.FK_RecipeIngredients_MeasurementUnits" FromRole="RecipeIngredient" ToRole="MeasurementUnit" />
         </EntityType>
         <EntityType Name="Recipe">
           <Key>
@@ -267,7 +259,7 @@
           <Property Name="ingredientId" Type="Int32" Nullable="false" />
           <Property Name="measurementQuantity" Type="Double" Nullable="false" />
           <NavigationProperty Name="Ingredient" Relationship="Self.FK_Supplies_Ingredients" FromRole="Supplies" ToRole="Ingredients" />
-          <NavigationProperty Name="MeasurementUnit" Relationship="Self.FK_Supplies_MeasurementUnits" FromRole="Supplies" ToRole="MeasurementUnits" />
+          <NavigationProperty Name="MeasurementUnit" Relationship="CookingAssistantDBModel.FK_Supplies_MeasurementUnits" FromRole="Supply" ToRole="MeasurementUnit" />
         </EntityType>
         <Association Name="FK_Recipes_FavouriteVideos">
           <End Role="FavouriteVideos" Type="Self.FavouriteVideo" Multiplicity="0..1" />
@@ -305,30 +297,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_RecipeIngredients_MeasurementUnits">
-          <End Role="MeasurementUnits" Type="Self.MeasurementUnit" Multiplicity="1" />
-          <End Role="RecipeIngredients" Type="Self.RecipeIngredient" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="MeasurementUnits">
-              <PropertyRef Name="measurementId" />
-            </Principal>
-            <Dependent Role="RecipeIngredients">
-              <PropertyRef Name="measurementId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Supplies_MeasurementUnits">
-          <End Role="MeasurementUnits" Type="Self.MeasurementUnit" Multiplicity="1" />
-          <End Role="Supplies" Type="Self.Supply" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="MeasurementUnits">
-              <PropertyRef Name="measurementId" />
-            </Principal>
-            <Dependent Role="Supplies">
-              <PropertyRef Name="measurementId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_RecipeIngredients_Recipes">
           <End Role="Recipes" Type="Self.Recipe" Multiplicity="1" />
           <End Role="RecipeIngredients" Type="Self.RecipeIngredient" Multiplicity="*" />
@@ -344,7 +312,6 @@
         <EntityContainer Name="CookingAssistantDBEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="FavouriteVideos" EntityType="Self.FavouriteVideo" />
           <EntitySet Name="Ingredients" EntityType="Self.Ingredient" />
-          <EntitySet Name="MeasurementUnits" EntityType="Self.MeasurementUnit" />
           <EntitySet Name="RecipeIngredients" EntityType="Self.RecipeIngredient" />
           <EntitySet Name="Recipes" EntityType="Self.Recipe" />
           <EntitySet Name="Supplies" EntityType="Self.Supply" />
@@ -360,14 +327,6 @@
             <End Role="Ingredients" EntitySet="Ingredients" />
             <End Role="Supplies" EntitySet="Supplies" />
           </AssociationSet>
-          <AssociationSet Name="FK_RecipeIngredients_MeasurementUnits" Association="Self.FK_RecipeIngredients_MeasurementUnits">
-            <End Role="MeasurementUnits" EntitySet="MeasurementUnits" />
-            <End Role="RecipeIngredients" EntitySet="RecipeIngredients" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Supplies_MeasurementUnits" Association="Self.FK_Supplies_MeasurementUnits">
-            <End Role="MeasurementUnits" EntitySet="MeasurementUnits" />
-            <End Role="Supplies" EntitySet="Supplies" />
-          </AssociationSet>
           <AssociationSet Name="FK_RecipeIngredients_Recipes" Association="Self.FK_RecipeIngredients_Recipes">
             <End Role="Recipes" EntitySet="Recipes" />
             <End Role="RecipeIngredients" EntitySet="RecipeIngredients" />
@@ -377,9 +336,18 @@
             <End Role="Ingredient" EntitySet="Ingredients" />
             <End Role="ShoppingList" EntitySet="ShoppingLists" />
           </AssociationSet>
+          <EntitySet Name="MeasurementUnits" EntityType="CookingAssistantDBModel.MeasurementUnit" />
+          <AssociationSet Name="FK_RecipeIngredients_MeasurementUnits" Association="CookingAssistantDBModel.FK_RecipeIngredients_MeasurementUnits">
+            <End Role="MeasurementUnit" EntitySet="MeasurementUnits" />
+            <End Role="RecipeIngredient" EntitySet="RecipeIngredients" />
+          </AssociationSet>
           <AssociationSet Name="FK_ShoppingLists_MeasurementUnits" Association="CookingAssistantDBModel.FK_ShoppingLists_MeasurementUnits">
             <End Role="MeasurementUnit" EntitySet="MeasurementUnits" />
             <End Role="ShoppingList" EntitySet="ShoppingLists" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Supplies_MeasurementUnits" Association="CookingAssistantDBModel.FK_Supplies_MeasurementUnits">
+            <End Role="MeasurementUnit" EntitySet="MeasurementUnits" />
+            <End Role="Supply" EntitySet="Supplies" />
           </AssociationSet>
         </EntityContainer>
         <EntityType Name="ShoppingList">
@@ -405,6 +373,30 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="MeasurementUnit">
+          <Key>
+            <PropertyRef Name="measurementId" />
+          </Key>
+          <Property Name="measurementId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="measurementDescription" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="RecipeIngredients" Relationship="CookingAssistantDBModel.FK_RecipeIngredients_MeasurementUnits" FromRole="MeasurementUnit" ToRole="RecipeIngredient" />
+          <NavigationProperty Name="ShoppingLists" Relationship="CookingAssistantDBModel.FK_ShoppingLists_MeasurementUnits" FromRole="MeasurementUnit" ToRole="ShoppingList" />
+          <NavigationProperty Name="Supplies" Relationship="CookingAssistantDBModel.FK_Supplies_MeasurementUnits" FromRole="MeasurementUnit" ToRole="Supply" />
+          <Property Name="type" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+          <Property Name="defaultUnit" Type="Double" />
+        </EntityType>
+        <Association Name="FK_RecipeIngredients_MeasurementUnits">
+          <End Type="CookingAssistantDBModel.MeasurementUnit" Role="MeasurementUnit" Multiplicity="1" />
+          <End Type="CookingAssistantDBModel.RecipeIngredient" Role="RecipeIngredient" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MeasurementUnit">
+              <PropertyRef Name="measurementId" />
+            </Principal>
+            <Dependent Role="RecipeIngredient">
+              <PropertyRef Name="measurementId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_ShoppingLists_MeasurementUnits">
           <End Type="CookingAssistantDBModel.MeasurementUnit" Role="MeasurementUnit" Multiplicity="1" />
           <End Type="CookingAssistantDBModel.ShoppingList" Role="ShoppingList" Multiplicity="*" />
@@ -413,6 +405,18 @@
               <PropertyRef Name="measurementId" />
             </Principal>
             <Dependent Role="ShoppingList">
+              <PropertyRef Name="measurementId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Supplies_MeasurementUnits">
+          <End Type="CookingAssistantDBModel.MeasurementUnit" Role="MeasurementUnit" Multiplicity="1" />
+          <End Type="CookingAssistantDBModel.Supply" Role="Supply" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MeasurementUnit">
+              <PropertyRef Name="measurementId" />
+            </Principal>
+            <Dependent Role="Supply">
               <PropertyRef Name="measurementId" />
             </Dependent>
           </ReferentialConstraint>
@@ -436,14 +440,6 @@
               <MappingFragment StoreEntitySet="Ingredients">
                 <ScalarProperty Name="ingredientId" ColumnName="ingredientId" />
                 <ScalarProperty Name="ingredientName" ColumnName="ingredientName" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="MeasurementUnits">
-            <EntityTypeMapping TypeName="CookingAssistantDBModel.MeasurementUnit">
-              <MappingFragment StoreEntitySet="MeasurementUnits">
-                <ScalarProperty Name="measurementId" ColumnName="measurementId" />
-                <ScalarProperty Name="measurementDescription" ColumnName="measurementDescription" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -486,6 +482,16 @@
                 <ScalarProperty Name="ingredientId" ColumnName="ingredientId" />
                 <ScalarProperty Name="measurementId" ColumnName="measurementId" />
                 <ScalarProperty Name="shoppingListId" ColumnName="shoppingListId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="MeasurementUnits">
+            <EntityTypeMapping TypeName="CookingAssistantDBModel.MeasurementUnit">
+              <MappingFragment StoreEntitySet="MeasurementUnits">
+                <ScalarProperty Name="defaultUnit" ColumnName="defaultUnit" />
+                <ScalarProperty Name="type" ColumnName="type" />
+                <ScalarProperty Name="measurementDescription" ColumnName="measurementDescription" />
+                <ScalarProperty Name="measurementId" ColumnName="measurementId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

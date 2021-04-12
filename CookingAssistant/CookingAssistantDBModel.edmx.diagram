@@ -7,19 +7,19 @@
       <Diagram DiagramId="d3e7523888c54478b3082d2a21c93660" Name="Diagram1">
         <EntityTypeShape EntityType="CookingAssistantDBModel.FavouriteVideo" Width="1.5" PointX="1.5" PointY="5.125" IsExpanded="true" />
         <EntityTypeShape EntityType="CookingAssistantDBModel.Ingredient" Width="1.5" PointX="6.25" PointY="3.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="CookingAssistantDBModel.MeasurementUnit" Width="1.5" PointX="6.25" PointY="1" IsExpanded="true" />
         <EntityTypeShape EntityType="CookingAssistantDBModel.RecipeIngredient" Width="1.5" PointX="3.25" PointY="1.875" IsExpanded="true" />
         <EntityTypeShape EntityType="CookingAssistantDBModel.Recipe" Width="1.5" PointX="0.875" PointY="2" IsExpanded="true" />
         <EntityTypeShape EntityType="CookingAssistantDBModel.Supply" Width="1.5" PointX="9.375" PointY="2" IsExpanded="true" />
         <AssociationConnector Association="CookingAssistantDBModel.FK_Recipes_FavouriteVideos" ManuallyRouted="false" />
         <AssociationConnector Association="CookingAssistantDBModel.FK_RecipeIngredients_Ingredients" ManuallyRouted="false" />
         <AssociationConnector Association="CookingAssistantDBModel.FK_Supplies_Ingredients" ManuallyRouted="false" />
-        <AssociationConnector Association="CookingAssistantDBModel.FK_RecipeIngredients_MeasurementUnits" ManuallyRouted="false" />
-        <AssociationConnector Association="CookingAssistantDBModel.FK_Supplies_MeasurementUnits" ManuallyRouted="false" />
         <AssociationConnector Association="CookingAssistantDBModel.FK_RecipeIngredients_Recipes" ManuallyRouted="false" />
         <EntityTypeShape EntityType="CookingAssistantDBModel.ShoppingList" Width="1.5" PointX="8.5" PointY="5.125" />
         <AssociationConnector Association="CookingAssistantDBModel.FK_ShoppingLists_Ingredients" />
+        <EntityTypeShape EntityType="CookingAssistantDBModel.MeasurementUnit" Width="1.5" PointX="6.25" PointY="0.75" />
+        <AssociationConnector Association="CookingAssistantDBModel.FK_RecipeIngredients_MeasurementUnits" />
         <AssociationConnector Association="CookingAssistantDBModel.FK_ShoppingLists_MeasurementUnits" />
+        <AssociationConnector Association="CookingAssistantDBModel.FK_Supplies_MeasurementUnits" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

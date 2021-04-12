@@ -21,7 +21,7 @@ namespace CookingAssistant
         public double measurementQuantity { get; set; }
     
         public virtual Ingredient Ingredient { get; set; }
-        public virtual MeasurementUnit MeasurementUnit { get; set; }
         public virtual Recipe Recipe { get; set; }
+        public virtual MeasurementUnit MeasurementUnit { get; set; }
     }
 }

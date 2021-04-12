@@ -27,10 +27,10 @@ namespace CookingAssistant
     
         public virtual DbSet<FavouriteVideo> FavouriteVideos { get; set; }
         public virtual DbSet<Ingredient> Ingredients { get; set; }
-        public virtual DbSet<MeasurementUnit> MeasurementUnits { get; set; }
         public virtual DbSet<RecipeIngredient> RecipeIngredients { get; set; }
         public virtual DbSet<Recipe> Recipes { get; set; }
         public virtual DbSet<Supply> Supplies { get; set; }
         public virtual DbSet<ShoppingList> ShoppingLists { get; set; }
+        public virtual DbSet<MeasurementUnit> MeasurementUnits { get; set; }
     }
 }

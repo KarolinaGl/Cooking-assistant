@@ -126,6 +126,9 @@
     <Compile Include="AddMeasurementsWindow.xaml.cs">
       <DependentUpon>AddMeasurementsWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="MeasurementUnit.cs">
+      <DependentUpon>CookingAssistantDBModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="RecipesWindow.xaml.cs">
       <DependentUpon>RecipesWindow.xaml</DependentUpon>
     </Compile>
@@ -142,9 +145,6 @@
       <DependentUpon>CookingAssistantDBModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Ingredient.cs">
-      <DependentUpon>CookingAssistantDBModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="MeasurementUnit.cs">
       <DependentUpon>CookingAssistantDBModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Recipe.cs">
