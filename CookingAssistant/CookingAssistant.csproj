@@ -126,6 +126,15 @@
     <Compile Include="AddMeasurementsWindow.xaml.cs">
       <DependentUpon>AddMeasurementsWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="MeasurementUnit.cs">
+      <DependentUpon>CookingAssistantDBModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="RecipesWindow.xaml.cs">
+      <DependentUpon>RecipesWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ShoppingList.cs">
+      <DependentUpon>CookingAssistantDBModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="YouTubeLib.cs" />
     <Compile Include="CookingAssistantDBModel.cs">
       <AutoGen>True</AutoGen>
@@ -136,9 +145,6 @@
       <DependentUpon>CookingAssistantDBModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Ingredient.cs">
-      <DependentUpon>CookingAssistantDBModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="MeasurementUnit.cs">
       <DependentUpon>CookingAssistantDBModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Recipe.cs">
@@ -183,6 +189,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="RecipesWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="YouTubeWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

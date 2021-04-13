@@ -7,7 +7,7 @@
         mc:Ignorable="d"
         Title="AddIngredientsWindow" Height="450" Width="800">
     <Grid>
-        <DataGrid x:Name="ingredientsDataGrid"  HorizontalAlignment="Left" Height="180" Margin="10,204,0,0" VerticalAlignment="Top" Width="521" SelectionChanged="IngredientsDataGrid_SelectionChanged" CanUserAddRows="False" CanUserDeleteRows="False" CanUserResizeRows="False" IsReadOnly="True"/>
+        <DataGrid x:Name="ingredientsDataGrid"  HorizontalAlignment="Left" Height="180" Margin="10,204,0,0" VerticalAlignment="Top" Width="521" SelectionChanged="IngredientsDataGrid_SelectionChanged" CanUserAddRows="False" CanUserDeleteRows="False" CanUserResizeRows="False" IsReadOnly="True" GridLinesVisibility="None"/>
         <Label Content="Ingredient name:" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" RenderTransformOrigin="2.026,-3.962"/>
         <Label Content="Label" HorizontalAlignment="Left" Height="103" Margin="219,64,0,0" VerticalAlignment="Top" Width="0"/>
         <TextBox x:Name="addIngredientNameTextBox" HorizontalAlignment="Left" Height="23" Margin="134,14,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120"/>

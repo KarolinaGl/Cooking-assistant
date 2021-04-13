@@ -18,14 +18,19 @@ namespace CookingAssistant
         public MeasurementUnit()
         {
             this.RecipeIngredients = new HashSet<RecipeIngredient>();
+            this.ShoppingLists = new HashSet<ShoppingList>();
             this.Supplies = new HashSet<Supply>();
         }
     
         public int measurementId { get; set; }
         public string measurementDescription { get; set; }
+        public string type { get; set; }
+        public Nullable<double> defaultUnit { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<RecipeIngredient> RecipeIngredients { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ShoppingList> ShoppingLists { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Supply> Supplies { get; set; }
     }
