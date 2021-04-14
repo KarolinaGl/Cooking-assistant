@@ -135,6 +135,9 @@
     <Compile Include="ShoppingList.cs">
       <DependentUpon>CookingAssistantDBModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="TimerWindow.xaml.cs">
+      <DependentUpon>TimerWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="YouTubeLib.cs" />
     <Compile Include="CookingAssistantDBModel.cs">
       <AutoGen>True</AutoGen>
@@ -190,6 +193,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="RecipesWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="TimerWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

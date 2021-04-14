@@ -47,5 +47,32 @@ namespace CookingAssistant
 
             this.recipesDataGrid.ItemsSource = ingredients.ToList();
         }
+
+        public RecipesWindow(int id)
+        {
+            InitializeComponent();
+            this.selectedRecipeId = id;
+
+            var recipes = from recipe in db.Recipes
+                          where recipe.recipeId == selectedRecipeId
+                          select recipe;
+
+            Recipe obj = recipes.SingleOrDefault();
+
+            this.recipeNameLabel.Content = obj.recipeName;
+            this.preparationTimeLabel.Content = "Preparation time: " + obj.preparationTime + " minutes";
+            this.descriptionTextBlock.Text = obj.description;
+
+            var ingredients = from r in db.RecipeIngredients
+                              where r.recipeId == selectedRecipeId
+                              select new
+                              {
+                                  r.measurementQuantity,
+                                  r.MeasurementUnit.measurementDescription,
+                                  r.Ingredient.ingredientName
+                              };
+
+            this.recipesDataGrid.ItemsSource = ingredients.ToList();
+        }
     }
 }
