@@ -6,9 +6,14 @@ using Google.Apis.YouTube.v3;
 using Google.Apis.YouTube.v3.Data;
 using Google.Apis.Services;
 
-
+/// <summary>
+/// Namespace housing classes acting as a wrapper for YouTube Data Api.
+/// </summary>
 namespace YouTubeLib
 {
+    /// <summary>
+    /// Handle used to connect to YouTube and manage communication between the service and the application
+    /// </summary>
     public class YouTubeHandle
     {
         private readonly YouTubeService service;
@@ -16,6 +21,12 @@ namespace YouTubeLib
         {
             service = new YouTubeService(new YouTubeService.Initializer() { ApiKey = apiKey });
         }
+        /// <summary>
+        /// Searches for videos related to a given term and return a list of found results
+        /// </summary>
+        /// <param name="searchTerm">Term to search</param>
+        /// <param name="maxResults">Maximum number of results</param>
+        /// <returns>A list of videos found related to the search term</returns>
         public async Task<List<YouTubeUtils.Video>> SearchVideos(string searchTerm, int maxResults)
         {
             var searchListRequest = service.Search.List("snippet");
@@ -28,6 +39,32 @@ namespace YouTubeLib
             foreach (var result in searchListResponse.Items)
             {
                 string id = Convert.ToString(result.Id.VideoId);
+                string title = result.Snippet.Title;
+                string channel = result.Snippet.ChannelTitle;
+                string description = result.Snippet.Description;
+
+                string thumbnailUrl = Convert.ToString(result.Snippet.Thumbnails.High.Url);
+                int thumbnailWidth = Convert.ToInt32(result.Snippet.Thumbnails.High.Width);
+                int thumbnailHeight = Convert.ToInt32(result.Snippet.Thumbnails.High.Height);
+
+                results.Add(new YouTubeUtils.Video(id, title, channel, description, new YouTubeUtils.Thumbnail(thumbnailUrl, thumbnailWidth, thumbnailHeight)));
+            }
+            return results;
+        }
+        /// <summary>
+        /// Retrieves videos using saved ids
+        /// </summary>
+        /// <param name="videoIds">List of saved YouTube video ids</param>
+        /// <returns>A list of retrived videos</returns>
+        public async Task<List<YouTubeUtils.Video>> GetVideosFromIds(List<string> videoIds)
+        {
+            var videoRequest = service.Videos.List("snippet");
+            videoRequest.Id = videoIds;
+            var videoResponse = await videoRequest.ExecuteAsync();
+            var results = new List<YouTubeUtils.Video>();
+            foreach (var result in videoResponse.Items)
+            {
+                string id = Convert.ToString(result.Id);
                 string title = result.Snippet.Title;
                 string channel = result.Snippet.ChannelTitle;
                 string description = result.Snippet.Description;
@@ -53,6 +90,7 @@ namespace YouTubeLib
         }
         */
     }
+    ///
     public static class YouTubeUtils
     {
         public class Thumbnail
@@ -101,10 +139,6 @@ namespace YouTubeLib
             return new Thumbnail(thumbnailUrl, thumbnailWidth, thumbnailHeight);
             // tu będą wyjątki i sposób pobrania najlepszej możliwej rodzielczości miniaturki
         }
-        public class UnreachableThumbnailException : Exception
-        {
-
-        }
         public static Video RetrieveVideoData(SearchResult result)
         {
             string id = Convert.ToString(result.Id.VideoId);
@@ -113,14 +147,6 @@ namespace YouTubeLib
             string description = result.Snippet.Description;
             Thumbnail thumbnail = RetrieveThumbnailData(result);
             return new Video(id, title, channel, description, thumbnail);
-        }
-        public class IncompleteVideoDataException : Exception
-        {
-
-        }
-        public static void ShuffleVideoList(List<Video> videos)
-        {
-
         }
     }
 }

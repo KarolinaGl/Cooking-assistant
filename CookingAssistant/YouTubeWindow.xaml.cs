@@ -13,35 +13,24 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using YouTubeLib;
 
-namespace CookingUI
+namespace CookingAssistant
 {
     /// <summary>
     /// Interaction logic for YouTubeWindow.xaml
     /// </summary>
     public partial class YouTubeWindow : Window
     {
-        YouTubeHandle yt;
-        string searchTerm;
+        List<YouTubeUtils.Video> videos;
         List<string> favouritesToAdd;
         public YouTubeWindow()
         {
             InitializeComponent();
-            yt = new YouTubeHandle("AIzaSyDvi23J4hoKVVtjVC-1XzW-s_PPjHGe_cA");
-            favouritesToAdd = new List<string>();
-            setDisplayVideoList();
-        }
-        public YouTubeWindow(string term)
-        {
-            InitializeComponent();
-            yt = new YouTubeHandle("AIzaSyDvi23J4hoKVVtjVC-1XzW-s_PPjHGe_cA");
-            searchTerm = term;
-            setDisplayVideoList();
         }
 
-        public async void setDisplayVideoList()
+        public void ReceiveVideos(List<YouTubeUtils.Video> videos)
         {
-            var videos = await yt.SearchVideos(this.searchTerm, 50);
-            displayVideoList.ItemsSource = videos;
+            this.videos = videos;
+            displayVideoList.ItemsSource = this.videos;
         }
 
         private void OpenBrowser_Click(object sender, RoutedEventArgs e)
@@ -50,8 +39,9 @@ namespace CookingUI
             System.Diagnostics.Process.Start(url);
         }
 
-        private void Favourites_Click(object sender, RoutedEventArgs e)
+        private void Save_Click(object sender, RoutedEventArgs e)
         {
         }
+
     }
 }
