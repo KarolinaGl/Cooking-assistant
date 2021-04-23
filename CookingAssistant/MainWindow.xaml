@@ -5,21 +5,25 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:CookingAssistant"
         mc:Ignorable="d"
-        Title="Cooking Assistant - Main Window" Height="450" Width="800"
-        SizeToContent="Width">
+        Title="Cooking Assistant"
+        Width="1920"
+        Height="1080"
+        ResizeMode="NoResize"
+        SizeToContent="Manual"
+        WindowState="Maximized"
+        WindowStyle="SingleBorderWindow">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="1*"/>
-            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="1*"/>
             <ColumnDefinition Width="1*"/>
         </Grid.ColumnDefinitions>
-        <Frame Grid.Column="0" Name="leftFrame" Background="DarkSlateGray"/>
-        <Frame Grid.Column="1" Name="recipesFrame" NavigationUIVisibility="Hidden" Background="LightGray" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
-        <Frame Grid.Column="2" Name="rightFrame" Background="DarkSlateGray">
+        <DataGrid Grid.Column="0"  x:Name="recipesGrid" IsReadOnly="True" SelectionMode="Single" SelectionUnit="Cell" CurrentCellChanged="recipesGrid_CurrentCellChanged" AreRowDetailsFrozen="True" GridLinesVisibility="None" HeadersVisibility="None"></DataGrid>
+        <Frame Grid.Column="1" Name="recipesFrame" NavigationUIVisibility="Hidden" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
+        <Frame Grid.Column="2" Name="rightFrame" NavigationUIVisibility="Hidden">
         </Frame>
-        <Button Name="savedVideosButton" Content="Saved videos" Grid.Column="2" HorizontalAlignment="Left" Margin="44,78,0,0" VerticalAlignment="Top" Width="129" Height="39" Click="SavedVideosButton_Click"/>
-        <Button Name="recommendedVideosButton" Content="Recommended videos" Grid.Column="2" HorizontalAlignment="Left" Margin="44,134,0,0" VerticalAlignment="Top" Width="129" Height="41" Click="RecommendedVideosButton_Click"/>
-        <Button Name="timerButton" Content="Timer" Grid.Column="2" HorizontalAlignment="Left" Margin="44,191,0,0" VerticalAlignment="Top" Width="129" Height="36" Click="TimerButton_Click"/>
-        <Button Name="RecipeSelectIdDummy" Content="RecipeSelectIdDummy" HorizontalAlignment="Left" Margin="35,38,0,0" VerticalAlignment="Top" Width="132" Height="79" Click="RecipeSelectIdDummy_Click"/>
+        <Button Name="savedVideosButton" Content="Saved video" Grid.Column="1" HorizontalAlignment="Left" Margin="208,799,0,0" VerticalAlignment="Top" Width="201" Height="47" Click="SavedVideosButton_Click"/>
+        <Button Name="recommendedVideosButton" Content="Recommended videos" Grid.Column="1" HorizontalAlignment="Left" Margin="208,851,0,0" VerticalAlignment="Top" Width="201" Height="46" Click="RecommendedVideosButton_Click"/>
+        <Button Name="timerButton" Content="Timer" Grid.Column="1" HorizontalAlignment="Left" Margin="208,902,0,0" VerticalAlignment="Top" Width="201" Height="46" Click="TimerButton_Click"/>
     </Grid>
 </Window>

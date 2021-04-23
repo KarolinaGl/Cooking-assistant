@@ -15,22 +15,16 @@ using YouTubeLib;
 
 namespace CookingAssistant
 {
-    /// <summary>
-    /// Interaction logic for YouTubeWindow.xaml
-    /// </summary>
     public partial class YouTubeWindow : Window
     {
-        List<YouTubeUtils.Video> videos;
-        List<string> favouritesToAdd;
+        private CookingAssistantDBEntities db = new CookingAssistantDBEntities();
         public YouTubeWindow()
         {
             InitializeComponent();
         }
-
         public void ReceiveVideos(List<YouTubeUtils.Video> videos)
         {
-            this.videos = videos;
-            displayVideoList.ItemsSource = this.videos;
+            displayVideoList.ItemsSource = videos;
         }
 
         private void OpenBrowser_Click(object sender, RoutedEventArgs e)
@@ -38,10 +32,15 @@ namespace CookingAssistant
             var url = "https://www.youtube.com/watch?v=" + ((Button)sender).Tag.ToString();
             System.Diagnostics.Process.Start(url);
         }
-
         private void Save_Click(object sender, RoutedEventArgs e)
         {
+            Recipe currentlyChosenRecipe = ((MainWindow)this.Owner).currentlyChosenRecipe;
+            string videoId = ((Button)sender).Tag.ToString();
+            Recipe record = (from r in db.Recipes.Include("FavouriteVideo")
+                             where currentlyChosenRecipe.recipeId == r.recipeId
+                             select r).FirstOrDefault();
+            record.FavouriteVideo = new FavouriteVideo() { youtubeId = videoId };
+            db.SaveChanges();
         }
-
     }
 }

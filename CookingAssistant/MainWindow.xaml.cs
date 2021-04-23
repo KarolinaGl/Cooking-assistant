@@ -17,15 +17,17 @@ using YouTubeLib;
 
 namespace CookingAssistant
 {
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
+    class RecipeGridCell
+    {
+        public string RecipeName { get; set; }
+        Recipe recipe { get; set; }
+    }
     public partial class MainWindow : Window
     {
-        private int selectedRecipeId;
+        public Recipe currentlyChosenRecipe;
+        private CookingAssistantDBEntities db = new CookingAssistantDBEntities();
         YouTubeHandle youTubeHandle;
-        Dictionary<string, List<YouTubeUtils.Video>> cachedSearchResults;
-        List<YouTubeUtils.Video> cachedSavedVideos;
+        Dictionary<string, List<YouTubeUtils.Video>> cachedSearchResults = new Dictionary<string, List<YouTubeUtils.Video>>();
         YouTubeWindow currentYouTubeWindow;
         TimerWindow currentTimerWindow;
         RecipesWindow currentRecipesWindow;
@@ -33,48 +35,78 @@ namespace CookingAssistant
         {
             InitializeComponent();
             youTubeHandle = new YouTubeHandle("AIzaSyDvi23J4hoKVVtjVC - 1XzW - s_PPjHGe_cA");
-            cachedSearchResults = new Dictionary<string, List<YouTubeUtils.Video>>();
-            cachedSavedVideos = new List<YouTubeUtils.Video>();
-            //cachedSavedVideos = youTubeHandle.GetVideosFromIds() pozyskanie ulubionych na podstawie listy id z bazy danych
+            /*
+            var recipes = (from r in db.Recipes
+                           select new RecipeGridCell()
+                           {
+                               RecipeName = r.recipeName
+                           }).ToArray();
+            */
+            var recipes = db.Recipes.Select((Recipe r) => new RecipeGridCell() { RecipeName = r.recipeName }).ToArray() ;
+            recipesGrid.ItemsSource = recipes;
         }
-
+        /*
+        public void LoadRecipes()
+        {
+            var recipes = db.Recipes.ToList();
+            recipesGrid.ItemsSource = recipes;
+        }
+        */
         private async void RecommendedVideosButton_Click(object sender, RoutedEventArgs e)
         {
-            string recipeName = "spaghetti";
-            List<YouTubeUtils.Video> videos;
-            if (this.cachedSearchResults.ContainsKey(recipeName))
+            if (currentlyChosenRecipe != null)
             {
-                videos = this.cachedSearchResults[recipeName];
+                string recipeName = this.currentlyChosenRecipe.recipeName;
+                List<YouTubeUtils.Video> videos;
+                if (this.cachedSearchResults.ContainsKey(recipeName))
+                {
+                    videos = this.cachedSearchResults[recipeName];
+                }
+                else
+                {
+                    var searchResult = await youTubeHandle.SearchVideos(recipeName, 50);
+                    this.cachedSearchResults[recipeName] = searchResult;
+                    videos = searchResult;
+                }
+                if (this.currentYouTubeWindow != null)
+                {
+                    currentYouTubeWindow.Close();
+                }
+                this.currentYouTubeWindow = new YouTubeWindow();
+                this.currentYouTubeWindow.Owner = this;
+                this.currentYouTubeWindow.ReceiveVideos(videos);
+                rightFrame.Content = this.currentYouTubeWindow.Content;
             }
-            else
-            {
-                var searchResult = await youTubeHandle.SearchVideos(recipeName, 50);
-                this.cachedSearchResults[recipeName] = searchResult;
-                videos = searchResult;
-            }
-            if (this.currentYouTubeWindow != null)
-            {
-                currentYouTubeWindow.Close();
-            }
-            this.currentYouTubeWindow = new YouTubeWindow();
-            this.currentYouTubeWindow.ReceiveVideos(videos);
-            this.currentYouTubeWindow.Show();
-        }
-        
+        } 
         private async void SavedVideosButton_Click(object sender, RoutedEventArgs e)
         {
-            List<string> videoIds = new List<string> { "qcXRx-Umcsg", "Yc5SGUIAhtM", "sWblpsLZ-O8" };
-            var videos = await this.youTubeHandle.GetVideosFromIds(videoIds);
-            this.cachedSavedVideos = videos;
-            if (this.currentYouTubeWindow != null)
+            if (this.currentlyChosenRecipe != null)
             {
-                currentYouTubeWindow.Close();
+                var records = (from r in db.Recipes.Include("FavouriteVideo")
+                            where this.currentlyChosenRecipe.recipeName == r.recipeName
+                            select r.FavouriteVideo).ToList();
+                var videoIds = new List<string>();
+                foreach (var record in records)
+                {
+                    if (record != null)
+                    {
+                        videoIds.Add(record.youtubeId);
+                    }
+                }
+                if (videoIds.Count() > 0)
+                {
+                    var videos = await this.youTubeHandle.GetVideosFromIds(videoIds);
+                    if (this.currentYouTubeWindow != null)
+                    {
+                        currentYouTubeWindow.Close();
+                    }
+                    this.currentYouTubeWindow = new YouTubeWindow();
+                    this.currentYouTubeWindow.Owner = this;
+                    this.currentYouTubeWindow.ReceiveVideos(videos);
+                    rightFrame.Content = this.currentYouTubeWindow.Content;
+                } 
             }
-            this.currentYouTubeWindow = new YouTubeWindow();
-            this.currentYouTubeWindow.ReceiveVideos(videos);
-            this.currentYouTubeWindow.Show();
         }
-
         private void TimerButton_Click(object sender, RoutedEventArgs e)
         {
             if (this.currentTimerWindow != null)
@@ -82,24 +114,44 @@ namespace CookingAssistant
                 this.currentTimerWindow.Close();
             }
             this.currentTimerWindow = new TimerWindow();
+            this.currentTimerWindow.Owner = this;
             this.currentTimerWindow.Show();
         }
-
-        public void EmbedRecipesWindow(int selectedRecipeId)
+        public void EmbedRecipesWindow(int chosenRecipeId)
         {
             if (this.currentRecipesWindow != null)
             {
                 this.currentRecipesWindow.Close();
             }
-            currentRecipesWindow = new RecipesWindow(selectedRecipeId);
+            this.currentRecipesWindow = new RecipesWindow(chosenRecipeId);
+            this.currentRecipesWindow.Owner = this;
             recipesFrame.Content = this.currentRecipesWindow.Content;
-
+        }
+        private void RemoveFavouriteHandle(object sender, RoutedEventArgs e)
+        {
+            
         }
 
-        private void RecipeSelectIdDummy_Click(object sender, RoutedEventArgs e)
+        private void recipesGrid_CurrentCellChanged(object sender, EventArgs e)
         {
-            this.selectedRecipeId = 1;
-            EmbedRecipesWindow(selectedRecipeId);
+            if (recipesGrid.CurrentCell.IsValid)
+            {
+                RecipeGridCell recipeGridCell = recipesGrid.CurrentCell.Item as RecipeGridCell;
+                if (recipeGridCell != null)
+                {
+                    string recipeName = recipeGridCell.RecipeName;
+                    var recipe = from r in db.Recipes where r.recipeName == recipeName select r;
+                    this.currentlyChosenRecipe = recipe.SingleOrDefault();
+                    if (this.currentlyChosenRecipe != null)
+                    {
+                        if (this.currentYouTubeWindow != null)
+                        {
+                            this.currentYouTubeWindow.Close();
+                        }
+                        EmbedRecipesWindow(this.currentlyChosenRecipe.recipeId);
+                    }
+                }
+            }
         }
     }
 }

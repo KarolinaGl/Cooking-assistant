@@ -15,6 +15,5 @@
         <Label x:Name="recipeNameLabel" Content="Label" HorizontalAlignment="Left" Margin="11,10,0,0" VerticalAlignment="Top"/>
         <Label x:Name="preparationTimeLabel" Content="Label" Grid.Column="1" HorizontalAlignment="Left" Margin="147,10,0,0" VerticalAlignment="Top"/>
         <TextBlock x:Name="descriptionTextBlock" HorizontalAlignment="Left" Margin="11,242,0,0" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Top" Width="629" Height="167" Grid.ColumnSpan="2"/>
-
     </Grid>
 </Window>

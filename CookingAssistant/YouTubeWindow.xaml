@@ -5,14 +5,13 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:CookingAssistant"
         mc:Ignorable="d"
-        Title="YouTubeWindow" Height="720" Width="1280">
+        Title="YouTubeWindow">
     <Grid>
-        <ListView Margin="10" Name="displayVideoList" HorizontalContentAlignment="Stretch" ScrollViewer.CanContentScroll="False"
->
+        <ListView Margin="10" Name="displayVideoList" HorizontalContentAlignment="Stretch" ScrollViewer.CanContentScroll="False">
             <ListView.ItemTemplate>
                 <DataTemplate>
-                    <UniformGrid>
-                        <Image Source="{Binding Thumbnail.Url}" Height="200" Width="300">
+                    <UniformGrid MaxWidth="500">
+                        <Image Source="{Binding Thumbnail.Url}" Height="150" Width="200">
                         </Image>
                         <TextBlock Text="{Binding Title}" VerticalAlignment="Center" HorizontalAlignment="Left"></TextBlock>
                         <Button Content="Open in Browser" Click="OpenBrowser_Click" Tag="{Binding Id}" Height="100" Width="150"/>
@@ -21,6 +20,5 @@
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
-
     </Grid>
 </Window>
