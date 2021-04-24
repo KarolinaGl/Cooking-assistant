@@ -129,6 +129,9 @@
     <Compile Include="MeasurementUnit.cs">
       <DependentUpon>CookingAssistantDBModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="RecipeCRUDWindow.xaml.cs">
+      <DependentUpon>RecipeCRUDWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="RecipesWindow.xaml.cs">
       <DependentUpon>RecipesWindow.xaml</DependentUpon>
     </Compile>
@@ -198,6 +201,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="RecipeCRUDWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="RecipesWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

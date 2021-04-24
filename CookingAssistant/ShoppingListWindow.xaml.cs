@@ -259,27 +259,35 @@ namespace CookingAssistant
         /// <param name="e"></param>
         private void DeleteIngredientButton_Click(object sender, RoutedEventArgs e)
         {
-            var shoppingListItems = from shoppingListItem in db.ShoppingLists
-                                    where shoppingListItem.shoppingListId == selectedShoppingListId
-                                    select shoppingListItem;
-
-            ShoppingList shoppingListObject = shoppingListItems.SingleOrDefault();
-
-            MessageBoxResult messageBoxResult = MessageBox.Show("Are you sure you want to delete " + shoppingListObject.Ingredient.ingredientName + " from your shopping list?",
-                "Delete ingredient",
-                MessageBoxButton.YesNo,
-                MessageBoxImage.Warning,
-                MessageBoxResult.No
-                );
-
-            if (messageBoxResult == MessageBoxResult.Yes)
+            if (selectedShoppingListId != 0)
             {
-                if (shoppingListObject != null)
+                var shoppingListItems = from shoppingListItem in db.ShoppingLists
+                                        where shoppingListItem.shoppingListId == selectedShoppingListId
+                                        select shoppingListItem;
+
+                ShoppingList shoppingListObject = shoppingListItems.SingleOrDefault();
+
+                MessageBoxResult messageBoxResult = MessageBox.Show("Are you sure you want to delete " + shoppingListObject.Ingredient.ingredientName + " from your shopping list?",
+                    "Delete ingredient",
+                    MessageBoxButton.YesNo,
+                    MessageBoxImage.Warning,
+                    MessageBoxResult.No
+                    );
+
+                if (messageBoxResult == MessageBoxResult.Yes)
                 {
-                    db.ShoppingLists.Remove(shoppingListObject);
-                    db.SaveChanges();
-                    UpdateIngredientsDataGrid();
+                    if (shoppingListObject != null)
+                    {
+                        db.ShoppingLists.Remove(shoppingListObject);
+                        db.SaveChanges();
+                        UpdateIngredientsDataGrid();
+                    }
                 }
+                selectedShoppingListId = 0;
+            }
+            else
+            {
+                GenerateMessageBox("Choose an ingredient you want to delete", "Delete ingredient");
             }
         }
 

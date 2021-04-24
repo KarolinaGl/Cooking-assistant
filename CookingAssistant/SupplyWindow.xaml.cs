@@ -258,27 +258,35 @@ namespace CookingAssistant
         /// <param name="e"></param>
         private void DeleteIngredientButton_Click(object sender, RoutedEventArgs e)
         {
-            var supplies = from supply in db.Supplies
-                              where supply.supplyId == selectedSupplyId
-                              select supply;
-
-            Supply obj = supplies.SingleOrDefault();
-
-            MessageBoxResult messageBoxResult = MessageBox.Show("Are you sure you want to delete " + obj.Ingredient.ingredientName + " from your supplies?",
-                "Delete ingredient",
-                MessageBoxButton.YesNo,
-                MessageBoxImage.Warning,
-                MessageBoxResult.No
-                );
-
-            if (messageBoxResult == MessageBoxResult.Yes)
+            if (selectedSupplyId != 0)
             {
-                if (obj != null)
+                var supplies = from supply in db.Supplies
+                               where supply.supplyId == selectedSupplyId
+                               select supply;
+
+                Supply obj = supplies.SingleOrDefault();
+
+                MessageBoxResult messageBoxResult = MessageBox.Show("Are you sure you want to delete " + obj.Ingredient.ingredientName + " from your supplies?",
+                    "Delete ingredient",
+                    MessageBoxButton.YesNo,
+                    MessageBoxImage.Warning,
+                    MessageBoxResult.No
+                    );
+
+                if (messageBoxResult == MessageBoxResult.Yes)
                 {
-                    db.Supplies.Remove(obj);
-                    db.SaveChanges();
-                    UpdateIngredientsDataGrid();
+                    if (obj != null)
+                    {
+                        db.Supplies.Remove(obj);
+                        db.SaveChanges();
+                        UpdateIngredientsDataGrid();
+                    }
                 }
+                selectedSupplyId = 0;
+            }
+            else
+            {
+                GenerateMessageBox("Choose an ingredient you want to delete", "Delete ingredient");
             }
         }
 
