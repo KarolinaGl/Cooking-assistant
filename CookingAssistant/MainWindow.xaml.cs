@@ -33,6 +33,7 @@ namespace CookingAssistant
         ShoppingListWindow currentShoppingListWindow;
         SupplyWindow currentSupplyWindow;
         AddIngredientsWindow currentAddIngredientsWindow;
+        RecipeCRUDWindow currentRecipeCRUDWindow;
         public MainWindow()
         {
             InitializeComponent();
