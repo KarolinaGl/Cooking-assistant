@@ -33,7 +33,6 @@ namespace YouTubeLib
             searchListRequest.Q = searchTerm;
             searchListRequest.MaxResults = maxResults;
             searchListRequest.Type = "video";
-            // searchListRequest.VideoEmbeddable = SearchResource.ListRequest.VideoEmbeddableEnum.True__;
             var searchListResponse = await searchListRequest.ExecuteAsync();
             var results = new List<YouTubeUtils.Video>();
             foreach (var result in searchListResponse.Items)
