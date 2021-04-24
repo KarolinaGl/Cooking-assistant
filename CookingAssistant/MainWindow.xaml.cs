@@ -18,27 +18,21 @@ using YouTubeLib;
 namespace CookingAssistant
 {
     /// <summary>
-    /// Auxiliary class used instead of anonymous objects to bind recipes to a DataGrid
+    /// Interaction logic for MainWindow.xaml. It's the main module of the application, acting as a hub for other windows and controls.
     /// </summary>
-    class RecipeGridCell
-    {
-        public string RecipeName { get; set; }
-        Recipe recipe { get; set; }
-    }
-    class ShoppingListGridCell
-    {
-        public string ShoppingListName { get; set; }
-        ShoppingList shoppingList { get; set; }
-    }
     public partial class MainWindow : Window
     {
         public Recipe currentlyChosenRecipe;
+        public List<ShoppingList> currentlyMissingItems;
         private CookingAssistantDBEntities db = new CookingAssistantDBEntities();
         public YouTubeHandle youTubeHandle;
         Dictionary<string, List<YouTubeUtils.Video>> cachedSearchResults = new Dictionary<string, List<YouTubeUtils.Video>>();
         YouTubeWindow currentYouTubeWindow;
         TimerWindow currentTimerWindow;
         RecipesWindow currentRecipesWindow;
+        ShoppingListWindow currentShoppingListWindow;
+        SupplyWindow currentSupplyWindow;
+        AddIngredientsWindow currentAddIngredientsWindow;
         public MainWindow()
         {
             InitializeComponent();
@@ -49,7 +43,7 @@ namespace CookingAssistant
 
         public void DisplayRecipes()
         {
-            recipesGrid.ItemsSource = db.Recipes.Select((Recipe r) => new RecipeGridCell() { RecipeName = r.recipeName }).ToArray();
+            recipesDataGrid.ItemsSource = db.Recipes.Select((Recipe r) => new RecipeGridCell() { RecipeName = r.recipeName }).ToArray();
         }
 
         public void DisplayShoppingList()
@@ -61,7 +55,33 @@ namespace CookingAssistant
                                     shoppingList.MeasurementUnit.measurementDescription,
                                     shoppingList.Ingredient.ingredientName
                                 };
-            shoppingListGrid.ItemsSource = shoppingLists.ToArray();
+            shoppingListDataGrid.ItemsSource = shoppingLists.ToArray();
+        }
+
+        public void DisplaySupplies()
+        {
+            var supplies = from supply in db.Supplies
+                           select new
+                           {
+                               supply.Ingredient.ingredientName,
+                               supply.measurementQuantity,
+                               supply.MeasurementUnit
+
+                           };
+            suppliesDataGrid.ItemsSource = supplies.ToArray();
+        }
+
+        public void DisplayMissingItems()
+        {
+            var toDisplay = from item in this.currentlyMissingItems
+                            select new
+                            {
+                                item.Ingredient.ingredientName,
+                                item.measurementQuantity,
+                                item.MeasurementUnit.measurementDescription
+                            };
+            missingItemsDataGrid.ItemsSource = toDisplay.ToList();
+            AddMissingItemsToShoppingList(this.currentlyMissingItems);
         }
 
         private async void RecommendedVideosButton_Click(object sender, RoutedEventArgs e)
@@ -145,9 +165,9 @@ namespace CookingAssistant
 
         private void recipesGrid_CurrentCellChanged(object sender, EventArgs e)
         {
-            if (recipesGrid.CurrentCell.IsValid)
+            if (recipesDataGrid.CurrentCell.IsValid)
             {
-                RecipeGridCell recipeGridCell = recipesGrid.CurrentCell.Item as RecipeGridCell;
+                RecipeGridCell recipeGridCell = recipesDataGrid.CurrentCell.Item as RecipeGridCell;
                 if (recipeGridCell != null)
                 {
                     string recipeName = recipeGridCell.RecipeName;
@@ -160,12 +180,14 @@ namespace CookingAssistant
                             this.currentYouTubeWindow.Close();
                         }
                         EmbedRecipesWindow(this.currentlyChosenRecipe.recipeId);
+                        EvaluateMissingItems();
+                        DisplayMissingItems();
                     }
                 }
             }
         }
 
-        public List<ShoppingList> GetMissingItems()
+        public void EvaluateMissingItems()
         {
             var recipe = this.currentlyChosenRecipe;
             var supplies = db.Supplies.ToList();
@@ -201,7 +223,7 @@ namespace CookingAssistant
                 }
             }
 
-            return missingItems;
+            this.currentlyMissingItems = missingItems;
         }
 
         public void AddMissingItemsToShoppingList(List<ShoppingList> missingItems)
@@ -210,10 +232,53 @@ namespace CookingAssistant
             {
                 foreach (var missingItem in missingItems)
                 {
-                    db.ShoppingLists.Add(missingItem);
+                    var relatedRecord = (from shoppingList in db.ShoppingLists 
+                                        where shoppingList.ingredientId == missingItem.ingredientId 
+                                        select shoppingList).FirstOrDefault();
+                    if (relatedRecord != null)
+                    {
+                        relatedRecord.measurementQuantity += missingItem.measurementQuantity;
+                    }
+                    else
+                    {
+                        db.ShoppingLists.Add(missingItem);
+                    }
                 }
                 db.SaveChanges();
             }
         }
+
+        public void FulfillRecipeAndUpdateSupplies()
+        {
+            var usedIngredients = this.currentlyChosenRecipe.RecipeIngredients;
+            foreach (var ingredient in usedIngredients)
+            {
+                var relatedSupply = db.Supplies.Find(ingredient);
+                if (relatedSupply != null)
+                {
+                    relatedSupply.measurementQuantity -= ingredient.measurementQuantity;
+                }
+            }
+            db.SaveChanges();
+        }
+
+        private void ShoppingListButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (this.currentShoppingListWindow != null)
+            {
+                this.currentShoppingListWindow.Close();
+            }
+            this.currentShoppingListWindow = new ShoppingListWindow();
+            this.currentShoppingListWindow.Show();
+        }
+        
+    }
+    /// <summary>
+    /// Auxiliary class used instead of anonymous objects to bind recipes to a DataGrid
+    /// </summary>
+    class RecipeGridCell
+    {
+        public string RecipeName { get; set; }
+        Recipe recipe { get; set; }
     }
 }
