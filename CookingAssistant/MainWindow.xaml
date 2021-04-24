@@ -18,12 +18,31 @@
             <ColumnDefinition Width="2*"/>
             <ColumnDefinition Width="1*"/>
         </Grid.ColumnDefinitions>
-        <Grid.RowDefinitions>
+        <DockPanel Grid.Column="0" VerticalAlignment="Stretch">
+            <Label Content="Recipes:" DockPanel.Dock="Top"/>
+            <DataGrid Name="recipesDataGrid" DockPanel.Dock="Top" IsReadOnly="True" SelectionMode="Single" SelectionUnit="Cell" CurrentCellChanged="recipesGrid_CurrentCellChanged" AreRowDetailsFrozen="True" GridLinesVisibility="None" HeadersVisibility="None" SourceUpdated="recipesDataGrid_SourceUpdated"/>
+            <Label Content="Shopping List:" DockPanel.Dock="Top"/>
+            <DataGrid Name="shoppingListDataGrid" DockPanel.Dock="Top" IsReadOnly="True" SelectionMode="Single" SelectionUnit="Cell" AreRowDetailsFrozen="True" GridLinesVisibility="None" HeadersVisibility="None"/>
+            <Label Content="Supplies:" DockPanel.Dock="Top" />
+            <DataGrid Name="suppliesDataGrid" DockPanel.Dock="Top" IsReadOnly="True" SelectionMode="Single" SelectionUnit="Cell" AreRowDetailsFrozen="True" GridLinesVisibility="None" HeadersVisibility="None"/>
+        </DockPanel>
+        <StackPanel Grid.Column="1">
+            <Frame Name="recipesFrame" NavigationUIVisibility="Hidden" HorizontalAlignment="Center" VerticalAlignment="Center" />
+            <Label Content="Missing ingredients:"/>
+            <DataGrid Name="missingItemsDataGrid" HorizontalAlignment="Center" VerticalAlignment="Center" IsReadOnly="True" SelectionMode="Single" SelectionUnit="FullRow" AreRowDetailsFrozen="True" GridLinesVisibility="None" HeadersVisibility="None"/>
+            <Button Name="recommendedVideosButton" Content="Recommended videos" Width="201" Height="46" Click="RecommendedVideosButton_Click"/>
+            <Button Name="timerButton" Content="Timer" Width="201" Height="46" Click="TimerButton_Click"/>
+            <Button Name="savedVideosButton" Content="Saved video" Width="201" Height="46" Click="SavedVideosButton_Click"/>
+            <Button Name="shoppingListButton" Content="Edit Shopping List" Width="201" Height="46" Click="ShoppingListButton_Click"/>
+            <Button Name="recipeCRUDWindowButton" Content="Manage Recipes" Width="201" Height="46" Click="RecipeCRUDWindowButton_Click"/>
+        </StackPanel>
+        <Frame Grid.Column="2" Name="rightFrame" NavigationUIVisibility="Hidden"/>
+        <!--<Grid.RowDefinitions>
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
-        <DataGrid Grid.Column="0" Grid.Row="0" Name="recipesDataGrid" IsReadOnly="True" SelectionMode="Single" SelectionUnit="Cell" CurrentCellChanged="recipesGrid_CurrentCellChanged" AreRowDetailsFrozen="True" GridLinesVisibility="None" HeadersVisibility="None"></DataGrid>
+        <DataGrid Grid.Column="0" Grid.Row="0" Name="recipesDataGrid" IsReadOnly="True" SelectionMode="Single" SelectionUnit="Cell" CurrentCellChanged="recipesGrid_CurrentCellChanged" AreRowDetailsFrozen="True" GridLinesVisibility="None" HeadersVisibility="None" SourceUpdated="recipesDataGrid_SourceUpdated"></DataGrid>
         <DataGrid Grid.Column="0" Grid.Row="1" Name="shoppingListDataGrid" IsReadOnly="True" SelectionMode="Single" SelectionUnit="Cell" AreRowDetailsFrozen="True" GridLinesVisibility="None" HeadersVisibility="None"></DataGrid>
         <DataGrid Grid.Column="0" Grid.Row="2" Name="suppliesDataGrid" IsReadOnly="True" SelectionMode="Single" SelectionUnit="Cell" AreRowDetailsFrozen="True" GridLinesVisibility="None" HeadersVisibility="None"></DataGrid>
         <DataGrid Grid.Column="1" Grid.Row="1" Name="missingItemsDataGrid" HorizontalAlignment="Center" VerticalAlignment="Center" IsReadOnly="True" SelectionMode="Single" SelectionUnit="Cell" AreRowDetailsFrozen="True" GridLinesVisibility="None" HeadersVisibility="None"/>
@@ -33,6 +52,6 @@
         <Button Name="timerButton" Content="Timer" Grid.Column="1" Grid.Row="2" Width="201" Height="46" Click="TimerButton_Click" Margin="218,341,218,138"/>
         <Button Name="savedVideosButton" Content="Saved video" Grid.Column="1" Grid.Row="2" Width="201" Height="46" Click="SavedVideosButton_Click" Margin="218,290,218,189"/>
         <Button Name="shoppingListButton" Content="Edit Shopping List" Grid.Column="1" Grid.Row="2" Width="201" Height="46" Click="ShoppingListButton_Click" Margin="378,392,378,88"/>
-        <Button Name="recipeCRUDWindowButton" Content="Manage Recipes" Grid.Column="1" Grid.Row="2" Width="201" Height="46" Click="RecipeCRUDWindowButton_Click" Margin="378,443,378,37"/>
+        <Button Name="recipeCRUDWindowButton" Content="Manage Recipes" Grid.Column="1" Grid.Row="2" Width="201" Height="46" Click="RecipeCRUDWindowButton_Click" Margin="378,443,378,37"/>-->
     </Grid>
 </Window>

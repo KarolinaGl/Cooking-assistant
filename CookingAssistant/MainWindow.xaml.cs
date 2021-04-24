@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.ComponentModel;
 using YouTubeLib;
 
 
@@ -96,7 +97,7 @@ namespace CookingAssistant
                 }
                 else
                 {
-                    var searchResult = await youTubeHandle.SearchVideos(recipeName, 50);
+                    var searchResult = await youTubeHandle.SearchVideos(recipeName + " recipe", 50);
                     this.cachedSearchResults[recipeName] = searchResult;
                     videos = searchResult;
                 }
@@ -283,6 +284,11 @@ namespace CookingAssistant
             this.currentRecipeCRUDWindow = new RecipeCRUDWindow();
             this.currentRecipeCRUDWindow.Owner = this;
             this.currentRecipeCRUDWindow.Show();
+        }
+
+        private void recipesDataGrid_SourceUpdated(object sender, DataTransferEventArgs e)
+        {
+            Console.WriteLine("test");
         }
     }
     /// <summary>
