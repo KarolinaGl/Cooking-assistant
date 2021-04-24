@@ -23,9 +23,9 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
-        <DataGrid Grid.Column="0" Grid.Row="0" x:Name="recipesDataGrid" IsReadOnly="True" SelectionMode="Single" SelectionUnit="Cell" CurrentCellChanged="recipesGrid_CurrentCellChanged" AreRowDetailsFrozen="True" GridLinesVisibility="None" HeadersVisibility="None"></DataGrid>
-        <DataGrid Grid.Column="0" Grid.Row="1" x:Name="shoppingListDataGrid" IsReadOnly="True" SelectionMode="Single" SelectionUnit="Cell" AreRowDetailsFrozen="True" GridLinesVisibility="None" HeadersVisibility="None"></DataGrid>
-        <DataGrid Grid.Column="0" Grid.Row="2" x:Name="suppliesDataGrid" IsReadOnly="True" SelectionMode="Single" SelectionUnit="Cell" AreRowDetailsFrozen="True" GridLinesVisibility="None" HeadersVisibility="None"></DataGrid>
+        <DataGrid Grid.Column="0" Grid.Row="0" Name="recipesDataGrid" IsReadOnly="True" SelectionMode="Single" SelectionUnit="Cell" CurrentCellChanged="recipesGrid_CurrentCellChanged" AreRowDetailsFrozen="True" GridLinesVisibility="None" HeadersVisibility="None"></DataGrid>
+        <DataGrid Grid.Column="0" Grid.Row="1" Name="shoppingListDataGrid" IsReadOnly="True" SelectionMode="Single" SelectionUnit="Cell" AreRowDetailsFrozen="True" GridLinesVisibility="None" HeadersVisibility="None"></DataGrid>
+        <DataGrid Grid.Column="0" Grid.Row="2" Name="suppliesDataGrid" IsReadOnly="True" SelectionMode="Single" SelectionUnit="Cell" AreRowDetailsFrozen="True" GridLinesVisibility="None" HeadersVisibility="None"></DataGrid>
         <DataGrid Grid.Column="1" Grid.Row="1" Name="missingItemsDataGrid" HorizontalAlignment="Center" VerticalAlignment="Center" IsReadOnly="True" SelectionMode="Single" SelectionUnit="Cell" AreRowDetailsFrozen="True" GridLinesVisibility="None" HeadersVisibility="None"/>
         <Frame Grid.Column="1" Grid.Row="0" Name="recipesFrame" NavigationUIVisibility="Hidden" HorizontalAlignment="Center" VerticalAlignment="Center" />
         <Frame Grid.Column="2" Grid.Row="0" Name="rightFrame" NavigationUIVisibility="Hidden"/>

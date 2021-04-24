@@ -179,6 +179,7 @@ namespace CookingAssistant
                         if (this.currentYouTubeWindow != null)
                         {
                             this.currentYouTubeWindow.Close();
+                            this.rightFrame.Content = null;
                         }
                         EmbedRecipesWindow(this.currentlyChosenRecipe.recipeId);
                         EvaluateMissingItems();
