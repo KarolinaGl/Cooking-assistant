@@ -32,7 +32,6 @@ namespace CookingAssistant
         RecipesWindow currentRecipesWindow;
         ShoppingListWindow currentShoppingListWindow;
         SupplyWindow currentSupplyWindow;
-        AddIngredientsWindow currentAddIngredientsWindow;
         RecipeCRUDWindow currentRecipeCRUDWindow;
         public MainWindow()
         {
@@ -271,9 +270,20 @@ namespace CookingAssistant
                 this.currentShoppingListWindow.Close();
             }
             this.currentShoppingListWindow = new ShoppingListWindow();
+            this.currentShoppingListWindow.Owner = this;
             this.currentShoppingListWindow.Show();
         }
-        
+
+        private void RecipeCRUDWindowButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (this.currentRecipeCRUDWindow != null)
+            {
+                this.currentRecipeCRUDWindow.Close();
+            }
+            this.currentRecipeCRUDWindow = new RecipeCRUDWindow();
+            this.currentRecipeCRUDWindow.Owner = this;
+            this.currentRecipeCRUDWindow.Show();
+        }
     }
     /// <summary>
     /// Auxiliary class used instead of anonymous objects to bind recipes to a DataGrid

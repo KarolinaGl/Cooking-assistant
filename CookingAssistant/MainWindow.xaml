@@ -33,5 +33,6 @@
         <Button Name="timerButton" Content="Timer" Grid.Column="1" Grid.Row="2" Width="201" Height="46" Click="TimerButton_Click" Margin="218,341,218,138"/>
         <Button Name="savedVideosButton" Content="Saved video" Grid.Column="1" Grid.Row="2" Width="201" Height="46" Click="SavedVideosButton_Click" Margin="218,290,218,189"/>
         <Button Name="shoppingListButton" Content="Edit Shopping List" Grid.Column="1" Grid.Row="2" Width="201" Height="46" Click="ShoppingListButton_Click" Margin="378,392,378,88"/>
+        <Button Name="recipeCRUDWindowButton" Content="Manage Recipes" Grid.Column="1" Grid.Row="2" Width="201" Height="46" Click="RecipeCRUDWindowButton_Click" Margin="378,443,378,37"/>
     </Grid>
 </Window>

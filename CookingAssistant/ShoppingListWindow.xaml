@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:CookingAssistant"
         mc:Ignorable="d"
+        WindowStartupLocation="CenterOwner"
         Title="ShoppingListWindow" Height="450" Width="800">
     <Grid>
         <DataGrid x:Name="ingredientsDataGrid"  HorizontalAlignment="Left" Height="354" Margin="320,10,0,0" VerticalAlignment="Top" Width="462" SelectionChanged="IngredientsDataGrid_SelectionChanged" CanUserAddRows="False" CanUserDeleteRows="False" CanUserResizeRows="False" IsReadOnly="True" GridLinesVisibility="None" AutoGeneratingColumn="IngredientsDataGrid_AutoGeneratingColumn"/>

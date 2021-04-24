@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:CookingAssistant"
         mc:Ignorable="d"
+        WindowStartupLocation="CenterOwner"
         Title="SupplyWindow" Height="450" Width="800">
     <Grid>
         <Grid.ColumnDefinitions>
