@@ -10,12 +10,11 @@
         <ListView Margin="10" Name="displayVideoList" HorizontalContentAlignment="Stretch" ScrollViewer.CanContentScroll="False">
             <ListView.ItemTemplate>
                 <DataTemplate>
-                    <UniformGrid MaxWidth="500">
-                        <Image Source="{Binding Thumbnail.Url}" Height="150" Width="200">
-                        </Image>
-                        <TextBlock Text="{Binding Title}" VerticalAlignment="Center" HorizontalAlignment="Left"></TextBlock>
-                        <Button Content="Open in Browser" Click="OpenBrowser_Click" Tag="{Binding Id}" Height="100" Width="150"/>
-                        <Button Content="Save" Click="Save_Click" Tag="{Binding Id}" Height="100" Width="150"/>
+                    <UniformGrid MaxWidth="400">
+                        <Image Source="{Binding Thumbnail.Url}" Margin="10" Height="150" Width="200"/>
+                        <TextBlock Text="{Binding Title}" VerticalAlignment="Center" TextWrapping="WrapWithOverflow" HorizontalAlignment="Left"></TextBlock>
+                        <Button Name="firstButton" Content="Open in Browser" Click="OpenBrowser_Click" Tag="{Binding Id}" Height="100" Width="150"/>
+                        <Button Name="secondButton" Content="Save" Click="Save_Click" Tag="{Binding Id}" Height="100" Width="150"/>
                     </UniformGrid>
                 </DataTemplate>
             </ListView.ItemTemplate>

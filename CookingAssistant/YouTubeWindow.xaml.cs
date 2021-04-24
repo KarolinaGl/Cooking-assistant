@@ -42,5 +42,13 @@ namespace CookingAssistant
             record.FavouriteVideo = new FavouriteVideo() { youtubeId = videoId };
             db.SaveChanges();
         }
+
+        /*
+        private void Remove_Click(object sender, RoutedEventArgs e)
+        {
+            string videoId = ((Button)sender).Tag.ToString();
+            db.SaveChanges();
+        }
+        */
     }
 }

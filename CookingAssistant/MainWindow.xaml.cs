@@ -17,16 +17,24 @@ using YouTubeLib;
 
 namespace CookingAssistant
 {
+    /// <summary>
+    /// Auxiliary class used instead of anonymous objects to bind recipes to a DataGrid
+    /// </summary>
     class RecipeGridCell
     {
         public string RecipeName { get; set; }
         Recipe recipe { get; set; }
     }
+    class ShoppingListGridCell
+    {
+        public string ShoppingListName { get; set; }
+        ShoppingList shoppingList { get; set; }
+    }
     public partial class MainWindow : Window
     {
         public Recipe currentlyChosenRecipe;
         private CookingAssistantDBEntities db = new CookingAssistantDBEntities();
-        YouTubeHandle youTubeHandle;
+        public YouTubeHandle youTubeHandle;
         Dictionary<string, List<YouTubeUtils.Video>> cachedSearchResults = new Dictionary<string, List<YouTubeUtils.Video>>();
         YouTubeWindow currentYouTubeWindow;
         TimerWindow currentTimerWindow;
@@ -34,24 +42,28 @@ namespace CookingAssistant
         public MainWindow()
         {
             InitializeComponent();
+            DisplayRecipes();
+            DisplayShoppingList();
             youTubeHandle = new YouTubeHandle("AIzaSyDvi23J4hoKVVtjVC - 1XzW - s_PPjHGe_cA");
-            /*
-            var recipes = (from r in db.Recipes
-                           select new RecipeGridCell()
-                           {
-                               RecipeName = r.recipeName
-                           }).ToArray();
-            */
-            var recipes = db.Recipes.Select((Recipe r) => new RecipeGridCell() { RecipeName = r.recipeName }).ToArray() ;
-            recipesGrid.ItemsSource = recipes;
         }
-        /*
-        public void LoadRecipes()
+
+        public void DisplayRecipes()
         {
-            var recipes = db.Recipes.ToList();
-            recipesGrid.ItemsSource = recipes;
+            recipesGrid.ItemsSource = db.Recipes.Select((Recipe r) => new RecipeGridCell() { RecipeName = r.recipeName }).ToArray();
         }
-        */
+
+        public void DisplayShoppingList()
+        {
+            var shoppingLists = from shoppingList in db.ShoppingLists
+                                select new
+                                {
+                                    shoppingList.measurementQuantity,
+                                    shoppingList.MeasurementUnit.measurementDescription,
+                                    shoppingList.Ingredient.ingredientName
+                                };
+            shoppingListGrid.ItemsSource = shoppingLists.ToArray();
+        }
+
         private async void RecommendedVideosButton_Click(object sender, RoutedEventArgs e)
         {
             if (currentlyChosenRecipe != null)
@@ -77,7 +89,8 @@ namespace CookingAssistant
                 this.currentYouTubeWindow.ReceiveVideos(videos);
                 rightFrame.Content = this.currentYouTubeWindow.Content;
             }
-        } 
+        }
+
         private async void SavedVideosButton_Click(object sender, RoutedEventArgs e)
         {
             if (this.currentlyChosenRecipe != null)
@@ -107,6 +120,7 @@ namespace CookingAssistant
                 } 
             }
         }
+
         private void TimerButton_Click(object sender, RoutedEventArgs e)
         {
             if (this.currentTimerWindow != null)
@@ -117,6 +131,7 @@ namespace CookingAssistant
             this.currentTimerWindow.Owner = this;
             this.currentTimerWindow.Show();
         }
+
         public void EmbedRecipesWindow(int chosenRecipeId)
         {
             if (this.currentRecipesWindow != null)
@@ -126,10 +141,6 @@ namespace CookingAssistant
             this.currentRecipesWindow = new RecipesWindow(chosenRecipeId);
             this.currentRecipesWindow.Owner = this;
             recipesFrame.Content = this.currentRecipesWindow.Content;
-        }
-        private void RemoveFavouriteHandle(object sender, RoutedEventArgs e)
-        {
-            
         }
 
         private void recipesGrid_CurrentCellChanged(object sender, EventArgs e)
@@ -151,6 +162,57 @@ namespace CookingAssistant
                         EmbedRecipesWindow(this.currentlyChosenRecipe.recipeId);
                     }
                 }
+            }
+        }
+
+        public List<ShoppingList> GetMissingItems()
+        {
+            var recipe = this.currentlyChosenRecipe;
+            var supplies = db.Supplies.ToList();
+            var missingItems = new List<ShoppingList>();
+
+            foreach(RecipeIngredient recipeIngredient in recipe.RecipeIngredients.ToList())
+            {
+                var relatedSupply = supplies.Find((Supply supply) => supply.ingredientId == recipeIngredient.ingredientId);
+                double missingQuantity = 0;
+                if (relatedSupply != null)
+                {
+                    var balance = relatedSupply.measurementQuantity - recipeIngredient.measurementQuantity;
+                    if (balance < 0)
+                    {
+                        missingQuantity = Math.Abs(balance);
+                    }
+                }
+                else
+                {
+                    missingQuantity = recipeIngredient.measurementQuantity;
+                }
+                if (missingQuantity > 0)
+                {
+                    var missingItem = new ShoppingList()
+                    {
+                        Ingredient = recipeIngredient.Ingredient,
+                        MeasurementUnit = recipeIngredient.MeasurementUnit,
+                        measurementQuantity = missingQuantity,
+                        ingredientId = recipeIngredient.ingredientId,
+                        measurementId = recipeIngredient.measurementId
+                    };
+                    missingItems.Add(missingItem);
+                }
+            }
+
+            return missingItems;
+        }
+
+        public void AddMissingItemsToShoppingList(List<ShoppingList> missingItems)
+        {
+            if (missingItems.Count() > 0)
+            {
+                foreach (var missingItem in missingItems)
+                {
+                    db.ShoppingLists.Add(missingItem);
+                }
+                db.SaveChanges();
             }
         }
     }
