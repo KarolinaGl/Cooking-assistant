@@ -270,8 +270,10 @@ namespace CookingAssistant
             {
                 this.currentShoppingListWindow.Close();
             }
-            this.currentShoppingListWindow = new ShoppingListWindow();
-            this.currentShoppingListWindow.Owner = this;
+            this.currentShoppingListWindow = new ShoppingListWindow
+            {
+                Owner = this
+            };
             this.currentShoppingListWindow.Show();
         }
 
@@ -281,14 +283,29 @@ namespace CookingAssistant
             {
                 this.currentRecipeCRUDWindow.Close();
             }
-            this.currentRecipeCRUDWindow = new RecipeCRUDWindow();
-            this.currentRecipeCRUDWindow.Owner = this;
+            this.currentRecipeCRUDWindow = new RecipeCRUDWindow
+            {
+                Owner = this
+            };
             this.currentRecipeCRUDWindow.Show();
         }
 
         private void recipesDataGrid_SourceUpdated(object sender, DataTransferEventArgs e)
         {
             Console.WriteLine("test");
+        }
+
+        private void SuppliesButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (this.currentSupplyWindow != null)
+            {
+                this.currentSupplyWindow.Close();
+            }
+            this.currentSupplyWindow = new SupplyWindow
+            {
+                Owner = this
+            };
+            this.currentSupplyWindow.Show();
         }
     }
     /// <summary>

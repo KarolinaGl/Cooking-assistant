@@ -6,37 +6,39 @@
         xmlns:local="clr-namespace:CookingAssistant"
         mc:Ignorable="d"
         Title="Cooking Assistant"
-        Width="1920"
-        Height="1080"
-        ResizeMode="NoResize"
+        Width="1280"
+        Height="720"
+        MinWidth="1280"
+        MinHeight="720"
+        ResizeMode="CanResize"
         SizeToContent="Manual"
-        WindowState="Maximized"
         WindowStyle="SingleBorderWindow">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="3*"/>
             <ColumnDefinition Width="2*"/>
-            <ColumnDefinition Width="1*"/>
         </Grid.ColumnDefinitions>
-        <DockPanel Grid.Column="0" VerticalAlignment="Stretch">
-            <Label Content="Recipes:" DockPanel.Dock="Top"/>
-            <DataGrid Name="recipesDataGrid" DockPanel.Dock="Top" IsReadOnly="True" SelectionMode="Single" SelectionUnit="Cell" CurrentCellChanged="recipesGrid_CurrentCellChanged" AreRowDetailsFrozen="True" GridLinesVisibility="None" HeadersVisibility="None" SourceUpdated="recipesDataGrid_SourceUpdated"/>
-            <Label Content="Shopping List:" DockPanel.Dock="Top"/>
-            <DataGrid Name="shoppingListDataGrid" DockPanel.Dock="Top" IsReadOnly="True" SelectionMode="Single" SelectionUnit="Cell" AreRowDetailsFrozen="True" GridLinesVisibility="None" HeadersVisibility="None"/>
-            <Label Content="Supplies:" DockPanel.Dock="Top" />
-            <DataGrid Name="suppliesDataGrid" DockPanel.Dock="Top" IsReadOnly="True" SelectionMode="Single" SelectionUnit="Cell" AreRowDetailsFrozen="True" GridLinesVisibility="None" HeadersVisibility="None"/>
+        <DockPanel Grid.Column="0" VerticalAlignment="Stretch" Margin="10">
+            <Label Content="Recipes:" HorizontalAlignment="Center" DockPanel.Dock="Top"/>
+            <DataGrid Name="recipesDataGrid" ColumnWidth="*" DockPanel.Dock="Top" IsReadOnly="True" SelectionMode="Single" SelectionUnit="Cell" CurrentCellChanged="recipesGrid_CurrentCellChanged" AreRowDetailsFrozen="True" GridLinesVisibility="None" HeadersVisibility="None" SourceUpdated="recipesDataGrid_SourceUpdated"/>
+            <Button Name="recipeCRUDWindowButton" Margin="0,10,0,10" Content="Manage Recipes" DockPanel.Dock="Top" Width="Auto" Height="30" Click="RecipeCRUDWindowButton_Click"/>
+            <Label Content="Shopping List:" HorizontalAlignment="Center" DockPanel.Dock="Top"/>
+            <DataGrid Name="shoppingListDataGrid" ColumnWidth="*" DockPanel.Dock="Top" IsReadOnly="True" SelectionMode="Single" SelectionUnit="FullRow" AreRowDetailsFrozen="True" GridLinesVisibility="None" HeadersVisibility="None"/>
+            <Button Name="shoppingListButton" Margin="0,10,0,10" Content="Edit Shopping List" DockPanel.Dock="Top" Width="Auto" Height="30" Click="ShoppingListButton_Click"/>
+            <Label Content="Supplies:" HorizontalAlignment="Center" DockPanel.Dock="Top" />
+            <DataGrid Name="suppliesDataGrid" ColumnWidth="*" DockPanel.Dock="Top" IsReadOnly="True" SelectionMode="Single" SelectionUnit="FullRow" AreRowDetailsFrozen="True" GridLinesVisibility="None" HeadersVisibility="None"/>
+            <Button Name="suppliesButton" Margin="0,10,0,10" Content="Manage Supplies" DockPanel.Dock="Top" Width="Auto" Height="30" Click="SuppliesButton_Click"/>
         </DockPanel>
-        <StackPanel Grid.Column="1">
-            <Frame Name="recipesFrame" NavigationUIVisibility="Hidden" HorizontalAlignment="Center" VerticalAlignment="Center" />
-            <Label Content="Missing ingredients:"/>
-            <DataGrid Name="missingItemsDataGrid" HorizontalAlignment="Center" VerticalAlignment="Center" IsReadOnly="True" SelectionMode="Single" SelectionUnit="FullRow" AreRowDetailsFrozen="True" GridLinesVisibility="None" HeadersVisibility="None"/>
-            <Button Name="recommendedVideosButton" Content="Recommended videos" Width="201" Height="46" Click="RecommendedVideosButton_Click"/>
-            <Button Name="timerButton" Content="Timer" Width="201" Height="46" Click="TimerButton_Click"/>
-            <Button Name="savedVideosButton" Content="Saved video" Width="201" Height="46" Click="SavedVideosButton_Click"/>
-            <Button Name="shoppingListButton" Content="Edit Shopping List" Width="201" Height="46" Click="ShoppingListButton_Click"/>
-            <Button Name="recipeCRUDWindowButton" Content="Manage Recipes" Width="201" Height="46" Click="RecipeCRUDWindowButton_Click"/>
-        </StackPanel>
-        <Frame Grid.Column="2" Name="rightFrame" NavigationUIVisibility="Hidden"/>
+        <DockPanel Grid.Column="1" Margin="10">
+            <Frame Name="recipesFrame" DockPanel.Dock="Top" NavigationUIVisibility="Hidden" />
+            <Label Content="Missing ingredients:" DockPanel.Dock="Top" />
+            <DataGrid Name="missingItemsDataGrid" DockPanel.Dock="Top" HorizontalAlignment="Center" VerticalAlignment="Center" IsReadOnly="True" SelectionMode="Single" SelectionUnit="FullRow" AreRowDetailsFrozen="True" GridLinesVisibility="None" HeadersVisibility="None"/>
+            <Button Name="recommendedVideosButton" DockPanel.Dock="Top" Content="Recommended videos" Width="201" Height="46" Click="RecommendedVideosButton_Click"/>
+            <Button Name="timerButton" Content="Timer" DockPanel.Dock="Top" Width="201" Height="46" Click="TimerButton_Click"/>
+            <Button Name="savedVideosButton" Content="Saved video" DockPanel.Dock="Top" Width="201" Height="46" Click="SavedVideosButton_Click"/>
+        </DockPanel>
+        <Frame Grid.Column="2" Name="rightFrame" NavigationUIVisibility="Hidden" Margin="10"/>
         <!--<Grid.RowDefinitions>
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>

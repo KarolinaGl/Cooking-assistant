@@ -7,14 +7,20 @@
         mc:Ignorable="d"
         Title="YouTubeWindow">
     <Grid>
-        <ListView Margin="10" Name="displayVideoList" HorizontalContentAlignment="Stretch" ScrollViewer.CanContentScroll="False">
+        <UniformGrid MaxWidth="400">
+            <Image Source="{Binding Thumbnail.Url}" Height="150" Width="180"/>
+            <TextBlock Text="{Binding Title}" VerticalAlignment="Center" TextWrapping="WrapWithOverflow" HorizontalAlignment="Left"></TextBlock>
+            <Button Name="openBrowserButton" Content="Open in Browser" Click="OpenBrowser_Click" Tag="{Binding Id}" Height="40" Width="120"/>
+            <Button Name="unpinButton" Content="Unpin" Click="Save_Click" Tag="{Binding Id}" Height="40" Width="120"/>
+        </UniformGrid>
+        <ListView Name="displayVideoList" HorizontalContentAlignment="Stretch" ScrollViewer.CanContentScroll="False">
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <UniformGrid MaxWidth="400">
-                        <Image Source="{Binding Thumbnail.Url}" Margin="10" Height="150" Width="200"/>
+                        <Image Source="{Binding Thumbnail.Url}" Height="150" Width="180"/>
                         <TextBlock Text="{Binding Title}" VerticalAlignment="Center" TextWrapping="WrapWithOverflow" HorizontalAlignment="Left"></TextBlock>
-                        <Button Name="firstButton" Content="Open in Browser" Click="OpenBrowser_Click" Tag="{Binding Id}" Height="100" Width="150"/>
-                        <Button Name="secondButton" Content="Save" Click="Save_Click" Tag="{Binding Id}" Height="100" Width="150"/>
+                        <Button Name="openBrowserButton" Content="Open in Browser" Click="OpenBrowser_Click" Tag="{Binding Id}" Height="40" Width="120"/>
+                        <Button Name="saveButton" Content="Pin as Favourite" Click="Save_Click" Tag="{Binding Id}" Height="40" Width="120"/>
                     </UniformGrid>
                 </DataTemplate>
             </ListView.ItemTemplate>
