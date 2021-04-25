@@ -6,6 +6,7 @@ using Google.Apis.YouTube.v3;
 using Google.Apis.YouTube.v3.Data;
 using Google.Apis.Services;
 
+
 /// <summary>
 /// Namespace housing classes acting as a wrapper for YouTube Data Api.
 /// </summary>
@@ -38,7 +39,7 @@ namespace YouTubeLib
             foreach (var result in searchListResponse.Items)
             {
                 string id = Convert.ToString(result.Id.VideoId);
-                string title = result.Snippet.Title;
+                string title = System.Net.WebUtility.HtmlDecode(result.Snippet.Title);
                 string channel = result.Snippet.ChannelTitle;
                 string description = result.Snippet.Description;
 

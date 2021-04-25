@@ -6,6 +6,7 @@
         xmlns:local="clr-namespace:CookingAssistant"
         mc:Ignorable="d"
         ResizeMode="NoResize"
+        WindowStartupLocation="CenterOwner"
         Title="Timer" Height="250" Width="450">
     <Grid>
         <TextBox></TextBox>

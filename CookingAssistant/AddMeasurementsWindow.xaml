@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:CookingAssistant"
         mc:Ignorable="d"
+        WindowStartupLocation="CenterOwner"
         Title="AddMeasurementsWindow" Height="450" Width="800">
     <Grid>
         <DataGrid x:Name="measurementsDataGrid"  HorizontalAlignment="Left" Height="180" Margin="10,204,0,0" VerticalAlignment="Top" Width="480" SelectionChanged="measurementsDataGrid_SelectionChanged" CanUserAddRows="False" CanUserDeleteRows="False" CanUserResizeRows="False" IsReadOnly="True"/>
