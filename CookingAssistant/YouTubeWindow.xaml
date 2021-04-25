@@ -6,18 +6,28 @@
         xmlns:local="clr-namespace:CookingAssistant"
         mc:Ignorable="d"
         Title="YouTubeWindow">
-    <Grid>
-        <UniformGrid MaxWidth="400">
-            <Image Source="{Binding Thumbnail.Url}" Height="150" Width="180"/>
-            <TextBlock Text="{Binding Title}" VerticalAlignment="Center" TextWrapping="WrapWithOverflow" HorizontalAlignment="Left"></TextBlock>
-            <Button Name="openBrowserButton" Content="Open in Browser" Click="OpenBrowser_Click" Tag="{Binding Id}" Height="40" Width="120"/>
-            <Button Name="unpinButton" Content="Unpin" Click="Save_Click" Tag="{Binding Id}" Height="40" Width="120"/>
-        </UniformGrid>
-        <ListView Name="displayVideoList" HorizontalContentAlignment="Stretch" ScrollViewer.CanContentScroll="False">
+    <DockPanel>
+        <DockPanel Name="favouriteVideoPanel" DockPanel.Dock="Top">
+            <Label Content="Pinned video:" HorizontalAlignment="Center" DockPanel.Dock="Top"/>
+            <ListView Name="favouriteVideoList" HorizontalContentAlignment="Stretch" ScrollViewer.CanContentScroll="False" DockPanel.Dock="Top">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <UniformGrid MaxWidth="370" DockPanel.Dock="Top">
+                            <Image Source="{Binding Thumbnail.Url}" Height="150" Width="180"/>
+                            <TextBlock Text="{Binding Title}" VerticalAlignment="Center" TextWrapping="WrapWithOverflow" HorizontalAlignment="Left"></TextBlock>
+                            <Button Content="Open in Browser" Click="OpenBrowser_Click" Tag="{Binding Id}" Height="40" Width="120"/>
+                            <Button Content="Unpin" Click="UnpinButton_Click" Tag="{Binding Id}" Height="40" Width="120"/>
+                        </UniformGrid>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </DockPanel>
+        <Label Content="Recommended videos:" HorizontalAlignment="Center" DockPanel.Dock="Top"/>
+        <ListView Name="displayVideoList" HorizontalContentAlignment="Stretch" ScrollViewer.CanContentScroll="False" DockPanel.Dock="Top">
             <ListView.ItemTemplate>
                 <DataTemplate>
-                    <UniformGrid MaxWidth="400">
-                        <Image Source="{Binding Thumbnail.Url}" Height="150" Width="180"/>
+                    <UniformGrid MaxWidth="370">
+                        <Image Source="{Binding Thumbnail.Url}" Height="150" Width="160"/>
                         <TextBlock Text="{Binding Title}" VerticalAlignment="Center" TextWrapping="WrapWithOverflow" HorizontalAlignment="Left"></TextBlock>
                         <Button Name="openBrowserButton" Content="Open in Browser" Click="OpenBrowser_Click" Tag="{Binding Id}" Height="40" Width="120"/>
                         <Button Name="saveButton" Content="Pin as Favourite" Click="Save_Click" Tag="{Binding Id}" Height="40" Width="120"/>
@@ -25,5 +35,5 @@
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
-    </Grid>
+    </DockPanel>
 </Window>

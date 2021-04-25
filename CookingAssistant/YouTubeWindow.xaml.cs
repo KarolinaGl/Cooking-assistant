@@ -22,33 +22,66 @@ namespace CookingAssistant
         {
             InitializeComponent();
         }
-        public void ReceiveVideos(List<YouTubeUtils.Video> videos)
+
+        public async void UpdateFavouriteBinding()
         {
-            displayVideoList.ItemsSource = videos;
+            var youTubeHandle = (this.Owner as MainWindow).youTubeHandle;
+            var currentlyChosenRecipe = (this.Owner as MainWindow).currentlyChosenRecipe;
+            var favouriteIds = from r in db.Recipes
+                               where r.recipeId == currentlyChosenRecipe.recipeId
+                               select r.FavouriteVideo.youtubeId;
+            var favouriteVideos = new List<YouTubeUtils.Video>();
+            try
+            {
+                favouriteVideos = await youTubeHandle.GetVideosFromIds(favouriteIds.ToList());
+            }
+            catch
+            {
+                favouriteVideoPanel.Visibility = Visibility.Collapsed;
+            }
+            finally
+            {
+                favouriteVideoPanel.Visibility = Visibility.Visible;
+                favouriteVideoList.ItemsSource = favouriteVideos;
+            }
+        }
+
+        public async void UpdateRecommendedBinding()
+        {
+            var youTubeHandle = (this.Owner as MainWindow).youTubeHandle;
+            var currentlyChosenRecipe = (this.Owner as MainWindow).currentlyChosenRecipe;
+            var recommendedVideos = await youTubeHandle.SearchVideos(currentlyChosenRecipe.recipeName + " recipe", 50);
+            displayVideoList.ItemsSource = recommendedVideos;
         }
 
         private void OpenBrowser_Click(object sender, RoutedEventArgs e)
         {
-            var url = "https://www.youtube.com/watch?v=" + ((Button)sender).Tag.ToString();
+            var url = "https://www.youtube.com/watch?v=" + (sender as Button).Tag.ToString();
             System.Diagnostics.Process.Start(url);
         }
+
         private void Save_Click(object sender, RoutedEventArgs e)
         {
-            Recipe currentlyChosenRecipe = ((MainWindow)this.Owner).currentlyChosenRecipe;
-            string videoId = ((Button)sender).Tag.ToString();
-            Recipe record = (from r in db.Recipes.Include("FavouriteVideo")
+            Recipe currentlyChosenRecipe = (this.Owner as MainWindow).currentlyChosenRecipe;
+            string videoId = (sender as Button).Tag.ToString();
+            Recipe record = (from r in db.Recipes
                              where currentlyChosenRecipe.recipeId == r.recipeId
                              select r).FirstOrDefault();
             record.FavouriteVideo = new FavouriteVideo() { youtubeId = videoId };
             db.SaveChanges();
+            UpdateFavouriteBinding();
         }
 
-        /*
-        private void Remove_Click(object sender, RoutedEventArgs e)
+        private void UnpinButton_Click(object sender, RoutedEventArgs e)
         {
-            string videoId = ((Button)sender).Tag.ToString();
+            var currentlyChosenRecipe = (this.Owner as MainWindow).currentlyChosenRecipe;
+            Recipe record = (from r in db.Recipes
+                             where currentlyChosenRecipe.recipeId == r.recipeId
+                             select r).FirstOrDefault();
+            record.FavouriteVideo = null;
             db.SaveChanges();
+            UpdateFavouriteBinding();
         }
-        */
+       
     }
 }

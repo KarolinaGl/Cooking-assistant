@@ -37,17 +37,18 @@ namespace CookingAssistant
         public MainWindow()
         {
             InitializeComponent();
-            DisplayRecipes();
-            DisplayShoppingList();
+            BindRecipes();
+            BindShoppingList();
+            BindSupplies();
             youTubeHandle = new YouTubeHandle("AIzaSyDvi23J4hoKVVtjVC - 1XzW - s_PPjHGe_cA");
         }
 
-        public void DisplayRecipes()
+        public void BindRecipes()
         {
-            recipesDataGrid.ItemsSource = db.Recipes.Select((Recipe r) => new RecipeGridCell() { RecipeName = r.recipeName }).ToArray();
+            recipesDataGrid.ItemsSource = db.Recipes.Select((Recipe r) => new RecipeGridCell() { RecipeName = r.recipeName}).ToArray();
         }
 
-        public void DisplayShoppingList()
+        public void BindShoppingList()
         {
             var shoppingLists = from shoppingList in db.ShoppingLists
                                 select new
@@ -59,7 +60,7 @@ namespace CookingAssistant
             shoppingListDataGrid.ItemsSource = shoppingLists.ToArray();
         }
 
-        public void DisplaySupplies()
+        public void BindSupplies()
         {
             var supplies = from supply in db.Supplies
                            select new
@@ -72,7 +73,7 @@ namespace CookingAssistant
             suppliesDataGrid.ItemsSource = supplies.ToArray();
         }
 
-        public void DisplayMissingItems()
+        public void BindMissingItems()
         {
             var toDisplay = from item in this.currentlyMissingItems
                             select new
@@ -90,6 +91,7 @@ namespace CookingAssistant
             if (currentlyChosenRecipe != null)
             {
                 string recipeName = this.currentlyChosenRecipe.recipeName;
+                /*
                 List<YouTubeUtils.Video> videos;
                 if (this.cachedSearchResults.ContainsKey(recipeName))
                 {
@@ -101,44 +103,19 @@ namespace CookingAssistant
                     this.cachedSearchResults[recipeName] = searchResult;
                     videos = searchResult;
                 }
+                */
                 if (this.currentYouTubeWindow != null)
                 {
                     currentYouTubeWindow.Close();
+                    rightFrame.Content = null;
                 }
-                this.currentYouTubeWindow = new YouTubeWindow();
-                this.currentYouTubeWindow.Owner = this;
-                this.currentYouTubeWindow.ReceiveVideos(videos);
+                this.currentYouTubeWindow = new YouTubeWindow
+                {
+                    Owner = this
+                };
+                this.currentYouTubeWindow.UpdateRecommendedBinding();
+                this.currentYouTubeWindow.UpdateFavouriteBinding();
                 rightFrame.Content = this.currentYouTubeWindow.Content;
-            }
-        }
-
-        private async void SavedVideosButton_Click(object sender, RoutedEventArgs e)
-        {
-            if (this.currentlyChosenRecipe != null)
-            {
-                var records = (from r in db.Recipes.Include("FavouriteVideo")
-                            where this.currentlyChosenRecipe.recipeName == r.recipeName
-                            select r.FavouriteVideo).ToList();
-                var videoIds = new List<string>();
-                foreach (var record in records)
-                {
-                    if (record != null)
-                    {
-                        videoIds.Add(record.youtubeId);
-                    }
-                }
-                if (videoIds.Count() > 0)
-                {
-                    var videos = await this.youTubeHandle.GetVideosFromIds(videoIds);
-                    if (this.currentYouTubeWindow != null)
-                    {
-                        currentYouTubeWindow.Close();
-                    }
-                    this.currentYouTubeWindow = new YouTubeWindow();
-                    this.currentYouTubeWindow.Owner = this;
-                    this.currentYouTubeWindow.ReceiveVideos(videos);
-                    rightFrame.Content = this.currentYouTubeWindow.Content;
-                } 
             }
         }
 
@@ -148,8 +125,10 @@ namespace CookingAssistant
             {
                 this.currentTimerWindow.Close();
             }
-            this.currentTimerWindow = new TimerWindow();
-            this.currentTimerWindow.Owner = this;
+            this.currentTimerWindow = new TimerWindow
+            {
+                Owner = this
+            };
             this.currentTimerWindow.Show();
         }
 
@@ -159,8 +138,10 @@ namespace CookingAssistant
             {
                 this.currentRecipesWindow.Close();
             }
-            this.currentRecipesWindow = new RecipesWindow(chosenRecipeId);
-            this.currentRecipesWindow.Owner = this;
+            this.currentRecipesWindow = new RecipesWindow(chosenRecipeId)
+            {
+                Owner = this
+            };
             recipesFrame.Content = this.currentRecipesWindow.Content;
         }
 
@@ -183,7 +164,7 @@ namespace CookingAssistant
                         }
                         EmbedRecipesWindow(this.currentlyChosenRecipe.recipeId);
                         EvaluateMissingItems();
-                        DisplayMissingItems();
+                        BindMissingItems();
                     }
                 }
             }
@@ -290,11 +271,6 @@ namespace CookingAssistant
             this.currentRecipeCRUDWindow.Show();
         }
 
-        private void recipesDataGrid_SourceUpdated(object sender, DataTransferEventArgs e)
-        {
-            Console.WriteLine("test");
-        }
-
         private void SuppliesButton_Click(object sender, RoutedEventArgs e)
         {
             if (this.currentSupplyWindow != null)
@@ -314,6 +290,6 @@ namespace CookingAssistant
     class RecipeGridCell
     {
         public string RecipeName { get; set; }
-        Recipe recipe { get; set; }
+        public Recipe recipe { get; set; }
     }
 }
