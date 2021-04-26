@@ -480,5 +480,10 @@ namespace CookingAssistant
                 GenerateMessageBox("Choose an ingredient you want to delete", "Delete ingredient");
             }
         }
+
+        private void RecipeCRUDWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            (this.Owner as MainWindow).BindRecipes();
+        }
     }
 }

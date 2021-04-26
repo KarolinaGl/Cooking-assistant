@@ -24,16 +24,14 @@ namespace CookingAssistant
     public partial class MainWindow : Window
     {
         public Recipe currentlyChosenRecipe;
-        public List<ShoppingList> currentlyMissingItems;
         private CookingAssistantDBEntities db = new CookingAssistantDBEntities();
         public YouTubeHandle youTubeHandle;
-        Dictionary<string, List<YouTubeUtils.Video>> cachedSearchResults = new Dictionary<string, List<YouTubeUtils.Video>>();
         YouTubeWindow currentYouTubeWindow;
-        TimerWindow currentTimerWindow;
         RecipesWindow currentRecipesWindow;
         ShoppingListWindow currentShoppingListWindow;
         SupplyWindow currentSupplyWindow;
         RecipeCRUDWindow currentRecipeCRUDWindow;
+        RecipePrepareWindow currentRecipePrepareWindow;
         public MainWindow()
         {
             InitializeComponent();
@@ -67,43 +65,25 @@ namespace CookingAssistant
                            {
                                supply.Ingredient.ingredientName,
                                supply.measurementQuantity,
-                               supply.MeasurementUnit
-
+                               supply.MeasurementUnit.measurementDescription
                            };
             suppliesDataGrid.ItemsSource = supplies.ToArray();
         }
 
-        public void BindMissingItems()
+
+        public void BindAll()
         {
-            var toDisplay = from item in this.currentlyMissingItems
-                            select new
-                            {
-                                item.Ingredient.ingredientName,
-                                item.measurementQuantity,
-                                item.MeasurementUnit.measurementDescription
-                            };
-            missingItemsDataGrid.ItemsSource = toDisplay.ToList();
-            AddMissingItemsToShoppingList(this.currentlyMissingItems);
+            BindRecipes();
+            BindShoppingList();
+            BindSupplies();
         }
 
-        private async void RecommendedVideosButton_Click(object sender, RoutedEventArgs e)
-        {
+        private void YouTubeTabButton_Click(object sender, RoutedEventArgs e)
+        { 
             if (currentlyChosenRecipe != null)
             {
+                youTubeTabButton.IsEnabled = false;
                 string recipeName = this.currentlyChosenRecipe.recipeName;
-                /*
-                List<YouTubeUtils.Video> videos;
-                if (this.cachedSearchResults.ContainsKey(recipeName))
-                {
-                    videos = this.cachedSearchResults[recipeName];
-                }
-                else
-                {
-                    var searchResult = await youTubeHandle.SearchVideos(recipeName + " recipe", 50);
-                    this.cachedSearchResults[recipeName] = searchResult;
-                    videos = searchResult;
-                }
-                */
                 if (this.currentYouTubeWindow != null)
                 {
                     currentYouTubeWindow.Close();
@@ -119,32 +99,6 @@ namespace CookingAssistant
             }
         }
 
-        private void TimerButton_Click(object sender, RoutedEventArgs e)
-        {
-            if (this.currentTimerWindow != null)
-            {
-                this.currentTimerWindow.Close();
-            }
-            this.currentTimerWindow = new TimerWindow
-            {
-                Owner = this
-            };
-            this.currentTimerWindow.Show();
-        }
-
-        public void EmbedRecipesWindow(int chosenRecipeId)
-        {
-            if (this.currentRecipesWindow != null)
-            {
-                this.currentRecipesWindow.Close();
-            }
-            this.currentRecipesWindow = new RecipesWindow(chosenRecipeId)
-            {
-                Owner = this
-            };
-            recipesFrame.Content = this.currentRecipesWindow.Content;
-        }
-
         private void recipesGrid_CurrentCellChanged(object sender, EventArgs e)
         {
             if (recipesDataGrid.CurrentCell.IsValid)
@@ -155,94 +109,42 @@ namespace CookingAssistant
                     string recipeName = recipeGridCell.RecipeName;
                     var recipe = from r in db.Recipes where r.recipeName == recipeName select r;
                     this.currentlyChosenRecipe = recipe.SingleOrDefault();
+                    youTubeTabButton.IsEnabled = true;
+                    startupComment.Visibility = Visibility.Collapsed;
                     if (this.currentlyChosenRecipe != null)
                     {
                         if (this.currentYouTubeWindow != null)
                         {
                             this.currentYouTubeWindow.Close();
-                            this.rightFrame.Content = null;
+                            rightFrame.Content = null;
                         }
-                        EmbedRecipesWindow(this.currentlyChosenRecipe.recipeId);
-                        EvaluateMissingItems();
-                        BindMissingItems();
+                        if (this.currentRecipesWindow != null)
+                        {
+                            this.currentRecipesWindow.Close();
+                            recipesFrame.Content = null;
+                        }
+                        if (this.currentRecipePrepareWindow != null)
+                        {
+                            this.currentRecipesWindow.Close();
+                            recipePrepareFrame.Content = null;
+                        }
+                        this.currentRecipesWindow = new RecipesWindow(this.currentlyChosenRecipe.recipeId)
+                        {
+                            Owner = this
+                        };
+                        recipesFrame.Content = this.currentRecipesWindow.Content;
+                        if (this.currentRecipePrepareWindow != null)
+                        {
+                            this.currentRecipePrepareWindow.Close();
+                        }
+                        this.currentRecipePrepareWindow = new RecipePrepareWindow(this.currentlyChosenRecipe)
+                        {
+                            Owner = this
+                        };
+                        recipePrepareFrame.Content = this.currentRecipePrepareWindow.Content;
                     }
                 }
             }
-        }
-
-        public void EvaluateMissingItems()
-        {
-            var recipe = this.currentlyChosenRecipe;
-            var supplies = db.Supplies.ToList();
-            var missingItems = new List<ShoppingList>();
-
-            foreach(RecipeIngredient recipeIngredient in recipe.RecipeIngredients.ToList())
-            {
-                var relatedSupply = supplies.Find((Supply supply) => supply.ingredientId == recipeIngredient.ingredientId);
-                double missingQuantity = 0;
-                if (relatedSupply != null)
-                {
-                    var balance = relatedSupply.measurementQuantity - recipeIngredient.measurementQuantity;
-                    if (balance < 0)
-                    {
-                        missingQuantity = Math.Abs(balance);
-                    }
-                }
-                else
-                {
-                    missingQuantity = recipeIngredient.measurementQuantity;
-                }
-                if (missingQuantity > 0)
-                {
-                    var missingItem = new ShoppingList()
-                    {
-                        Ingredient = recipeIngredient.Ingredient,
-                        MeasurementUnit = recipeIngredient.MeasurementUnit,
-                        measurementQuantity = missingQuantity,
-                        ingredientId = recipeIngredient.ingredientId,
-                        measurementId = recipeIngredient.measurementId
-                    };
-                    missingItems.Add(missingItem);
-                }
-            }
-
-            this.currentlyMissingItems = missingItems;
-        }
-
-        public void AddMissingItemsToShoppingList(List<ShoppingList> missingItems)
-        {
-            if (missingItems.Count() > 0)
-            {
-                foreach (var missingItem in missingItems)
-                {
-                    var relatedRecord = (from shoppingList in db.ShoppingLists 
-                                        where shoppingList.ingredientId == missingItem.ingredientId 
-                                        select shoppingList).FirstOrDefault();
-                    if (relatedRecord != null)
-                    {
-                        relatedRecord.measurementQuantity += missingItem.measurementQuantity;
-                    }
-                    else
-                    {
-                        db.ShoppingLists.Add(missingItem);
-                    }
-                }
-                db.SaveChanges();
-            }
-        }
-
-        public void FulfillRecipeAndUpdateSupplies()
-        {
-            var usedIngredients = this.currentlyChosenRecipe.RecipeIngredients;
-            foreach (var ingredient in usedIngredients)
-            {
-                var relatedSupply = db.Supplies.Find(ingredient);
-                if (relatedSupply != null)
-                {
-                    relatedSupply.measurementQuantity -= ingredient.measurementQuantity;
-                }
-            }
-            db.SaveChanges();
         }
 
         private void ShoppingListButton_Click(object sender, RoutedEventArgs e)
@@ -255,7 +157,7 @@ namespace CookingAssistant
             {
                 Owner = this
             };
-            this.currentShoppingListWindow.Show();
+            this.currentShoppingListWindow.ShowDialog();
         }
 
         private void RecipeCRUDWindowButton_Click(object sender, RoutedEventArgs e)
@@ -268,7 +170,7 @@ namespace CookingAssistant
             {
                 Owner = this
             };
-            this.currentRecipeCRUDWindow.Show();
+            this.currentRecipeCRUDWindow.ShowDialog();
         }
 
         private void SuppliesButton_Click(object sender, RoutedEventArgs e)
@@ -281,7 +183,7 @@ namespace CookingAssistant
             {
                 Owner = this
             };
-            this.currentSupplyWindow.Show();
+            this.currentSupplyWindow.ShowDialog();
         }
     }
     /// <summary>

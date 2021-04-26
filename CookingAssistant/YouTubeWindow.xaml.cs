@@ -13,6 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using YouTubeLib;
 
+
 namespace CookingAssistant
 {
     public partial class YouTubeWindow : Window
@@ -27,22 +28,23 @@ namespace CookingAssistant
         {
             var youTubeHandle = (this.Owner as MainWindow).youTubeHandle;
             var currentlyChosenRecipe = (this.Owner as MainWindow).currentlyChosenRecipe;
-            var favouriteIds = from r in db.Recipes
-                               where r.recipeId == currentlyChosenRecipe.recipeId
-                               select r.FavouriteVideo.youtubeId;
+            var favouriteIds = (from r in db.Recipes
+                                where r.recipeId == currentlyChosenRecipe.recipeId
+                                select r.FavouriteVideo.youtubeId).ToList();
             var favouriteVideos = new List<YouTubeUtils.Video>();
             try
             {
-                favouriteVideos = await youTubeHandle.GetVideosFromIds(favouriteIds.ToList());
+                favouriteVideos = await youTubeHandle.GetVideosFromIds(favouriteIds);
+                favouriteVideoPanel.Visibility = Visibility.Visible;
+                favouriteVideoList.ItemsSource = favouriteVideos;
             }
             catch
             {
                 favouriteVideoPanel.Visibility = Visibility.Collapsed;
-            }
-            finally
-            {
-                favouriteVideoPanel.Visibility = Visibility.Visible;
-                favouriteVideoList.ItemsSource = favouriteVideos;
+                if (!favouriteIds.Contains(null))
+                {
+                    MessageBox.Show("Failed to retrieve the pinned video");
+                }
             }
         }
 
@@ -50,8 +52,16 @@ namespace CookingAssistant
         {
             var youTubeHandle = (this.Owner as MainWindow).youTubeHandle;
             var currentlyChosenRecipe = (this.Owner as MainWindow).currentlyChosenRecipe;
-            var recommendedVideos = await youTubeHandle.SearchVideos(currentlyChosenRecipe.recipeName + " recipe", 50);
-            displayVideoList.ItemsSource = recommendedVideos;
+            var recommendedVideos = new List<YouTubeUtils.Video>();
+            try
+            {
+                recommendedVideos = await youTubeHandle.SearchVideos(currentlyChosenRecipe.recipeName + " recipe", 50);
+                displayVideoList.ItemsSource = recommendedVideos;
+            }
+            catch
+            {
+                MessageBox.Show("Failed to get recommended videos");
+            }
         }
 
         private void OpenBrowser_Click(object sender, RoutedEventArgs e)
@@ -67,7 +77,10 @@ namespace CookingAssistant
             Recipe record = (from r in db.Recipes
                              where currentlyChosenRecipe.recipeId == r.recipeId
                              select r).FirstOrDefault();
-            record.FavouriteVideo = new FavouriteVideo() { youtubeId = videoId };
+            var favouriteVideo = new FavouriteVideo() { youtubeId = videoId };
+            db.FavouriteVideos.Add(favouriteVideo);
+            db.SaveChanges();
+            record.favouriteVideoId = favouriteVideo.favouriteVideoId;
             db.SaveChanges();
             UpdateFavouriteBinding();
         }
@@ -78,10 +91,10 @@ namespace CookingAssistant
             Recipe record = (from r in db.Recipes
                              where currentlyChosenRecipe.recipeId == r.recipeId
                              select r).FirstOrDefault();
-            record.FavouriteVideo = null;
+            db.FavouriteVideos.Remove(record.FavouriteVideo);
+            record.favouriteVideoId = null;
             db.SaveChanges();
             UpdateFavouriteBinding();
         }
-       
     }
 }

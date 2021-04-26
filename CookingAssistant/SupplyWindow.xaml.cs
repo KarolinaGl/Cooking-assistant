@@ -440,5 +440,10 @@ namespace CookingAssistant
         {
             RadioButtonChecked("quantity", "updateMeasurementComboBox");
         }
+
+        private void SupplyWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            (this.Owner as MainWindow).BindSupplies();
+        }
     }
 }

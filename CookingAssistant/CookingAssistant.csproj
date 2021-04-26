@@ -132,6 +132,9 @@
     <Compile Include="RecipeCRUDWindow.xaml.cs">
       <DependentUpon>RecipeCRUDWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="RecipePrepareWindow.xaml.cs">
+      <DependentUpon>RecipePrepareWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="RecipesWindow.xaml.cs">
       <DependentUpon>RecipesWindow.xaml</DependentUpon>
     </Compile>
@@ -202,6 +205,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="RecipeCRUDWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="RecipePrepareWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

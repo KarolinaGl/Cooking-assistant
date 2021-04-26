@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:CookingAssistant"
         mc:Ignorable="d"
         WindowStartupLocation="CenterOwner"
-        Title="ShoppingListWindow" Height="450" Width="800">
+        Title="ShoppingListWindow" Height="450" Width="800" Closing="ShoppingListWindow_Closing" ResizeMode="NoResize">
     <Grid>
         <DataGrid x:Name="ingredientsDataGrid"  HorizontalAlignment="Left" Height="354" Margin="320,10,0,0" VerticalAlignment="Top" Width="462" SelectionChanged="IngredientsDataGrid_SelectionChanged" CanUserAddRows="False" CanUserDeleteRows="False" CanUserResizeRows="False" IsReadOnly="True" GridLinesVisibility="None" AutoGeneratingColumn="IngredientsDataGrid_AutoGeneratingColumn"/>
         <Label Content="Product name:" HorizontalAlignment="Left" Margin="10,136,0,0" VerticalAlignment="Top" RenderTransformOrigin="2.026,-3.962"/>

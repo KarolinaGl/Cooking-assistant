@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:CookingAssistant"
         mc:Ignorable="d"
         WindowStartupLocation="CenterOwner"
-        Title="SupplyWindow" Height="450" Width="800">
+        Title="SupplyWindow" Height="450" Width="800" Closing="SupplyWindow_Closing" ResizeMode="NoResize">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="5*"/>

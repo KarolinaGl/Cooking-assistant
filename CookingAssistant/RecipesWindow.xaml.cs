@@ -34,7 +34,7 @@ namespace CookingAssistant
 
             this.recipeNameLabel.Content = obj.recipeName;
             this.preparationTimeLabel.Content = "Preparation time: " + obj.preparationTime + " minutes";
-            this.descriptionTextBlock.Text = obj.description;
+            this.descriptionTextBox.Text = obj.description;
 
             var ingredients = from r in db.RecipeIngredients
                               where r.recipeId == selectedRecipeId
@@ -61,7 +61,7 @@ namespace CookingAssistant
 
             this.recipeNameLabel.Content = obj.recipeName;
             this.preparationTimeLabel.Content = "Preparation time: " + obj.preparationTime + " minutes";
-            this.descriptionTextBlock.Text = obj.description;
+            this.descriptionTextBox.Text = obj.description;
 
             var ingredients = from r in db.RecipeIngredients
                               where r.recipeId == selectedRecipeId
