@@ -31,26 +31,6 @@ namespace CookingAssistant
             InitializeComponent();
             this.currentlyChosenRecipe = currentlyChosenRecipe;
             EvaluateMissingItems();
-            
-            if (this.currentlyMissingItems.Count > 0)
-            {
-                missingItemsComment.Text = "You're not able to prepare this meal, because you're missing some of the needed ingredients.";
-                missingItemsComment.Visibility = Visibility.Visible;
-                addToShoppingListButton.IsEnabled = true;
-                var missingItemsToDisplay = from item in this.currentlyMissingItems
-                                            select new
-                                            {
-                                                item.measurementQuantity,
-                                                item.MeasurementUnit.measurementDescription,
-                                                item.Ingredient.ingredientName
-                                            };
-                missingItemsDataGrid.ItemsSource = missingItemsToDisplay;
-            }
-            else
-            {
-                missingItemsDataGrid.Visibility = Visibility.Collapsed;
-                prepareRecipeButton.IsEnabled = true;
-            }
         }
         public void EvaluateMissingItems()
         {
@@ -89,6 +69,25 @@ namespace CookingAssistant
             }
 
             this.currentlyMissingItems = missingItems;
+            if (this.currentlyMissingItems.Count > 0)
+            {
+                missingItemsComment.Text = "You're not able to prepare this meal, because you're missing some of the needed ingredients.";
+                missingItemsComment.Visibility = Visibility.Visible;
+                addToShoppingListButton.IsEnabled = true;
+                var missingItemsToDisplay = from item in this.currentlyMissingItems
+                                            select new
+                                            {
+                                                item.measurementQuantity,
+                                                item.MeasurementUnit.measurementDescription,
+                                                item.Ingredient.ingredientName
+                                            };
+                missingItemsDataGrid.ItemsSource = missingItemsToDisplay;
+            }
+            else
+            {
+                missingItemsDataGrid.Visibility = Visibility.Collapsed;
+                prepareRecipeButton.IsEnabled = true;
+            }
         }
 
         public void AddMissingItemsToShoppingList()
@@ -124,25 +123,27 @@ namespace CookingAssistant
             var usedIngredients = this.currentlyChosenRecipe.RecipeIngredients;
             foreach (var ingredient in usedIngredients)
             {
-                var relatedSupply = db.Supplies.Find(ingredient);
+                var relatedSupply = db.Supplies.ToList().Find((Supply supply) => supply.ingredientId == ingredient.ingredientId);
                 if (relatedSupply != null)
                 {
                     relatedSupply.measurementQuantity -= ingredient.measurementQuantity;
                 }
+                db.SaveChanges();
             }
-            db.SaveChanges();
         }
 
         private void AddToShoppingListButton_Click(object sender, RoutedEventArgs e)
         {
             AddMissingItemsToShoppingList();
             (this.Owner as MainWindow).BindShoppingList();
+            EvaluateMissingItems();
         }
 
         private void PrepareRecipeButton_Click(object sender, RoutedEventArgs e)
         {
             PrepareRecipeAndUpdateSupplies();
             (this.Owner as MainWindow).BindSupplies();
+            EvaluateMissingItems();
         }
     }
 }

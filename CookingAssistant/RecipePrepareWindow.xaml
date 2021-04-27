@@ -6,12 +6,12 @@
         xmlns:local="clr-namespace:CookingAssistant"
         mc:Ignorable="d"
         Title="RecipePrepareWindow" Height="Auto" Width="Auto">
-    <DockPanel>
+    <DockPanel Width="610">
         <TextBlock DockPanel.Dock="Top" Name="missingItemsComment" Visibility="Collapsed" HorizontalAlignment="Center"/>
-        <DataGrid DockPanel.Dock="Top" Name="missingItemsDataGrid" HorizontalAlignment="Center" VerticalAlignment="Top" Height="Auto" Width="Auto" AreRowDetailsFrozen="True" GridLinesVisibility="None" HeadersVisibility="None"/>
-        <WrapPanel>
-            <Button Name="addToShoppingListButton" Content="Add missing items to shopping list" IsEnabled="False" Click="AddToShoppingListButton_Click" HorizontalAlignment="Center" Width="200" Height="40"/>
-            <Button Name="prepareRecipeButton" Content="Prepare the meal" IsEnabled="False" Click="PrepareRecipeButton_Click" HorizontalAlignment="Center" Width="200" Height="40"/>
+        <DataGrid DockPanel.Dock="Top" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" ColumnWidth="*" Name="missingItemsDataGrid" HorizontalAlignment="Stretch" Height="Auto" Width="Auto" AreRowDetailsFrozen="True" GridLinesVisibility="None" HeadersVisibility="None" MaxHeight="200"/>
+        <WrapPanel HorizontalAlignment="Center">
+            <Button Name="addToShoppingListButton" Content="Add missing items to shopping list" IsEnabled="False" Click="AddToShoppingListButton_Click" HorizontalAlignment="Left" Width="200" Height="40" Margin="10"/>
+            <Button Name="prepareRecipeButton" Content="Prepare the meal" IsEnabled="False" Click="PrepareRecipeButton_Click" HorizontalAlignment="Right" Width="200" Height="40" Margin="10"/>
         </WrapPanel>
     </DockPanel>
 </Window>
