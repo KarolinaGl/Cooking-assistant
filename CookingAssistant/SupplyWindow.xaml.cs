@@ -195,7 +195,7 @@ namespace CookingAssistant
 
             string[] output = ValidateText(buttonType, ingredientName, ingredientAmount);
 
-            if (output[0] == null || output[1] == null)
+            if (output[0] != null && output[1] != null)
             {
                 GenerateMessageBox(output[0], output[1]);
                 return false;
@@ -213,6 +213,7 @@ namespace CookingAssistant
         {
             if (!ValidateAddUpdateIngredientButton("add"))
             {
+                Console.WriteLine("aaaaaa");
                 return;
             }
 
