@@ -35,7 +35,7 @@ namespace CookingAssistant
         }
 
         /// <summary>
-        /// Fills recipesDataGrid with recipes from the database 
+        /// Fills recipesDataGrid with recipes from the database
         /// </summary>
         public void UpdateRecipesDataGrid()
         {
