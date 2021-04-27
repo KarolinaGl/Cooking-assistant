@@ -90,11 +90,10 @@ namespace CookingAssistant
         private void GenerateMessageBox(string messageBoxText, string messageBoxTitle)
         {
             MessageBox.Show(messageBoxText,
-            messageBoxTitle,
-            MessageBoxButton.OK,
-            MessageBoxImage.Warning,
-            MessageBoxResult.No
-            );
+                            messageBoxTitle,
+                            MessageBoxButton.OK,
+                            MessageBoxImage.Warning,
+                            MessageBoxResult.No);
         }
 
         /// <summary>

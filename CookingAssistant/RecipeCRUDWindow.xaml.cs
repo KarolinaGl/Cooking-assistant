@@ -37,7 +37,7 @@ namespace CookingAssistant
         /// <summary>
         /// Fills recipesDataGrid with recipes from the database 
         /// </summary>
-        private void UpdateRecipesDataGrid()
+        public void UpdateRecipesDataGrid()
         {
             var recipes = from recipe in db.Recipes
                           select recipe;
@@ -48,7 +48,7 @@ namespace CookingAssistant
         /// <summary>
         /// Fills ingredientsDataGrid with ingredients from the database 
         /// </summary>
-        private void UpdateIngredientsDataGrid()
+        public void UpdateIngredientsDataGrid()
         {
             if (selectedRecipeId > 0)
             {
@@ -93,7 +93,7 @@ namespace CookingAssistant
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void RecipesDataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        public void RecipesDataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (this.recipesDataGrid.SelectedIndex >= 0 && this.recipesDataGrid.SelectedItems.Count >= 0)
             {
@@ -107,7 +107,7 @@ namespace CookingAssistant
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void ingredientsDataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        public void ingredientsDataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (this.ingredientsDataGrid.SelectedIndex >= 0 && this.ingredientsDataGrid.SelectedItems.Count >= 0)
             {
@@ -120,7 +120,7 @@ namespace CookingAssistant
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void RecipesDataGrid_AutoGeneratingColumn(object sender, DataGridAutoGeneratingColumnEventArgs e)
+        public void RecipesDataGrid_AutoGeneratingColumn(object sender, DataGridAutoGeneratingColumnEventArgs e)
         {
             switch (e.Column.Header.ToString())
             {
@@ -138,7 +138,7 @@ namespace CookingAssistant
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void ingredientsDataGrid_AutoGeneratingColumn(object sender, DataGridAutoGeneratingColumnEventArgs e)
+        public void ingredientsDataGrid_AutoGeneratingColumn(object sender, DataGridAutoGeneratingColumnEventArgs e)
         {
             switch (e.Column.Header.ToString())
             {
@@ -162,7 +162,7 @@ namespace CookingAssistant
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void AddRecipeButton_Click(object sender, RoutedEventArgs e)
+        public void AddRecipeButton_Click(object sender, RoutedEventArgs e)
         {
             if (addRecipeNameTextBox.Text == "")
             {
@@ -198,7 +198,7 @@ namespace CookingAssistant
         /// </summary>
         /// <param name="messageBoxText">Content of the generated MessageBox</param>
         /// <param name="messageBoxTitle">Title of the generated MessageBox</param>
-        private void GenerateMessageBox(string messageBoxText, string messageBoxTitle)
+        public void GenerateMessageBox(string messageBoxText, string messageBoxTitle)
         {
             MessageBox.Show(messageBoxText,
             messageBoxTitle,
@@ -208,12 +208,28 @@ namespace CookingAssistant
             );
         }
 
+        public static string ValidateText(string ingredientName, string ingredientAmount)
+        {
+            if (ingredientName == "" || ingredientAmount == "")
+            {
+                return "Make sure to fill in all of the textboxes before you add an ingredient";
+                
+            }
+            // Checks if textbox content is a number
+            else if (!double.TryParse(ingredientAmount, out _))
+            {
+                return "Amount must be a number";
+            }
+
+            return "";
+        }
+
         /// <summary>
         /// Validates textbox content 
         /// </summary>
         /// <param name="buttonType">Name of the performed CRUD operation</param>
         /// <returns></returns>
-        private bool ValidateAddUpdateIngredientButton(string buttonType)
+        private bool ValidateAddIngredientButton(string buttonType)
         {
             bool isValidationPassed = true;
             string ingredientName = "";
@@ -230,6 +246,16 @@ namespace CookingAssistant
                 emptyTextboxMessage = "Make sure to fill in all of the textboxes before you add an ingredient";
             }
 
+            string errorMessage = ValidateText(ingredientName, ingredientAmount);
+            if (errorMessage.Length > 0)
+            {
+                GenerateMessageBox(errorMessage, windowTitle);
+                return false;
+            }
+
+            return true;
+
+            /*
             // Checks if texbox content is empty
             if (ingredientName == "" || ingredientAmount == "")
             {
@@ -243,7 +269,7 @@ namespace CookingAssistant
                 isValidationPassed = false;
             }
 
-            return isValidationPassed;
+            return isValidationPassed;*/
         }
 
         /// <summary>
@@ -292,7 +318,7 @@ namespace CookingAssistant
         {
             if (selectedRecipeId != 0)
             {
-                if (!ValidateAddUpdateIngredientButton("add"))
+                if (!ValidateAddIngredientButton("add"))
                 {
                     return;
                 }
@@ -439,6 +465,10 @@ namespace CookingAssistant
                         UpdateRecipesDataGrid();
                     }
                 }
+            }
+            else
+            {
+                GenerateMessageBox("Choose a recipe you want to delete", "Delete recipe");
             }
         }
 
