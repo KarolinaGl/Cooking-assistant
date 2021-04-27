@@ -171,7 +171,7 @@ namespace CookingAssistant
             }
             else
             {
-                if (parsedNumber < 0)
+                if (parsedNumber <= 0)
                 {
                     outputArray[0] = "Amount must be a positive number";
                     return outputArray;

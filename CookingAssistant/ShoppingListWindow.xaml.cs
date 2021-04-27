@@ -181,7 +181,7 @@ namespace CookingAssistant
             }
             else
             {
-                if (parsedNumber < 0)
+                if (parsedNumber <= 0)
                 {
                     GenerateMessageBox("Amount must be a positive number", windowTitle);
                     isValidationPassed = false;

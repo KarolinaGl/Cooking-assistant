@@ -183,7 +183,7 @@ namespace CookingAssistant
             }
             else
             {
-                if (parsedNumber < 0)
+                if (parsedNumber <= 0)
                 {
                     GenerateMessageBox("Preparation time be a positive number", windowName);
                     return;
