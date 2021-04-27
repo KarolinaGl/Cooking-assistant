@@ -36,7 +36,7 @@ namespace CookingAssistant
         /// <summary>
         /// Fills ingredientsDataGrid with shopping list items from the database 
         /// </summary>
-        private void UpdateIngredientsDataGrid()
+        public void UpdateIngredientsDataGrid()
         {
             var shoppingLists = from shoppingList in db.ShoppingLists
                                select new
@@ -56,7 +56,7 @@ namespace CookingAssistant
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void IngredientsDataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        public void IngredientsDataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (this.ingredientsDataGrid.SelectedIndex >= 0 && this.ingredientsDataGrid.SelectedItems.Count >= 0)
             {
@@ -87,7 +87,7 @@ namespace CookingAssistant
         /// </summary>
         /// <param name="messageBoxText">Content of the generated MessageBox</param>
         /// <param name="messageBoxTitle">Title of the generated MessageBox</param>
-        private void GenerateMessageBox(string messageBoxText, string messageBoxTitle)
+        public void GenerateMessageBox(string messageBoxText, string messageBoxTitle)
         {
             MessageBox.Show(messageBoxText,
             messageBoxTitle,
@@ -102,7 +102,7 @@ namespace CookingAssistant
         /// </summary>
         /// <param name="operationType">Name of the performed CRUD operation</param>
         /// <returns></returns>
-        private Ingredient GetOrCreateIngredient(string operationType)
+        public Ingredient GetOrCreateIngredient(string operationType)
         {
             string ingredientName = "";
             if (operationType == "add")
@@ -143,7 +143,7 @@ namespace CookingAssistant
         /// </summary>
         /// <param name="buttonType">Name of the performed CRUD operation</param>
         /// <returns></returns>
-        private bool ValidateAddUpdateIngredientButton(string buttonType)
+        public bool ValidateAddUpdateIngredientButton(string buttonType)
         {
             bool isValidationPassed = true;
             string ingredientName = "";
@@ -187,7 +187,7 @@ namespace CookingAssistant
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void AddIngredientButton_Click(object sender, RoutedEventArgs e)
+        public void AddIngredientButton_Click(object sender, RoutedEventArgs e)
         {
             if (!ValidateAddUpdateIngredientButton("add"))
             {
@@ -219,7 +219,7 @@ namespace CookingAssistant
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void UpdateIngredientButton_Click(object sender, RoutedEventArgs e)
+        public void UpdateIngredientButton_Click(object sender, RoutedEventArgs e)
         {
             if (!ValidateAddUpdateIngredientButton("update"))
             {
@@ -257,7 +257,7 @@ namespace CookingAssistant
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void DeleteIngredientButton_Click(object sender, RoutedEventArgs e)
+        public void DeleteIngredientButton_Click(object sender, RoutedEventArgs e)
         {
             if (selectedShoppingListId != 0)
             {
@@ -296,7 +296,7 @@ namespace CookingAssistant
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void MeasurementComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        public void MeasurementComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (this.measurementComboBox.SelectedItem != null)
             {
@@ -309,7 +309,7 @@ namespace CookingAssistant
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void UpdateMeasurementComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        public void UpdateMeasurementComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (this.updateMeasurementComboBox.SelectedItem != null)
             {
@@ -322,7 +322,7 @@ namespace CookingAssistant
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void IngredientsDataGrid_AutoGeneratingColumn(object sender, DataGridAutoGeneratingColumnEventArgs e)
+        public void IngredientsDataGrid_AutoGeneratingColumn(object sender, DataGridAutoGeneratingColumnEventArgs e)
         {
             switch (e.Column.Header.ToString())
             {
@@ -346,7 +346,7 @@ namespace CookingAssistant
         /// </summary>
         /// <param name="measurementType">Selected measurement type</param>
         /// <param name="comboBox">Specifies the CRUD operation ComboBox type</param>
-        private void RadioButtonChecked(string measurementType, string comboBox)
+        public void RadioButtonChecked(string measurementType, string comboBox)
         {
             var units = from unit in db.MeasurementUnits
                         where unit.type == measurementType
@@ -387,7 +387,7 @@ namespace CookingAssistant
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void VolumeRadioButton_Checked(object sender, RoutedEventArgs e)
+        public void VolumeRadioButton_Checked(object sender, RoutedEventArgs e)
         {
             RadioButtonChecked("volume", "measurementComboBox");
         }
@@ -397,7 +397,7 @@ namespace CookingAssistant
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void MassRadioButton_Checked(object sender, RoutedEventArgs e)
+        public void MassRadioButton_Checked(object sender, RoutedEventArgs e)
         {
             RadioButtonChecked("mass", "measurementComboBox");
         }
@@ -407,7 +407,7 @@ namespace CookingAssistant
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void QuantityRadioButton_Checked(object sender, RoutedEventArgs e)
+        public void QuantityRadioButton_Checked(object sender, RoutedEventArgs e)
         {
             RadioButtonChecked("quantity", "measurementComboBox");
         }
@@ -417,7 +417,7 @@ namespace CookingAssistant
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void UpdateVolumeRadioButton_Checked(object sender, RoutedEventArgs e)
+        public void UpdateVolumeRadioButton_Checked(object sender, RoutedEventArgs e)
         {
             RadioButtonChecked("volume", "updateMeasurementComboBox");
         }
@@ -427,7 +427,7 @@ namespace CookingAssistant
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void UpdateMassRadioButton_Checked(object sender, RoutedEventArgs e)
+        public void UpdateMassRadioButton_Checked(object sender, RoutedEventArgs e)
         {
             RadioButtonChecked("mass", "updateMeasurementComboBox");
         }
@@ -437,7 +437,7 @@ namespace CookingAssistant
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void UpdateQuantityRadioButton_Checked(object sender, RoutedEventArgs e)
+        public void UpdateQuantityRadioButton_Checked(object sender, RoutedEventArgs e)
         {
             RadioButtonChecked("quantity", "updateMeasurementComboBox");
         }
