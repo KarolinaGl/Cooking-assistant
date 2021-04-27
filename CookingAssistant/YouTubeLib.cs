@@ -65,7 +65,7 @@ namespace YouTubeLib
             foreach (var result in videoResponse.Items)
             {
                 string id = Convert.ToString(result.Id);
-                string title = result.Snippet.Title;
+                string title = System.Net.WebUtility.HtmlDecode(result.Snippet.Title);
                 string channel = result.Snippet.ChannelTitle;
                 string description = result.Snippet.Description;
 

@@ -43,7 +43,8 @@ namespace CookingAssistant
 
         public void BindRecipes()
         {
-            recipesDataGrid.ItemsSource = db.Recipes.Select((Recipe r) => new RecipeGridCell() { RecipeName = r.recipeName}).ToArray();
+            //recipesDataGrid.ItemsSource = db.Recipes.Select((Recipe r) => new RecipeGridCell() { RecipeName = r.recipeName}).ToArray();
+            recipesDataGrid.ItemsSource = db.Recipes.ToArray();
         }
 
         public void BindShoppingList()
@@ -103,12 +104,10 @@ namespace CookingAssistant
         {
             if (recipesDataGrid.CurrentCell.IsValid)
             {
-                RecipeGridCell recipeGridCell = recipesDataGrid.CurrentCell.Item as RecipeGridCell;
-                if (recipeGridCell != null)
+                Recipe currentlyChosenRecipe = recipesDataGrid.CurrentCell.Item as Recipe;
+                if (currentlyChosenRecipe != null)
                 {
-                    string recipeName = recipeGridCell.RecipeName;
-                    var recipe = from r in db.Recipes where r.recipeName == recipeName select r;
-                    this.currentlyChosenRecipe = recipe.SingleOrDefault();
+                    this.currentlyChosenRecipe = (from r in db.Recipes where r.recipeId == currentlyChosenRecipe.recipeId select r).SingleOrDefault();
                     youTubeTabButton.IsEnabled = true;
                     startupComment.Visibility = Visibility.Collapsed;
                     if (this.currentlyChosenRecipe != null)
@@ -185,13 +184,18 @@ namespace CookingAssistant
             };
             this.currentSupplyWindow.ShowDialog();
         }
-    }
-    /// <summary>
-    /// Auxiliary class used instead of anonymous objects to bind recipes to a DataGrid
-    /// </summary>
-    class RecipeGridCell
-    {
-        public string RecipeName { get; set; }
-        public Recipe recipe { get; set; }
+
+        private void recipesDataGrid_AutoGeneratingColumn(object sender, DataGridAutoGeneratingColumnEventArgs e)
+        {
+            switch (e.Column.Header.ToString())
+            {
+                case "recipeName":
+                    e.Column.Visibility = Visibility.Visible;
+                    break;
+                default:
+                    e.Column.Visibility = Visibility.Hidden;
+                    break;
+            }
+        }
     }
 }
