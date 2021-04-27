@@ -65,10 +65,9 @@ namespace CookingAssistant
             var supplies = from supply in db.Supplies
                            select new
                            {
-                               supply.Ingredient.ingredientName,
-                               supply.measurementQuantity,
-                               supply.MeasurementUnit
-
+                                supply.measurementQuantity,
+                                supply.MeasurementUnit.measurementDescription,
+                                supply.Ingredient.ingredientName,
                            };
             suppliesDataGrid.ItemsSource = supplies.ToArray();
         }
