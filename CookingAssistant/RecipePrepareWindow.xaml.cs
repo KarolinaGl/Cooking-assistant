@@ -31,7 +31,47 @@ namespace CookingAssistant
             InitializeComponent();
             this.currentlyChosenRecipe = currentlyChosenRecipe;
             EvaluateMissingItems();
-            
+        }
+        public void EvaluateMissingItems()
+        {
+            var recipe = this.currentlyChosenRecipe;
+            var supplies = db.Supplies.ToList();
+            var missingItems = new List<ShoppingList>();
+
+            foreach (RecipeIngredient recipeIngredient in recipe.RecipeIngredients.ToList())
+            {
+                var relatedSupply = supplies.Find((Supply supply) => supply.ingredientId == recipeIngredient.ingredientId);
+                double missingQuantity = 0;
+                if (relatedSupply != null)
+                {
+                    if (relatedSupply.MeasurementUnit.type == recipeIngredient.MeasurementUnit.type)
+                    {
+                        double balance = relatedSupply.measurementQuantity * relatedSupply.MeasurementUnit.defaultUnit.Value - recipeIngredient.measurementQuantity * recipeIngredient.MeasurementUnit.defaultUnit.Value;
+                        if (balance < 0)
+                        {
+                            missingQuantity = Math.Abs(balance);
+                        }
+                        missingQuantity = missingQuantity / relatedSupply.MeasurementUnit.defaultUnit.Value;
+                    }
+                }
+                else
+                {
+                    missingQuantity = recipeIngredient.measurementQuantity;
+                }
+                if (missingQuantity > 0)
+                {
+                    var missingItem = new ShoppingList()
+                    {
+                        Ingredient = recipeIngredient.Ingredient,
+                        MeasurementUnit = recipeIngredient.MeasurementUnit,
+                        measurementQuantity = missingQuantity,
+                        ingredientId = recipeIngredient.ingredientId,
+                        measurementId = recipeIngredient.measurementId
+                    };
+                    missingItems.Add(missingItem);
+                }
+            }
+            this.currentlyMissingItems = missingItems;
             if (this.currentlyMissingItems.Count > 0)
             {
                 missingItemsComment.Text = "You're not able to prepare this meal, because you're missing some of the needed ingredients.";
@@ -52,44 +92,6 @@ namespace CookingAssistant
                 prepareRecipeButton.IsEnabled = true;
             }
         }
-        public void EvaluateMissingItems()
-        {
-            var recipe = this.currentlyChosenRecipe;
-            var supplies = db.Supplies.ToList();
-            var missingItems = new List<ShoppingList>();
-
-            foreach (RecipeIngredient recipeIngredient in recipe.RecipeIngredients.ToList())
-            {
-                var relatedSupply = supplies.Find((Supply supply) => supply.ingredientId == recipeIngredient.ingredientId);
-                double missingQuantity = 0;
-                if (relatedSupply != null)
-                {
-                    var balance = relatedSupply.measurementQuantity - recipeIngredient.measurementQuantity;
-                    if (balance < 0)
-                    {
-                        missingQuantity = Math.Abs(balance);
-                    }
-                }
-                else
-                {
-                    missingQuantity = recipeIngredient.measurementQuantity;
-                }
-                if (missingQuantity > 0)
-                {
-                    var missingItem = new ShoppingList()
-                    {
-                        Ingredient = recipeIngredient.Ingredient,
-                        MeasurementUnit = recipeIngredient.MeasurementUnit,
-                        measurementQuantity = missingQuantity,
-                        ingredientId = recipeIngredient.ingredientId,
-                        measurementId = recipeIngredient.measurementId
-                    };
-                    missingItems.Add(missingItem);
-                }
-            }
-
-            this.currentlyMissingItems = missingItems;
-        }
 
         public void AddMissingItemsToShoppingList()
         {
@@ -102,7 +104,10 @@ namespace CookingAssistant
                                          select shoppingList).FirstOrDefault();
                     if (relatedRecord != null)
                     {
-                        relatedRecord.measurementQuantity += missingItem.measurementQuantity;
+                        if (relatedRecord.MeasurementUnit.type == missingItem.MeasurementUnit.type)
+                        {
+                            relatedRecord.measurementQuantity += (missingItem.measurementQuantity * missingItem.MeasurementUnit.defaultUnit.Value) / relatedRecord.MeasurementUnit.defaultUnit.Value;
+                        }
                     }
                     else
                     {
@@ -124,25 +129,27 @@ namespace CookingAssistant
             var usedIngredients = this.currentlyChosenRecipe.RecipeIngredients;
             foreach (var ingredient in usedIngredients)
             {
-                var relatedSupply = db.Supplies.Find(ingredient);
+                var relatedSupply = db.Supplies.ToList().Find((Supply supply) => supply.ingredientId == ingredient.ingredientId);
                 if (relatedSupply != null)
                 {
-                    relatedSupply.measurementQuantity -= ingredient.measurementQuantity;
+                    relatedSupply.measurementQuantity -= (ingredient.measurementQuantity*ingredient.MeasurementUnit.defaultUnit.Value)/relatedSupply.MeasurementUnit.defaultUnit.Value;
                 }
+                db.SaveChanges();
             }
-            db.SaveChanges();
         }
 
         private void AddToShoppingListButton_Click(object sender, RoutedEventArgs e)
         {
             AddMissingItemsToShoppingList();
             (this.Owner as MainWindow).BindShoppingList();
+            EvaluateMissingItems();
         }
 
         private void PrepareRecipeButton_Click(object sender, RoutedEventArgs e)
         {
             PrepareRecipeAndUpdateSupplies();
             (this.Owner as MainWindow).BindSupplies();
+            EvaluateMissingItems();
         }
     }
 }
