@@ -151,6 +151,7 @@ namespace CookingAssistant
             string windowTitle = "";
             string emptyTextboxMessage = "";
             string amountMessage = "Amount must be a number";
+            double parsedNumber;
             if (buttonType == "update")
             {
                 ingredientName = updateIngredientNameTextBox.Text;
@@ -173,10 +174,18 @@ namespace CookingAssistant
                 isValidationPassed = false;
             }
             // Checks if textbox content is a number
-            else if (!double.TryParse(ingredientAmount, out _))
+            if (!double.TryParse(ingredientAmount, out parsedNumber))
             {
                 GenerateMessageBox(amountMessage, windowTitle);
                 isValidationPassed = false;
+            }
+            else
+            {
+                if (parsedNumber < 0)
+                {
+                    GenerateMessageBox("Amount must be a positive number", windowTitle);
+                    isValidationPassed = false;
+                }
             }
 
             return isValidationPassed;

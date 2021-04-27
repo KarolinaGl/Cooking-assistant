@@ -164,20 +164,30 @@ namespace CookingAssistant
         /// <param name="e"></param>
         public void AddRecipeButton_Click(object sender, RoutedEventArgs e)
         {
+            double parsedNumber;
+            string windowName = "Add new recipe";
             if (addRecipeNameTextBox.Text == "")
             {
-                GenerateMessageBox("Make sure to fill in the recipe name before you add a new recipe", "Add new recipe");
+                GenerateMessageBox("Make sure to fill in the recipe name before you add a new recipe", windowName);
                 return;
             }
             else if (addPreparationTimeTextBox.Text == "")
             {
-                GenerateMessageBox("Make sure to fill in the recipe preparation time before you add a new recipe", "Add new recipe");
+                GenerateMessageBox("Make sure to fill in the recipe preparation time before you add a new recipe", windowName);
                 return;
             }
-            else if (!double.TryParse(addPreparationTimeTextBox.Text, out _))
+            if (!double.TryParse(addPreparationTimeTextBox.Text, out parsedNumber))
             {
-                GenerateMessageBox("Preparation time must be a number of minutes", "Add new recipe");
+                GenerateMessageBox("Preparation time must be a number of minutes", windowName);
                 return;
+            }
+            else
+            {
+                if (parsedNumber < 0)
+                {
+                    GenerateMessageBox("Preparation time be a positive number", windowName);
+                    return;
+                }
             }
 
             Recipe recipeObject = new Recipe()
@@ -216,15 +226,23 @@ namespace CookingAssistant
         /// <returns></returns>
         public static string ValidateText(string ingredientName, string ingredientAmount)
         {
+            double parsedNumber;
             if (ingredientName == "" || ingredientAmount == "")
             {
                 return "Make sure to fill in all of the textboxes before you add an ingredient";
                 
             }
             // Checks if textbox content is a number
-            else if (!double.TryParse(ingredientAmount, out _))
+            if (!double.TryParse(ingredientAmount, out parsedNumber))
             {
                 return "Amount must be a number";
+            }
+            else
+            {
+                if (parsedNumber < 0)
+                {
+                    return "Amount must be a positive number";
+                }
             }
 
             return "";

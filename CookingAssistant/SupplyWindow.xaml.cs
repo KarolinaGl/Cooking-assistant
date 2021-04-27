@@ -146,6 +146,7 @@ namespace CookingAssistant
         public static string[] ValidateText(string buttonType, string ingredientName, string ingredientAmount)
         {
             string[] outputArray = new string[2];
+            double parsedNumber;
 
             if (buttonType == "update")
             {
@@ -163,11 +164,20 @@ namespace CookingAssistant
                 return outputArray;
             }
             // Checks if textbox content is a number
-            else if (!double.TryParse(ingredientAmount, out _))
+            if (!double.TryParse(ingredientAmount, out parsedNumber))
             {
                 outputArray[0] = "Amount must be a number";
                 return outputArray;
             }
+            else
+            {
+                if (parsedNumber < 0)
+                {
+                    outputArray[0] = "Amount must be a positive number";
+                    return outputArray;
+                }
+            }
+            
             outputArray = new string[] { null, null };
             return outputArray;
         }
@@ -213,7 +223,6 @@ namespace CookingAssistant
         {
             if (!ValidateAddUpdateIngredientButton("add"))
             {
-                Console.WriteLine("aaaaaa");
                 return;
             }
 
