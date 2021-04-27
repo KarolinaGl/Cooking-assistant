@@ -208,6 +208,12 @@ namespace CookingAssistant
             );
         }
 
+        /// <summary>
+        /// Validates received addIngredientTextBox and amountTextBox content
+        /// </summary>
+        /// <param name="ingredientName">addIngredientTextBox content</param>
+        /// <param name="ingredientAmount">amountTextBox content</param>
+        /// <returns></returns>
         public static string ValidateText(string ingredientName, string ingredientAmount)
         {
             if (ingredientName == "" || ingredientAmount == "")
@@ -229,21 +235,17 @@ namespace CookingAssistant
         /// </summary>
         /// <param name="buttonType">Name of the performed CRUD operation</param>
         /// <returns></returns>
-        private bool ValidateAddIngredientButton(string buttonType)
+        public bool ValidateAddIngredientButton(string buttonType)
         {
-            bool isValidationPassed = true;
             string ingredientName = "";
             string ingredientAmount = "";
             string windowTitle = "";
-            string emptyTextboxMessage = "";
-            string amountMessage = "Amount must be a number";
 
             if (buttonType == "add")
             {
                 ingredientName = addIngredientTextBox.Text;
                 ingredientAmount = amountTextBox.Text;
                 windowTitle = "Add ingredient";
-                emptyTextboxMessage = "Make sure to fill in all of the textboxes before you add an ingredient";
             }
 
             string errorMessage = ValidateText(ingredientName, ingredientAmount);
@@ -254,22 +256,6 @@ namespace CookingAssistant
             }
 
             return true;
-
-            /*
-            // Checks if texbox content is empty
-            if (ingredientName == "" || ingredientAmount == "")
-            {
-                GenerateMessageBox(emptyTextboxMessage, windowTitle);
-                isValidationPassed = false;
-            }
-            // Checks if textbox content is a number
-            else if (!double.TryParse(ingredientAmount, out _))
-            {
-                GenerateMessageBox(amountMessage, windowTitle);
-                isValidationPassed = false;
-            }
-
-            return isValidationPassed;*/
         }
 
         /// <summary>
@@ -277,7 +263,7 @@ namespace CookingAssistant
         /// </summary>
         /// <param name="operationType">Name of the performed CRUD operation</param>
         /// <returns></returns>
-        private Ingredient GetOrCreateIngredient(string operationType)
+        public Ingredient GetOrCreateIngredient(string operationType)
         {
             string ingredientName = "";
             if (operationType == "add")
@@ -314,7 +300,7 @@ namespace CookingAssistant
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void AddIngredientButton_Click(object sender, RoutedEventArgs e)
+        public void AddIngredientButton_Click(object sender, RoutedEventArgs e)
         {
             if (selectedRecipeId != 0)
             {
@@ -354,7 +340,7 @@ namespace CookingAssistant
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void MeasurementComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        public void MeasurementComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (this.measurementComboBox.SelectedItem != null)
             {
@@ -367,7 +353,7 @@ namespace CookingAssistant
         /// </summary>
         /// <param name="measurementType">Selected measurement type</param>
         /// <param name="comboBox">Specifies the CRUD operation ComboBox type</param>
-        private void RadioButtonChecked(string measurementType, string comboBox)
+        public void RadioButtonChecked(string measurementType, string comboBox)
         {
             var units = from unit in db.MeasurementUnits
                         where unit.type == measurementType
@@ -399,7 +385,7 @@ namespace CookingAssistant
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void VolumeRadioButton_Checked(object sender, RoutedEventArgs e)
+        public void VolumeRadioButton_Checked(object sender, RoutedEventArgs e)
         {
             RadioButtonChecked("volume", "measurementComboBox");
         }
@@ -409,7 +395,7 @@ namespace CookingAssistant
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void MassRadioButton_Checked(object sender, RoutedEventArgs e)
+        public void MassRadioButton_Checked(object sender, RoutedEventArgs e)
         {
             RadioButtonChecked("mass", "measurementComboBox");
         }
@@ -419,7 +405,7 @@ namespace CookingAssistant
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void QuantityRadioButton_Checked(object sender, RoutedEventArgs e)
+        public void QuantityRadioButton_Checked(object sender, RoutedEventArgs e)
         {
             RadioButtonChecked("quantity", "measurementComboBox");
         }
@@ -429,7 +415,7 @@ namespace CookingAssistant
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void deleteRecipeButton_Click(object sender, RoutedEventArgs e)
+        public void deleteRecipeButton_Click(object sender, RoutedEventArgs e)
         {
             if (selectedRecipeId != 0)
             {
@@ -473,11 +459,11 @@ namespace CookingAssistant
         }
 
         /// <summary>
-        /// Deletes user-specified ingredient from the database RecipeINgredients table
+        /// Deletes user-specified ingredient from the database RecipeIngredients table
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void deleteIngredientButton_Click(object sender, RoutedEventArgs e)
+        public void deleteIngredientButton_Click(object sender, RoutedEventArgs e)
         {
             if (selectedRecipeIngredientId != 0)
             {
