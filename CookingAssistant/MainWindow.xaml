@@ -10,24 +10,24 @@
         Height="720"
         MinWidth="1280"
         MinHeight="720"
-        ResizeMode="CanResize"
+        ResizeMode="NoResize"
         SizeToContent="Manual"
         WindowStyle="SingleBorderWindow">
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="1*"/>
-            <ColumnDefinition Width="3*"/>
+            <ColumnDefinition Width="1.5*"/>
+            <ColumnDefinition Width="2*"/>
             <ColumnDefinition Width="2*"/>
         </Grid.ColumnDefinitions>
         <DockPanel Grid.Column="0" VerticalAlignment="Stretch" Margin="10" LastChildFill="False">
             <Label Content="Recipes:" HorizontalAlignment="Center" DockPanel.Dock="Top"/>
-            <DataGrid Name="recipesDataGrid" ColumnWidth="*" DockPanel.Dock="Top" IsReadOnly="True" SelectionMode="Single" SelectionUnit="Cell" CurrentCellChanged="recipesGrid_CurrentCellChanged" AreRowDetailsFrozen="True" GridLinesVisibility="None" HeadersVisibility="None" AutoGeneratingColumn="recipesDataGrid_AutoGeneratingColumn"/>
+            <DataGrid Name="recipesDataGrid" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" ColumnWidth="*" DockPanel.Dock="Top" IsReadOnly="True" SelectionMode="Single" SelectionUnit="Cell" CurrentCellChanged="recipesGrid_CurrentCellChanged" AreRowDetailsFrozen="True" GridLinesVisibility="None" HeadersVisibility="None" AutoGeneratingColumn="recipesDataGrid_AutoGeneratingColumn" MaxHeight="140"/>
             <Button Name="recipeCRUDWindowButton" Margin="0,10,0,10" Content="Manage Recipes" DockPanel.Dock="Top" Width="Auto" Height="30" Click="RecipeCRUDWindowButton_Click"/>
             <Label Content="Shopping List:" HorizontalAlignment="Center" DockPanel.Dock="Top"/>
-            <DataGrid Name="shoppingListDataGrid" ColumnWidth="*" DockPanel.Dock="Top" IsReadOnly="True" SelectionMode="Single" SelectionUnit="FullRow" AreRowDetailsFrozen="True" GridLinesVisibility="None" HeadersVisibility="None"/>
+            <DataGrid Name="shoppingListDataGrid" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" ColumnWidth="*" DockPanel.Dock="Top" IsReadOnly="True" SelectionMode="Single" SelectionUnit="FullRow" AreRowDetailsFrozen="True" GridLinesVisibility="None" HeadersVisibility="None" MaxHeight="140"/>
             <Button Name="shoppingListButton" Margin="0,10,0,10" Content="Edit Shopping List" DockPanel.Dock="Top" Width="Auto" Height="30" Click="ShoppingListButton_Click"/>
             <Label Content="Supplies:" HorizontalAlignment="Center" DockPanel.Dock="Top"/>
-            <DataGrid Name="suppliesDataGrid" ColumnWidth="*" DockPanel.Dock="Top" IsReadOnly="True" SelectionMode="Single" SelectionUnit="FullRow" AreRowDetailsFrozen="True" GridLinesVisibility="None" HeadersVisibility="None"/>
+            <DataGrid Name="suppliesDataGrid" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" ColumnWidth="*" DockPanel.Dock="Top" IsReadOnly="True" SelectionMode="Single" SelectionUnit="FullRow" AreRowDetailsFrozen="True" GridLinesVisibility="None" HeadersVisibility="None" MaxHeight="140"/>
             <Button Name="suppliesButton" Margin="0,10,0,10" Content="Manage Supplies" DockPanel.Dock="Top" Width="Auto" Height="30" Click="SuppliesButton_Click"/>
         </DockPanel>
         <TextBlock Grid.Column="1" Name="startupComment" Text="Select one of the recipes on the left to start" HorizontalAlignment="Center" VerticalAlignment="Center"/>
