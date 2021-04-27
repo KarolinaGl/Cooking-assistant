@@ -52,6 +52,7 @@ namespace CookingAssistant
                             missingQuantity = Math.Abs(balance);
                         }
                         missingQuantity = missingQuantity / relatedSupply.MeasurementUnit.defaultUnit.Value;
+                        missingQuantity = Math.Round(missingQuantity, 2);
                     }
                 }
                 else
@@ -76,7 +77,9 @@ namespace CookingAssistant
             {
                 missingItemsComment.Text = "You're not able to prepare this meal, because you're missing some of the needed ingredients.";
                 missingItemsComment.Visibility = Visibility.Visible;
+                missingItemsDataGrid.Visibility = Visibility.Visible;
                 addToShoppingListButton.IsEnabled = true;
+                prepareRecipeButton.IsEnabled = false;
                 var missingItemsToDisplay = from item in this.currentlyMissingItems
                                             select new
                                             {
@@ -89,7 +92,9 @@ namespace CookingAssistant
             else
             {
                 missingItemsDataGrid.Visibility = Visibility.Collapsed;
+                missingItemsComment.Visibility = Visibility.Collapsed;
                 prepareRecipeButton.IsEnabled = true;
+                addToShoppingListButton.IsEnabled = false;
             }
         }
 
@@ -104,9 +109,13 @@ namespace CookingAssistant
                                          select shoppingList).FirstOrDefault();
                     if (relatedRecord != null)
                     {
-                        if (relatedRecord.MeasurementUnit.type == missingItem.MeasurementUnit.type)
+                        if (relatedRecord.MeasurementUnit != null)
                         {
-                            relatedRecord.measurementQuantity += (missingItem.measurementQuantity * missingItem.MeasurementUnit.defaultUnit.Value) / relatedRecord.MeasurementUnit.defaultUnit.Value;
+                            if (relatedRecord.MeasurementUnit.type == missingItem.MeasurementUnit.type)
+                            {
+                                relatedRecord.measurementQuantity += (missingItem.measurementQuantity * missingItem.MeasurementUnit.defaultUnit.Value) / relatedRecord.MeasurementUnit.defaultUnit.Value;
+                                relatedRecord.measurementQuantity = Math.Round(relatedRecord.measurementQuantity, 2);
+                            }
                         }
                     }
                     else
@@ -115,7 +124,7 @@ namespace CookingAssistant
                         {
                             ingredientId = missingItem.ingredientId,
                             measurementId = missingItem.measurementId,
-                            measurementQuantity = missingItem.measurementQuantity,
+                            measurementQuantity = missingItem.measurementQuantity
                         };
                         db.ShoppingLists.Add(item);
                     }
@@ -132,7 +141,16 @@ namespace CookingAssistant
                 var relatedSupply = db.Supplies.ToList().Find((Supply supply) => supply.ingredientId == ingredient.ingredientId);
                 if (relatedSupply != null)
                 {
-                    relatedSupply.measurementQuantity -= (ingredient.measurementQuantity*ingredient.MeasurementUnit.defaultUnit.Value)/relatedSupply.MeasurementUnit.defaultUnit.Value;
+                    if (relatedSupply.MeasurementUnit.type == ingredient.MeasurementUnit.type)
+                    {
+                        relatedSupply.measurementQuantity -= (ingredient.measurementQuantity * ingredient.MeasurementUnit.defaultUnit.Value) / relatedSupply.MeasurementUnit.defaultUnit.Value;
+                        relatedSupply.measurementQuantity = Math.Round(relatedSupply.measurementQuantity, 2);
+                        if (relatedSupply.measurementQuantity <= 0)
+                        {
+                            db.Supplies.Remove(relatedSupply);
+                            db.SaveChanges();
+                        }
+                    }
                 }
                 db.SaveChanges();
             }

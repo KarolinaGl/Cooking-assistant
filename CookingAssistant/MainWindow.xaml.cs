@@ -43,7 +43,6 @@ namespace CookingAssistant
 
         public void BindRecipes()
         {
-            //recipesDataGrid.ItemsSource = db.Recipes.Select((Recipe r) => new RecipeGridCell() { RecipeName = r.recipeName}).ToArray();
             recipesDataGrid.ItemsSource = db.Recipes.ToArray();
         }
 
@@ -64,11 +63,19 @@ namespace CookingAssistant
             var supplies = from supply in db.Supplies
                            select new
                            {
-                               supply.Ingredient.ingredientName,
                                supply.measurementQuantity,
-                               supply.MeasurementUnit.measurementDescription
+                               supply.MeasurementUnit.measurementDescription,
+                               supply.Ingredient.ingredientName
                            };
             suppliesDataGrid.ItemsSource = supplies.ToArray();
+            if (this.currentRecipePrepareWindow != null && this.currentlyChosenRecipe != null)
+            {
+                this.currentRecipePrepareWindow = new RecipePrepareWindow(this.currentlyChosenRecipe)
+                {
+                    Owner = this
+                };
+                recipePrepareFrame.Content = this.currentRecipePrepareWindow.Content;
+            }
         }
 
 
