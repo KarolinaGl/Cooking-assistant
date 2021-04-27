@@ -138,47 +138,70 @@ namespace CookingAssistant
         }
 
         /// <summary>
+        /// Validates received addIngredientTextBox and amountTextBox content
+        /// </summary>
+        /// <param name="ingredientName">addIngredientTextBox content</param>
+        /// <param name="ingredientAmount">amountTextBox content</param>
+        /// <returns></returns>
+        public static string[] ValidateText(string buttonType, string ingredientName, string ingredientAmount)
+        {
+            string[] outputArray = new string[2];
+
+            if (buttonType == "update")
+            {
+                outputArray[1] = "Update ingredient";
+                outputArray[0] = "Make sure to fill in all of the textboxes before you update an ingredient";
+            }
+            else if (buttonType == "add")
+            {
+                outputArray[1] = "Add ingredient";
+                outputArray[0] = "Make sure to fill in all of the textboxes before you add an ingredient";
+            }
+
+            if (ingredientName == "" || ingredientAmount == "")
+            {
+                return outputArray;
+            }
+            // Checks if textbox content is a number
+            else if (!double.TryParse(ingredientAmount, out _))
+            {
+                outputArray[0] = "Amount must be a number";
+                return outputArray;
+            }
+            outputArray = new string[] { null, null };
+            return outputArray;
+        }
+
+        /// <summary>
         /// Validates textbox content 
         /// </summary>
         /// <param name="buttonType">Name of the performed CRUD operation</param>
-        /// <returns></returns>
+        /// <returns>True if textbox input was validated</returns>
         private bool ValidateAddUpdateIngredientButton(string buttonType)
         {
-            bool isValidationPassed = true;
             string ingredientName = "";
             string ingredientAmount = "";
-            string windowTitle = "";
-            string emptyTextboxMessage = "";
-            string amountMessage = "Amount must be a number";
+
             if (buttonType == "update")
             {
                 ingredientName = updateIngredientNameTextBox.Text;
                 ingredientAmount = updateAmountTextBox.Text;
-                windowTitle = "Update ingredient";
-                emptyTextboxMessage = "Make sure to fill in all of the textboxes before you update an ingredient";
             }
             else if (buttonType == "add")
             {
                 ingredientName = addIngredientTextBox.Text;
                 ingredientAmount = amountTextBox.Text;
-                windowTitle = "Add ingredient";
-                emptyTextboxMessage = "Make sure to fill in all of the textboxes before you add an ingredient";
             }
 
-            // Checks if texbox content is empty
-            if (ingredientName == "" || ingredientAmount == "")
+            string[] output = ValidateText(buttonType, ingredientName, ingredientAmount);
+
+            if (output[0] == null || output[1] == null)
             {
-                GenerateMessageBox(emptyTextboxMessage, windowTitle);
-                isValidationPassed = false;
-            }
-            // Checks if textbox content is a number
-            else if (!double.TryParse(ingredientAmount, out _))
-            {
-                GenerateMessageBox(amountMessage, windowTitle);
-                isValidationPassed = false;
+                GenerateMessageBox(output[0], output[1]);
+                return false;
             }
 
-            return isValidationPassed;
+            return true;
         }
 
         /// <summary>

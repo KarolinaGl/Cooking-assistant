@@ -14,11 +14,17 @@ namespace CookingAssistant.Tests
     {
         [Theory]
         [InlineData("","", "Make sure to fill in all of the textboxes before you add an ingredient")]
+        [InlineData("test","", "Make sure to fill in all of the textboxes before you add an ingredient")]
+        [InlineData("", "test", "Make sure to fill in all of the textboxes before you add an ingredient")]
+        [InlineData("", "123", "Make sure to fill in all of the textboxes before you add an ingredient")]
+        [InlineData("test", "test", "Amount must be a number")]
+        [InlineData("test", "123", "")]
+        [InlineData("test", "123.4", "")]
         public void ValidateText_Test(string ingredientName, string ingredientAmount, string errorMessage)
         {
-            string error = RecipeCRUDWindow.ValidateText(ingredientName, ingredientAmount);
+            string validationOutput = RecipeCRUDWindow.ValidateText(ingredientName, ingredientAmount);
 
-            Assert.Equal(errorMessage, error);
+            Assert.Equal(errorMessage, validationOutput);
         }
     }
 }

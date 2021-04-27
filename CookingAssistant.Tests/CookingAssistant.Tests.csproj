@@ -63,6 +63,7 @@
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RecipeCRUDWindowTests.cs" />
+    <Compile Include="SupplyWindowTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
