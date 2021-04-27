@@ -44,10 +44,14 @@ namespace CookingAssistant
                 double missingQuantity = 0;
                 if (relatedSupply != null)
                 {
-                    var balance = relatedSupply.measurementQuantity - recipeIngredient.measurementQuantity;
-                    if (balance < 0)
+                    if (relatedSupply.MeasurementUnit.type == recipeIngredient.MeasurementUnit.type)
                     {
-                        missingQuantity = Math.Abs(balance);
+                        double balance = relatedSupply.measurementQuantity * relatedSupply.MeasurementUnit.defaultUnit.Value - recipeIngredient.measurementQuantity * recipeIngredient.MeasurementUnit.defaultUnit.Value;
+                        if (balance < 0)
+                        {
+                            missingQuantity = Math.Abs(balance);
+                        }
+                        missingQuantity = missingQuantity / relatedSupply.MeasurementUnit.defaultUnit.Value;
                     }
                 }
                 else
@@ -67,7 +71,6 @@ namespace CookingAssistant
                     missingItems.Add(missingItem);
                 }
             }
-
             this.currentlyMissingItems = missingItems;
             if (this.currentlyMissingItems.Count > 0)
             {
@@ -101,7 +104,10 @@ namespace CookingAssistant
                                          select shoppingList).FirstOrDefault();
                     if (relatedRecord != null)
                     {
-                        relatedRecord.measurementQuantity += missingItem.measurementQuantity;
+                        if (relatedRecord.MeasurementUnit.type == missingItem.MeasurementUnit.type)
+                        {
+                            relatedRecord.measurementQuantity += (missingItem.measurementQuantity * missingItem.MeasurementUnit.defaultUnit.Value) / relatedRecord.MeasurementUnit.defaultUnit.Value;
+                        }
                     }
                     else
                     {
@@ -126,7 +132,7 @@ namespace CookingAssistant
                 var relatedSupply = db.Supplies.ToList().Find((Supply supply) => supply.ingredientId == ingredient.ingredientId);
                 if (relatedSupply != null)
                 {
-                    relatedSupply.measurementQuantity -= ingredient.measurementQuantity;
+                    relatedSupply.measurementQuantity -= (ingredient.measurementQuantity*ingredient.MeasurementUnit.defaultUnit.Value)/relatedSupply.MeasurementUnit.defaultUnit.Value;
                 }
                 db.SaveChanges();
             }
