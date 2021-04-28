@@ -23,7 +23,7 @@
             </ListView>
         </DockPanel>
         <Label Content="Recommended videos:" HorizontalAlignment="Center" DockPanel.Dock="Top"/>
-        <ListView Name="displayVideoList" HorizontalContentAlignment="Stretch" ScrollViewer.CanContentScroll="False" DockPanel.Dock="Top">
+        <ListView Name="displayVideoList" HorizontalContentAlignment="Stretch" ScrollViewer.CanContentScroll="False" DockPanel.Dock="Top" FontSize="14">
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <UniformGrid MaxWidth="370">
