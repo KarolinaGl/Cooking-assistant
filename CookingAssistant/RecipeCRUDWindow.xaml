@@ -6,21 +6,21 @@
         xmlns:local="clr-namespace:CookingAssistant"
         mc:Ignorable="d"
         WindowStartupLocation="CenterOwner"
-        Title="Manage recipes" Height="697" Width="1244" Closing="RecipeCRUDWindow_Closing" ResizeMode="NoResize">
+        Title="Manage recipes" Height="776" Width="1280" Closing="RecipeCRUDWindow_Closing" ResizeMode="NoResize">
     <Grid>
-        <DataGrid x:Name="ingredientsDataGrid" HorizontalAlignment="Left" Height="172" Margin="634,35,0,0" VerticalAlignment="Top" Width="592" AreRowDetailsFrozen="True" GridLinesVisibility="None" HeadersVisibility="None" SelectionChanged="ingredientsDataGrid_SelectionChanged" AutoGeneratingColumn="ingredientsDataGrid_AutoGeneratingColumn" FontSize="14"/>
-        <Label x:Name="recipeNameLabel" Content="Label" HorizontalAlignment="Left" Margin="635,4,0,0" VerticalAlignment="Top" FontSize="14"/>
-        <Label x:Name="preparationTimeLabel" Content="Label" HorizontalAlignment="Left" Margin="851,4,0,0" VerticalAlignment="Top" FontSize="14"/>
-        <TextBlock x:Name="descriptionTextBlock" HorizontalAlignment="Left" Margin="635,212,0,0" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Top" Width="575" Height="439" FontSize="14"/>
-        <Label Content="Choose your recipe:" HorizontalAlignment="Left" Margin="10,262,0,0" VerticalAlignment="Top" FontSize="14"/>
-        <DataGrid x:Name="recipesDataGrid" HorizontalAlignment="Left" Height="107" Margin="10,290,0,0" VerticalAlignment="Top" Width="150" AreRowDetailsFrozen="True" GridLinesVisibility="None" HeadersVisibility="None" SelectionChanged="RecipesDataGrid_SelectionChanged" AutoGeneratingColumn="RecipesDataGrid_AutoGeneratingColumn" IsReadOnly="True" FontSize="14"/>
-        <Label Content="Add a new recipe:" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" FontSize="14"/>
+        <DataGrid x:Name="ingredientsDataGrid" HorizontalAlignment="Left" Height="205" Margin="634,35,0,0" VerticalAlignment="Top" Width="486" AreRowDetailsFrozen="True" GridLinesVisibility="None" HeadersVisibility="None" SelectionChanged="ingredientsDataGrid_SelectionChanged" AutoGeneratingColumn="ingredientsDataGrid_AutoGeneratingColumn" FontSize="14"/>
+        <Label x:Name="recipeNameLabel" Content="Label" HorizontalAlignment="Left" Margin="634,4,0,0" VerticalAlignment="Top" FontSize="14" FontWeight="Bold"/>
+        <Label x:Name="preparationTimeLabel" Content="Label" HorizontalAlignment="Left" Margin="851,4,0,0" VerticalAlignment="Top" FontSize="14" FontWeight="Bold"/>
+        <TextBox x:Name="descriptionTextBlock" IsReadOnly="True" ScrollViewer.VerticalScrollBarVisibility="Auto" HorizontalAlignment="Left" Margin="635,262,0,0" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Top" Width="591" Height="389" FontSize="14" BorderThickness="0"/>
+        <Label Content="Choose your recipe:" HorizontalAlignment="Left" Margin="18,262,0,0" VerticalAlignment="Top" FontSize="14" FontWeight="Bold"/>
+        <DataGrid x:Name="recipesDataGrid" HorizontalAlignment="Left" Height="156" Margin="18,296,0,0" VerticalAlignment="Top" Width="150" AreRowDetailsFrozen="True" GridLinesVisibility="None" HeadersVisibility="None" SelectionChanged="RecipesDataGrid_SelectionChanged" AutoGeneratingColumn="RecipesDataGrid_AutoGeneratingColumn" IsReadOnly="True" FontSize="14"/>
+        <Label Content="Add a new recipe:" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" FontSize="14" FontWeight="Bold"/>
         <Label Content="Recipe name:" HorizontalAlignment="Left" Margin="10,41,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.481,1.731" FontSize="14"/>
         <Label Content="Preparation time in minutes:" HorizontalAlignment="Left" Margin="10,72,0,0" VerticalAlignment="Top" FontSize="14"/>
         <Label Content="Description:" HorizontalAlignment="Left" Margin="10,103,0,0" VerticalAlignment="Top" FontSize="14"/>
         <TextBox x:Name="addRecipeNameTextBox" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" Margin="199,50,0,0" FontSize="14" />
         <TextBox x:Name="addPreparationTimeTextBox" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" Margin="199,78,0,0" FontSize="14"/>
-        <TextBox x:Name="addDescriptionTextBox" HorizontalAlignment="Left" Height="134" TextWrapping="Wrap" VerticalAlignment="Top" Width="420" Margin="200,108,0,0" RenderTransformOrigin="0.5,0.5" FontSize="14">
+        <TextBox x:Name="addDescriptionTextBox" HorizontalAlignment="Left" Height="87" TextWrapping="Wrap" VerticalAlignment="Top" Width="420" Margin="200,108,0,0" RenderTransformOrigin="0.5,0.5" FontSize="14">
             <TextBox.RenderTransform>
                 <TransformGroup>
                     <ScaleTransform/>
@@ -30,19 +30,19 @@
                 </TransformGroup>
             </TextBox.RenderTransform>
         </TextBox>
-        <Button x:Name="addRecipeButton" Content="Add recipe" HorizontalAlignment="Left" Margin="185,247,0,0" VerticalAlignment="Top" Width="190" Click="AddRecipeButton_Click" FontSize="14" Height="44"/>
-        <Label Content="Add a new ingredient to your chosen recipe:&#xD;&#xA;" HorizontalAlignment="Left" Margin="10,402,0,0" VerticalAlignment="Top" Width="309" Height="28" FontSize="14"/>
-        <Label Content="Product name:" HorizontalAlignment="Left" Margin="16,561,0,0" VerticalAlignment="Top" RenderTransformOrigin="2.026,-3.962" FontSize="14"/>
-        <TextBox x:Name="addIngredientTextBox" HorizontalAlignment="Left" Height="23" Margin="140,565,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120" FontSize="14"/>
-        <Button x:Name="addIngredientButton" Content="Add ingredient" HorizontalAlignment="Left" Margin="18,605,0,0" VerticalAlignment="Top" Width="120" Click="AddIngredientButton_Click" FontSize="14" Height="46"/>
-        <RadioButton x:Name="volumeRadioButton" GroupName="addIngredient" Content="volume" HorizontalAlignment="Left" Margin="18,465,0,0" VerticalAlignment="Top" Checked="VolumeRadioButton_Checked" FontSize="14"/>
-        <RadioButton x:Name="massRadioButton" GroupName="addIngredient" Content="mass" HorizontalAlignment="Left" Margin="18,500,0,0" VerticalAlignment="Top" Checked="MassRadioButton_Checked" FontSize="14"/>
-        <RadioButton x:Name="quantityRadioButton" GroupName="addIngredient" Content="quantity" HorizontalAlignment="Left" Margin="18,535,0,0" VerticalAlignment="Top" Checked="QuantityRadioButton_Checked" FontSize="14"/>
-        <ComboBox x:Name="measurementComboBox" HorizontalAlignment="Left" VerticalAlignment="Top" Width="120" Margin="140,500,0,0" SelectionChanged="MeasurementComboBox_SelectionChanged" FontSize="14" />
-        <Label Content="Amount:" HorizontalAlignment="Left" Margin="16,431,0,0" VerticalAlignment="Top" RenderTransformOrigin="2.026,-3.962" FontSize="14"/>
-        <TextBox x:Name="amountTextBox" HorizontalAlignment="Left" Height="23" Margin="140,435,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120" FontSize="14"/>
-        <Button x:Name="deleteRecipeButton" Content="Delete recipe" HorizontalAlignment="Left" Margin="185,350,0,0" VerticalAlignment="Top" Width="190" Click="deleteRecipeButton_Click" FontSize="14" Height="50"/>
-        <Button x:Name="deleteIngredientButton" Content="Delete ingredient" HorizontalAlignment="Left" Margin="150,605,0,0" VerticalAlignment="Top" Width="120" Click="deleteIngredientButton_Click" FontSize="14" Height="46"/>
+        <Button x:Name="addRecipeButton" Content="Add recipe" HorizontalAlignment="Left" Margin="199,213,0,0" VerticalAlignment="Top" Width="190" Click="AddRecipeButton_Click" FontSize="14" Height="44"/>
+        <Label Content="Add a new ingredient to your chosen recipe:&#xD;&#xA;" HorizontalAlignment="Left" Margin="10,457,0,0" VerticalAlignment="Top" Width="309" Height="28" FontSize="14" FontWeight="Bold"/>
+        <Label Content="Ingredient name:" HorizontalAlignment="Left" Margin="16,616,0,0" VerticalAlignment="Top" RenderTransformOrigin="2.026,-3.962" FontSize="14"/>
+        <TextBox x:Name="addIngredientTextBox" HorizontalAlignment="Left" Height="23" Margin="140,620,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120" FontSize="14"/>
+        <Button x:Name="addIngredientButton" Content="Add ingredient" HorizontalAlignment="Left" Margin="199,680,0,0" VerticalAlignment="Top" Width="190" Click="AddIngredientButton_Click" FontSize="14" Height="44"/>
+        <RadioButton x:Name="volumeRadioButton" GroupName="addIngredient" Content="volume" HorizontalAlignment="Left" Margin="18,520,0,0" VerticalAlignment="Top" Checked="VolumeRadioButton_Checked" FontSize="14"/>
+        <RadioButton x:Name="massRadioButton" GroupName="addIngredient" Content="mass" HorizontalAlignment="Left" Margin="18,555,0,0" VerticalAlignment="Top" Checked="MassRadioButton_Checked" FontSize="14"/>
+        <RadioButton x:Name="quantityRadioButton" GroupName="addIngredient" Content="quantity" HorizontalAlignment="Left" Margin="18,590,0,0" VerticalAlignment="Top" Checked="QuantityRadioButton_Checked" FontSize="14"/>
+        <ComboBox x:Name="measurementComboBox" HorizontalAlignment="Left" VerticalAlignment="Top" Width="120" Margin="140,555,0,0" SelectionChanged="MeasurementComboBox_SelectionChanged" FontSize="14" />
+        <Label Content="Amount:" HorizontalAlignment="Left" Margin="16,486,0,0" VerticalAlignment="Top" RenderTransformOrigin="2.026,-3.962" FontSize="14"/>
+        <TextBox x:Name="amountTextBox" HorizontalAlignment="Left" Height="23" Margin="140,490,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120" FontSize="14"/>
+        <Button x:Name="deleteRecipeButton" Content="Delete recipe" HorizontalAlignment="Left" Margin="430,213,0,0" VerticalAlignment="Top" Width="190" Click="deleteRecipeButton_Click" FontSize="14" Height="44"/>
+        <Button x:Name="deleteIngredientButton" Content="Delete ingredient" HorizontalAlignment="Left" Margin="430,680,0,0" VerticalAlignment="Top" Width="190" Click="deleteIngredientButton_Click" FontSize="14" Height="44"/>
 
     </Grid>
 </Window>

@@ -164,7 +164,7 @@ namespace CookingAssistant
                 return outputArray;
             }
             // Checks if textbox content is a number
-            if (!double.TryParse(ingredientAmount, out parsedNumber))
+            else if (!double.TryParse(ingredientAmount, out parsedNumber))
             {
                 outputArray[0] = "Amount must be a number";
                 return outputArray;
