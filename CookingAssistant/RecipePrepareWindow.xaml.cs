@@ -128,14 +128,11 @@ namespace CookingAssistant
                                          select shoppingList).FirstOrDefault();
                     if (relatedRecord != null)
                     {
-                        if (relatedRecord.MeasurementUnit != null)
-                        {
-                            if (relatedRecord.MeasurementUnit.type == missingItem.MeasurementUnit.type)
-                            {
-                                relatedRecord.measurementQuantity += (missingItem.measurementQuantity * missingItem.MeasurementUnit.defaultUnit.Value) / relatedRecord.MeasurementUnit.defaultUnit.Value;
-                                relatedRecord.measurementQuantity = Math.Round(relatedRecord.measurementQuantity, 2);
-                            }
-                        }
+                        var relatedRecordMeasurementUnit = (from measurementUnit in db.MeasurementUnits
+                                                            where measurementUnit.measurementId == missingItem.measurementId
+                                                            select measurementUnit).FirstOrDefault();
+                        relatedRecord.measurementQuantity += (missingItem.measurementQuantity * missingItem.MeasurementUnit.defaultUnit.Value) / relatedRecordMeasurementUnit.defaultUnit.Value;
+                        relatedRecord.measurementQuantity = Math.Round(relatedRecord.measurementQuantity, 2);
                     }
                     else
                     {
@@ -146,6 +143,7 @@ namespace CookingAssistant
                             measurementQuantity = missingItem.measurementQuantity
                         };
                         db.ShoppingLists.Add(item);
+                        db.SaveChanges();
                     }
                     db.SaveChanges();
                 }
