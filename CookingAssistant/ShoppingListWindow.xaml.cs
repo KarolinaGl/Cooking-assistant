@@ -337,12 +337,15 @@ namespace CookingAssistant
             {
                 case "measurementQuantity":
                     e.Column.Visibility = Visibility.Visible;
+                    e.Column.Header = "Quantity";
                     break;
                 case "measurementDescription":
                     e.Column.Visibility = Visibility.Visible;
+                    e.Column.Header = "Measurement unit";
                     break;
                 case "ingredientName":
                     e.Column.Visibility = Visibility.Visible;
+                    e.Column.Header = "Ingredient";
                     break;
                 default:
                     e.Column.Visibility = Visibility.Hidden;
