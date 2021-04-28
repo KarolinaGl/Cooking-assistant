@@ -230,10 +230,9 @@ namespace CookingAssistant
             if (ingredientName == "" || ingredientAmount == "")
             {
                 return "Make sure to fill in all of the textboxes before you add an ingredient";
-                
             }
             // Checks if textbox content is a number
-            if (!double.TryParse(ingredientAmount, out parsedNumber))
+            else if (!double.TryParse(ingredientAmount, out parsedNumber))
             {
                 return "Amount must be a number";
             }

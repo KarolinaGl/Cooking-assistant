@@ -174,7 +174,7 @@ namespace CookingAssistant
                 isValidationPassed = false;
             }
             // Checks if textbox content is a number
-            if (!double.TryParse(ingredientAmount, out parsedNumber))
+            else if (!double.TryParse(ingredientAmount, out parsedNumber))
             {
                 GenerateMessageBox(amountMessage, windowTitle);
                 isValidationPassed = false;

@@ -20,13 +20,13 @@
             <ColumnDefinition Width="2*"/>
         </Grid.ColumnDefinitions>
         <DockPanel Grid.Column="0" VerticalAlignment="Stretch" Margin="10" LastChildFill="False">
-            <Label Content="Recipes:" HorizontalAlignment="Center" DockPanel.Dock="Top" FontSize="14"/>
+            <Label Content="Recipes:" HorizontalAlignment="Center" DockPanel.Dock="Top" FontSize="14" FontWeight="Bold"/>
             <DataGrid Name="recipesDataGrid" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" ColumnWidth="*" DockPanel.Dock="Top" IsReadOnly="True" SelectionMode="Single" SelectionUnit="Cell" CurrentCellChanged="recipesGrid_CurrentCellChanged" AreRowDetailsFrozen="True" GridLinesVisibility="None" HeadersVisibility="None" AutoGeneratingColumn="recipesDataGrid_AutoGeneratingColumn" MaxHeight="140" FontSize="14"/>
             <Button Name="recipeCRUDWindowButton" Margin="0,10,0,10" Content="Manage Recipes" DockPanel.Dock="Top" Width="Auto" Height="30" Click="RecipeCRUDWindowButton_Click" FontSize="14"/>
-            <Label Content="Shopping List:" HorizontalAlignment="Center" DockPanel.Dock="Top" FontSize="14"/>
+            <Label Content="Shopping List:" HorizontalAlignment="Center" DockPanel.Dock="Top" FontSize="14" FontWeight="Bold"/>
             <DataGrid Name="shoppingListDataGrid" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" ColumnWidth="*" DockPanel.Dock="Top" IsReadOnly="True" SelectionMode="Single" SelectionUnit="FullRow" AreRowDetailsFrozen="True" GridLinesVisibility="None" HeadersVisibility="None" MaxHeight="140" FontSize="14"/>
             <Button Name="shoppingListButton" Margin="0,10,0,10" Content="Edit Shopping List" DockPanel.Dock="Top" Width="Auto" Height="30" Click="ShoppingListButton_Click" FontSize="14"/>
-            <Label Content="Supplies:" HorizontalAlignment="Center" DockPanel.Dock="Top" FontSize="14"/>
+            <Label Content="Supplies:" HorizontalAlignment="Center" DockPanel.Dock="Top" FontSize="14" FontWeight="Bold"/>
             <DataGrid Name="suppliesDataGrid" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" ColumnWidth="*" DockPanel.Dock="Top" IsReadOnly="True" SelectionMode="Single" SelectionUnit="FullRow" AreRowDetailsFrozen="True" GridLinesVisibility="None" HeadersVisibility="None" MaxHeight="140" FontSize="14"/>
             <Button Name="suppliesButton" Margin="0,10,0,10" Content="Manage Supplies" DockPanel.Dock="Top" Width="Auto" Height="30" Click="SuppliesButton_Click" FontSize="14"/>
         </DockPanel>
