@@ -10,8 +10,8 @@
         <TextBlock DockPanel.Dock="Top" Name="missingItemsComment" Visibility="Collapsed" TextWrapping="Wrap" HorizontalAlignment="Center"/>
         <DataGrid DockPanel.Dock="Top" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" ColumnWidth="*" Name="missingItemsDataGrid" HorizontalAlignment="Stretch" Height="Auto" Width="Auto" AreRowDetailsFrozen="True" GridLinesVisibility="None" HeadersVisibility="None" MaxHeight="200"/>
         <WrapPanel HorizontalAlignment="Center" DockPanel.Dock="Top">
-            <Button Name="addToShoppingListButton" Content="Add missing items to shopping list" IsEnabled="False" Click="AddToShoppingListButton_Click" HorizontalAlignment="Left" Width="190" Height="40" Margin="10"/>
-            <Button Name="prepareRecipeButton" Content="Prepare the meal" IsEnabled="False" Click="PrepareRecipeButton_Click" HorizontalAlignment="Right" Width="190" Height="40" Margin="10"/>
+            <Button Name="addToShoppingListButton" Content="Add missing items to shopping list" IsEnabled="False" Click="AddToShoppingListButton_Click" HorizontalAlignment="Left" Width="236" Height="40" Margin="10" FontSize="14"/>
+            <Button Name="prepareRecipeButton" Content="Prepare the meal" IsEnabled="False" Click="PrepareRecipeButton_Click" HorizontalAlignment="Right" Width="190" Height="40" Margin="10" FontSize="14"/>
         </WrapPanel>
     </DockPanel>
 </Window>

@@ -6,33 +6,33 @@
         xmlns:local="clr-namespace:CookingAssistant"
         mc:Ignorable="d"
         WindowStartupLocation="CenterOwner"
-        Title="SupplyWindow" Height="450" Width="800" Closing="SupplyWindow_Closing" ResizeMode="NoResize">
-    <Grid>
+        Title="Manage supplies" Height="516" Width="678" Closing="SupplyWindow_Closing" ResizeMode="NoResize">
+    <Grid Margin="0" Height="486" VerticalAlignment="Top">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="5*"/>
-            <ColumnDefinition Width="7*"/>
+            <ColumnDefinition Width="275*"/>
+            <ColumnDefinition Width="392*"/>
         </Grid.ColumnDefinitions>
-        <DataGrid x:Name="ingredientsDataGrid"  HorizontalAlignment="Left" Height="354" Margin="320,10,0,0" VerticalAlignment="Top" Width="462" SelectionChanged="IngredientsDataGrid_SelectionChanged" CanUserAddRows="False" CanUserDeleteRows="False" CanUserResizeRows="False" IsReadOnly="True" GridLinesVisibility="None" Grid.ColumnSpan="2" AutoGeneratingColumn="IngredientsDataGrid_AutoGeneratingColumn"/>
-        <Label Content="Product name:" HorizontalAlignment="Left" Margin="10,136,0,0" VerticalAlignment="Top" RenderTransformOrigin="2.026,-3.962"/>
-        <Label Content="Label" HorizontalAlignment="Left" Height="103" Margin="219,279,0,0" VerticalAlignment="Top" Width="0"/>
-        <TextBox x:Name="addIngredientTextBox" HorizontalAlignment="Left" Height="23" Margin="134,140,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120"/>
-        <Button x:Name="addIngredientButton" Content="Add" HorizontalAlignment="Left" Margin="134,180,0,0" VerticalAlignment="Top" Width="120" Click="AddIngredientButton_Click"/>
-        <Button x:Name="updateIngredientButton" Content="Update" HorizontalAlignment="Left" Margin="134,389,0,0" VerticalAlignment="Top" Width="120" Click="UpdateIngredientButton_Click"/>
-        <TextBox x:Name="updateIngredientNameTextBox" HorizontalAlignment="Left" Height="23" Margin="134,350,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120"/>
-        <Button x:Name="deleteIngredientButton" Content="Delete" HorizontalAlignment="Left" Margin="332,380,0,0" VerticalAlignment="Top" Width="120" Click="DeleteIngredientButton_Click" Grid.Column="1"/>
-        <Label Content="Product name:" HorizontalAlignment="Left" Margin="12,350,0,0" VerticalAlignment="Top" RenderTransformOrigin="2.026,-3.962"/>
-        <RadioButton x:Name="volumeRadioButton" GroupName="addIngredient" Content="volume" HorizontalAlignment="Left" Margin="12,40,0,0" VerticalAlignment="Top" Checked="VolumeRadioButton_Checked"/>
-        <RadioButton x:Name="massRadioButton" GroupName="addIngredient" Content="mass" HorizontalAlignment="Left" Margin="12,75,0,0" VerticalAlignment="Top" Checked="MassRadioButton_Checked"/>
-        <RadioButton x:Name="quantityRadioButton" GroupName="addIngredient" Content="quantity" HorizontalAlignment="Left" Margin="12,110,0,0" VerticalAlignment="Top" Checked="QuantityRadioButton_Checked"/>
-        <ComboBox x:Name="measurementComboBox" HorizontalAlignment="Left" VerticalAlignment="Top" Width="120" Margin="134,75,0,0" SelectionChanged="MeasurementComboBox_SelectionChanged" />
-        <Label Content="Amount:" HorizontalAlignment="Left" Margin="10,6,0,0" VerticalAlignment="Top" RenderTransformOrigin="2.026,-3.962"/>
-        <TextBox x:Name="amountTextBox" HorizontalAlignment="Left" Height="23" Margin="134,10,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120"/>
-        <RadioButton x:Name="updateVolumeRadioButton" GroupName="updateIngredient" Content="volume" HorizontalAlignment="Left" Margin="12,260,0,0" VerticalAlignment="Top" Checked="UpdateVolumeRadioButton_Checked"/>
-        <RadioButton x:Name="updateMassRadioButton" GroupName="updateIngredient" Content="mass" HorizontalAlignment="Left" Margin="12,295,0,0" VerticalAlignment="Top" Checked="UpdateMassRadioButton_Checked"/>
-        <RadioButton x:Name="updateQuantityRadioButton" GroupName="updateIngredient" Content="quantity" HorizontalAlignment="Left" Margin="12,330,0,0" VerticalAlignment="Top" Checked="UpdateQuantityRadioButton_Checked"/>
-        <ComboBox x:Name="updateMeasurementComboBox" HorizontalAlignment="Left" VerticalAlignment="Top" Width="120" Margin="134,295,0,0" SelectionChanged="UpdateMeasurementComboBox_SelectionChanged"/>
-        <Label Content="Amount:" HorizontalAlignment="Left" Margin="10,226,0,0" VerticalAlignment="Top" RenderTransformOrigin="2.026,-3.962"/>
-        <TextBox x:Name="updateAmountTextBox" HorizontalAlignment="Left" Height="23" Margin="134,230,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120"/>
+        <DataGrid x:Name="ingredientsDataGrid"  HorizontalAlignment="Left" Height="405" Margin="42,10,0,0" VerticalAlignment="Top" Width="321" SelectionChanged="IngredientsDataGrid_SelectionChanged" CanUserAddRows="False" CanUserDeleteRows="False" CanUserResizeRows="False" IsReadOnly="True" GridLinesVisibility="None" AutoGeneratingColumn="IngredientsDataGrid_AutoGeneratingColumn" FontSize="14" Grid.Column="1"/>
+        <Label Content="Product name:" HorizontalAlignment="Left" Margin="8,133,0,0" VerticalAlignment="Top" RenderTransformOrigin="2.026,-3.962" FontSize="14" Height="29" Width="100"/>
+        <Label Content="Label" HorizontalAlignment="Left" Height="103" Margin="217,324,0,0" VerticalAlignment="Top" Width="0" FontSize="14"/>
+        <TextBox x:Name="addIngredientTextBox" HorizontalAlignment="Left" Height="23" Margin="132,137,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120" FontSize="14"/>
+        <Button x:Name="addIngredientButton" Content="Add" HorizontalAlignment="Left" Margin="134,180,0,0" VerticalAlignment="Top" Width="120" Click="AddIngredientButton_Click" FontSize="14" Height="45"/>
+        <Button x:Name="updateIngredientButton" Content="Update" HorizontalAlignment="Left" Margin="134,431,0,0" VerticalAlignment="Top" Width="120" Click="UpdateIngredientButton_Click" FontSize="14" Height="46"/>
+        <TextBox x:Name="updateIngredientNameTextBox" HorizontalAlignment="Left" Height="23" Margin="132,395,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120" FontSize="14"/>
+        <Button x:Name="deleteIngredientButton" Content="Delete" HorizontalAlignment="Left" Margin="243,431,0,0" VerticalAlignment="Top" Width="120" Click="DeleteIngredientButton_Click" Grid.Column="1" FontSize="14" Height="47"/>
+        <Label Content="Product name:" HorizontalAlignment="Left" Margin="10,395,0,0" VerticalAlignment="Top" RenderTransformOrigin="2.026,-3.962" FontSize="14" Height="29" Width="100"/>
+        <RadioButton x:Name="volumeRadioButton" GroupName="addIngredient" Content="volume" HorizontalAlignment="Left" Margin="12,40,0,0" VerticalAlignment="Top" Checked="VolumeRadioButton_Checked" FontSize="14" Height="18" Width="65"/>
+        <RadioButton x:Name="massRadioButton" GroupName="addIngredient" Content="mass" HorizontalAlignment="Left" Margin="12,75,0,0" VerticalAlignment="Top" Checked="MassRadioButton_Checked" FontSize="14" Height="18" Width="50"/>
+        <RadioButton x:Name="quantityRadioButton" GroupName="addIngredient" Content="quantity" HorizontalAlignment="Left" Margin="12,110,0,0" VerticalAlignment="Top" Checked="QuantityRadioButton_Checked" FontSize="14" Height="18" Width="70"/>
+        <ComboBox x:Name="measurementComboBox" HorizontalAlignment="Left" VerticalAlignment="Top" Width="120" Margin="134,75,0,0" SelectionChanged="MeasurementComboBox_SelectionChanged" FontSize="14" Height="25" />
+        <Label Content="Amount:" HorizontalAlignment="Left" Margin="10,6,0,0" VerticalAlignment="Top" RenderTransformOrigin="2.026,-3.962" FontSize="14" Height="29" Width="63"/>
+        <TextBox x:Name="amountTextBox" HorizontalAlignment="Left" Height="23" Margin="134,10,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120" FontSize="14"/>
+        <RadioButton x:Name="updateVolumeRadioButton" GroupName="updateIngredient" Content="volume" HorizontalAlignment="Left" Margin="12,302,0,0" VerticalAlignment="Top" Checked="UpdateVolumeRadioButton_Checked" FontSize="14" Height="18" Width="65"/>
+        <RadioButton x:Name="updateMassRadioButton" GroupName="updateIngredient" Content="mass" HorizontalAlignment="Left" Margin="12,337,0,0" VerticalAlignment="Top" Checked="UpdateMassRadioButton_Checked" FontSize="14" Height="18" Width="50"/>
+        <RadioButton x:Name="updateQuantityRadioButton" GroupName="updateIngredient" Content="quantity" HorizontalAlignment="Left" Margin="12,372,0,0" VerticalAlignment="Top" Checked="UpdateQuantityRadioButton_Checked" FontSize="14" Height="18" Width="70"/>
+        <ComboBox x:Name="updateMeasurementComboBox" HorizontalAlignment="Left" VerticalAlignment="Top" Width="120" Margin="134,337,0,0" SelectionChanged="UpdateMeasurementComboBox_SelectionChanged" FontSize="14" Height="25"/>
+        <Label Content="Amount:" HorizontalAlignment="Left" Margin="10,268,0,0" VerticalAlignment="Top" RenderTransformOrigin="2.026,-3.962" FontSize="14" Height="29" Width="63"/>
+        <TextBox x:Name="updateAmountTextBox" HorizontalAlignment="Left" Height="23" Margin="134,272,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120" FontSize="14"/>
 
     </Grid>
 </Window>
