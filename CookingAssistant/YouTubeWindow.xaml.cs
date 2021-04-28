@@ -78,7 +78,7 @@ namespace CookingAssistant
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void OpenBrowser_Click(object sender, RoutedEventArgs e)
+        public void OpenBrowser_Click(object sender, RoutedEventArgs e)
         {
             var url = "https://www.youtube.com/watch?v=" + (sender as Button).Tag.ToString();
             System.Diagnostics.Process.Start(url);
@@ -90,7 +90,7 @@ namespace CookingAssistant
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void Save_Click(object sender, RoutedEventArgs e)
+        public void Save_Click(object sender, RoutedEventArgs e)
         {
             Recipe currentlyChosenRecipe = (this.Owner as MainWindow).currentlyChosenRecipe;
             string videoId = (sender as Button).Tag.ToString();
@@ -110,7 +110,7 @@ namespace CookingAssistant
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void UnpinButton_Click(object sender, RoutedEventArgs e)
+        public void UnpinButton_Click(object sender, RoutedEventArgs e)
         {
             var currentlyChosenRecipe = (this.Owner as MainWindow).currentlyChosenRecipe;
             Recipe record = (from r in db.Recipes
