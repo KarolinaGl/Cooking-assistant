@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:CookingAssistant"
         mc:Ignorable="d"
-        Title="RecipePrepareWindow" Height="Auto" Width="Auto">
+        Title="RecipePrepareWindow" Height="Auto" Width="Auto" FontSize="14">
     <DockPanel>
         <TextBlock DockPanel.Dock="Top" Text="You're not able to prepare this meal, because you're missing some of the needed ingredients." Name="missingItemsComment" Visibility="Collapsed" TextWrapping="Wrap" HorizontalAlignment="Center"/>
         <DataGrid DockPanel.Dock="Top" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" ColumnWidth="*" Name="missingItemsDataGrid" HorizontalAlignment="Stretch" Height="Auto" Width="Auto" AreRowDetailsFrozen="True" GridLinesVisibility="None" HeadersVisibility="None" MaxHeight="100"/>
