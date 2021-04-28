@@ -100,7 +100,7 @@ namespace CookingAssistant
         /// Retrieves an existing ingredient from the database or creates a new one
         /// </summary>
         /// <param name="operationType">Name of the performed CRUD operation</param>
-        /// <returns></returns>
+        /// <returns>Ingredient object</returns>
         public Ingredient GetOrCreateIngredient(string operationType)
         {
             string ingredientName = "";
@@ -359,12 +359,15 @@ namespace CookingAssistant
             {
                 case "measurementQuantity":
                     e.Column.Visibility = Visibility.Visible;
+                    e.Column.Header = "Quantity";
                     break;
                 case "measurementDescription":
                     e.Column.Visibility = Visibility.Visible;
+                    e.Column.Header = "Measurement unit";
                     break;
                 case "ingredientName":
                     e.Column.Visibility = Visibility.Visible;
+                    e.Column.Header = "Ingredient";
                     break;
                 default:
                     e.Column.Visibility = Visibility.Hidden;
