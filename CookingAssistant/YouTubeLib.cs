@@ -52,7 +52,7 @@ namespace YouTubeLib
             return results;
         }
         /// <summary>
-        /// Retrieves videos using saved ids
+        /// Retrieves videos using saved ids.
         /// </summary>
         /// <param name="videoIds">List of saved YouTube video ids</param>
         /// <returns>A list of retrived videos</returns>
@@ -77,22 +77,16 @@ namespace YouTubeLib
             }
             return results;
         }
-        /*
-        public async Task<bool> SynchronizeVideoList(List<Video> videos)
-        {
-            var videosRequest = service.Videos.List("snippet");
-            foreach (var video in videos)
-            {
-                videosRequest.
-            }
-            var videosResponse = await videosRequest.ExecuteAsync();
-            return true;
-        }
-        */
     }
-    ///
+
+    /// <summary>
+    /// Static class housing utility classes related to communication via the YouTube Data Api.
+    /// </summary>
     public static class YouTubeUtils
     {
+        /// <summary>
+        /// Class representing a thumbnail related to a youtube video.
+        /// </summary>
         public class Thumbnail
         {
             public string Url { get; set; }
@@ -111,6 +105,9 @@ namespace YouTubeLib
                 this.Height = 0;
             }
         }
+        /// <summary>
+        /// Class representing a thumbnail related to a youtube video.
+        /// </summary>
         public class Video
         {
             public string Id { get; set; }
@@ -130,23 +127,6 @@ namespace YouTubeLib
             {
                 return this.Title;
             }
-        }
-        public static Thumbnail RetrieveThumbnailData(SearchResult result)
-        {
-            string thumbnailUrl = Convert.ToString(result.Snippet.Thumbnails.High.Url);
-            int thumbnailWidth = Convert.ToInt32(result.Snippet.Thumbnails.High.Width);
-            int thumbnailHeight = Convert.ToInt32(result.Snippet.Thumbnails.High.Height);
-            return new Thumbnail(thumbnailUrl, thumbnailWidth, thumbnailHeight);
-            // tu będą wyjątki i sposób pobrania najlepszej możliwej rodzielczości miniaturki
-        }
-        public static Video RetrieveVideoData(SearchResult result)
-        {
-            string id = Convert.ToString(result.Id.VideoId);
-            string title = result.Snippet.Title;
-            string channel = result.Snippet.ChannelTitle;
-            string description = result.Snippet.Description;
-            Thumbnail thumbnail = RetrieveThumbnailData(result);
-            return new Video(id, title, channel, description, thumbnail);
         }
     }
 }

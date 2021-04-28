@@ -16,6 +16,9 @@ using YouTubeLib;
 
 namespace CookingAssistant
 {
+    /// <summary>
+    /// Interaction logic for YouTubeWindow.xaml
+    /// </summary>
     public partial class YouTubeWindow : Window
     {
         private CookingAssistantDBEntities db = new CookingAssistantDBEntities();
@@ -24,6 +27,9 @@ namespace CookingAssistant
             InitializeComponent();
         }
 
+        /// <summary>
+        /// Binds favourite video data received using YouTube Data Api to the related section in YouTubeWindow.
+        /// </summary>
         public async void UpdateFavouriteBinding()
         {
             var youTubeHandle = (this.Owner as MainWindow).youTubeHandle;
@@ -48,6 +54,9 @@ namespace CookingAssistant
             }
         }
 
+        /// <summary>
+        /// Binds videos received from YouTube Data Api to section related to recommended videos in YouTubeWindow.
+        /// </summary>
         public async void UpdateRecommendedBinding()
         {
             var youTubeHandle = (this.Owner as MainWindow).youTubeHandle;
@@ -64,12 +73,23 @@ namespace CookingAssistant
             }
         }
 
+        /// <summary>
+        /// Opens the video related to the button in default system browser.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void OpenBrowser_Click(object sender, RoutedEventArgs e)
         {
             var url = "https://www.youtube.com/watch?v=" + (sender as Button).Tag.ToString();
             System.Diagnostics.Process.Start(url);
         }
 
+
+        /// <summary>
+        /// Saves the video related to the button to the database as the favourite video and refreshes the binding.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Save_Click(object sender, RoutedEventArgs e)
         {
             Recipe currentlyChosenRecipe = (this.Owner as MainWindow).currentlyChosenRecipe;
@@ -85,6 +105,11 @@ namespace CookingAssistant
             UpdateFavouriteBinding();
         }
 
+        /// <summary>
+        /// Removes the favourite video from the database and refreshes the binding.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void UnpinButton_Click(object sender, RoutedEventArgs e)
         {
             var currentlyChosenRecipe = (this.Owner as MainWindow).currentlyChosenRecipe;

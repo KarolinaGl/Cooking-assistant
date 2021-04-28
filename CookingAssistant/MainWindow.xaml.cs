@@ -41,11 +41,17 @@ namespace CookingAssistant
             youTubeHandle = new YouTubeHandle("AIzaSyDvi23J4hoKVVtjVC - 1XzW - s_PPjHGe_cA");
         }
 
+        /// <summary>
+        /// Fills recipesDataGrid with recipes from database.
+        /// </summary>
         public void BindRecipes()
         {
             recipesDataGrid.ItemsSource = db.Recipes.ToArray();
         }
 
+        /// <summary>
+        /// Fills shoppingListDataGrid with shopping list items from database.
+        /// </summary>
         public void BindShoppingList()
         {
             var shoppingLists = from shoppingList in db.ShoppingLists
@@ -58,6 +64,9 @@ namespace CookingAssistant
             shoppingListDataGrid.ItemsSource = shoppingLists.ToArray();
         }
 
+        /// <summary>
+        /// Fills suppliesDataGrid with supplies from database.
+        /// </summary>
         public void BindSupplies()
         {
             var supplies = from supply in db.Supplies
@@ -78,15 +87,12 @@ namespace CookingAssistant
             }
         }
 
-
-        public void BindAll()
-        {
-            BindRecipes();
-            BindShoppingList();
-            BindSupplies();
-        }
-
-        private void YouTubeTabButton_Click(object sender, RoutedEventArgs e)
+        /// <summary>
+        /// Places content of opened youtube tab related to current recipe in the right side of the Main Window. 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        public void YouTubeTabButton_Click(object sender, RoutedEventArgs e)
         { 
             if (currentlyChosenRecipe != null)
             {
@@ -107,12 +113,17 @@ namespace CookingAssistant
             }
         }
 
-        private void recipesGrid_CurrentCellChanged(object sender, EventArgs e)
+        /// <summary>
+        /// Updates currently chosen recipe.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        public void recipesGrid_CurrentCellChanged(object sender, EventArgs e)
         {
             if (recipesDataGrid.CurrentCell.IsValid)
             {
                 Recipe currentlyChosenRecipe = recipesDataGrid.CurrentCell.Item as Recipe;
-                if (currentlyChosenRecipe != null)
+                if (currentlyChosenRecipe != null && (currentlyChosenRecipe != this.currentlyChosenRecipe))
                 {
                     this.currentlyChosenRecipe = (from r in db.Recipes where r.recipeId == currentlyChosenRecipe.recipeId select r).SingleOrDefault();
                     youTubeTabButton.IsEnabled = true;
@@ -153,7 +164,12 @@ namespace CookingAssistant
             }
         }
 
-        private void ShoppingListButton_Click(object sender, RoutedEventArgs e)
+        /// <summary>
+        /// Opens new ShoppingListWindow and shows it as a dialog.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        public void ShoppingListButton_Click(object sender, RoutedEventArgs e)
         {
             if (this.currentShoppingListWindow != null)
             {
@@ -166,7 +182,12 @@ namespace CookingAssistant
             this.currentShoppingListWindow.ShowDialog();
         }
 
-        private void RecipeCRUDWindowButton_Click(object sender, RoutedEventArgs e)
+        /// <summary>
+        /// Opens new RecipeCRUDWindow and shows it as a dialog.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        public void RecipeCRUDWindowButton_Click(object sender, RoutedEventArgs e)
         {
             if (this.currentRecipeCRUDWindow != null)
             {
@@ -179,7 +200,12 @@ namespace CookingAssistant
             this.currentRecipeCRUDWindow.ShowDialog();
         }
 
-        private void SuppliesButton_Click(object sender, RoutedEventArgs e)
+        /// <summary>
+        /// Opens new SupplyWindow and shows it as a dialog.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        public void SuppliesButton_Click(object sender, RoutedEventArgs e)
         {
             if (this.currentSupplyWindow != null)
             {
@@ -192,7 +218,12 @@ namespace CookingAssistant
             this.currentSupplyWindow.ShowDialog();
         }
 
-        private void recipesDataGrid_AutoGeneratingColumn(object sender, DataGridAutoGeneratingColumnEventArgs e)
+        /// <summary>
+        /// Makes the column related to name of the recipe the only visible one.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        public void recipesDataGrid_AutoGeneratingColumn(object sender, DataGridAutoGeneratingColumnEventArgs e)
         {
             switch (e.Column.Header.ToString())
             {

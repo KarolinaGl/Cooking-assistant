@@ -22,21 +22,22 @@ namespace CookingAssistant
         private CookingAssistantDBEntities db = new CookingAssistantDBEntities();
         List<ShoppingList> currentlyMissingItems;
         Recipe currentlyChosenRecipe;
-        public RecipePrepareWindow()
-        {
-            InitializeComponent();
-        }
         public RecipePrepareWindow(Recipe currentlyChosenRecipe)
         {
             InitializeComponent();
             this.currentlyChosenRecipe = currentlyChosenRecipe;
             EvaluateMissingItems();
         }
+
+        /// <summary>
+        /// Evaluates which items (ingredients) are missing and in what quantity. The evaluation compares the list of ingredients of currently chosen recipe with the list of supplies. If the items types are mismatched the items are ignored in the evaluation. 
+        /// </summary>
         public void EvaluateMissingItems()
         {
             var recipe = this.currentlyChosenRecipe;
             var supplies = db.Supplies.ToList();
             var missingItems = new List<ShoppingList>();
+            var mismatchedItems = new List<string>();
 
             foreach (RecipeIngredient recipeIngredient in recipe.RecipeIngredients.ToList())
             {
@@ -54,10 +55,14 @@ namespace CookingAssistant
                         missingQuantity = missingQuantity / relatedSupply.MeasurementUnit.defaultUnit.Value;
                         missingQuantity = Math.Round(missingQuantity, 2);
                     }
+                    else
+                    {
+                        mismatchedItems.Add(recipeIngredient.Ingredient.ingredientName);
+                    }
                 }
                 else
                 {
-                    missingQuantity = recipeIngredient.measurementQuantity;
+                    missingQuantity = Math.Round(recipeIngredient.measurementQuantity, 2);
                 }
                 if (missingQuantity > 0)
                 {
@@ -73,9 +78,19 @@ namespace CookingAssistant
                 }
             }
             this.currentlyMissingItems = missingItems;
+            if (mismatchedItems.Count > 0)
+            {
+                mismatchedItemsList.ItemsSource = mismatchedItems;
+                mismatchedItemsList.Visibility = Visibility.Visible;
+                mismatchedItemsComment.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                mismatchedItemsList.Visibility = Visibility.Collapsed;
+                mismatchedItemsComment.Visibility = Visibility.Collapsed;
+            }
             if (this.currentlyMissingItems.Count > 0)
             {
-                missingItemsComment.Text = "You're not able to prepare this meal, because you're missing some of the needed ingredients.";
                 missingItemsComment.Visibility = Visibility.Visible;
                 missingItemsDataGrid.Visibility = Visibility.Visible;
                 addToShoppingListButton.IsEnabled = true;
@@ -88,6 +103,7 @@ namespace CookingAssistant
                                                 item.Ingredient.ingredientName
                                             };
                 missingItemsDataGrid.ItemsSource = missingItemsToDisplay;
+
             }
             else
             {
@@ -98,6 +114,9 @@ namespace CookingAssistant
             }
         }
 
+        /// <summary>
+        /// Adds evaluated missing items to the shopping list, changing quantity of present ones and creating new records if the ingredient were not in the shopping list.
+        /// </summary>
         public void AddMissingItemsToShoppingList()
         {
             if (this.currentlyMissingItems.Count() > 0)
@@ -133,6 +152,9 @@ namespace CookingAssistant
             }
         }
 
+        /// <summary>
+        /// Subtracts quantity of ingredients used in currently chosen recipe from quantity of this ingredient in supplies.
+        /// </summary>
         public void PrepareRecipeAndUpdateSupplies()
         {
             var usedIngredients = this.currentlyChosenRecipe.RecipeIngredients;
@@ -156,14 +178,23 @@ namespace CookingAssistant
             }
         }
 
-        private void AddToShoppingListButton_Click(object sender, RoutedEventArgs e)
+        /// <summary>
+        /// Executes function which adds previously evaluated items to shopping list and binds the list in Main Window to refresh the data in datagrid.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        public void AddToShoppingListButton_Click(object sender, RoutedEventArgs e)
         {
             AddMissingItemsToShoppingList();
             (this.Owner as MainWindow).BindShoppingList();
-            EvaluateMissingItems();
         }
 
-        private void PrepareRecipeButton_Click(object sender, RoutedEventArgs e)
+        /// <summary>
+        /// Executes function which subtracts needed ingredients from supplies, then refreshes the data in datagrid inside Main Window and evaluates missing items again to check if the recipe can prepared again. 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        public void PrepareRecipeButton_Click(object sender, RoutedEventArgs e)
         {
             PrepareRecipeAndUpdateSupplies();
             (this.Owner as MainWindow).BindSupplies();
