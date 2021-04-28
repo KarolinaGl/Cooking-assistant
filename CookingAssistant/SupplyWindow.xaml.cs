@@ -142,7 +142,7 @@ namespace CookingAssistant
         /// </summary>
         /// <param name="ingredientName">addIngredientTextBox content</param>
         /// <param name="ingredientAmount">amountTextBox content</param>
-        /// <returns></returns>
+        /// <returns>String array containing message box content and title</returns>
         public static string[] ValidateText(string buttonType, string ingredientName, string ingredientAmount)
         {
             string[] outputArray = new string[2];
